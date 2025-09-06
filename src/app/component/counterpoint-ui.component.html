@@ -9,11 +9,8 @@
   <section class="controls">
     <div class="slider">
       <label>Inversion (mod 12): <strong>{{ inversion() }}</strong></label>
-      <mat-slider min="0" max="11" step="1" showTickMarks discrete
-                  [displayWith]="(v:number)=>v.toString()"
-                  [value]="inversion()"
-                  (input)="inversion.set($any($event.value))">
-        <input matSliderThumb [value]="inversion()">
+      <mat-slider min="0" max="11" step="1">
+        <input matSliderThumb [value]="inversion()" (valueChange)="inversion.set($event)">
       </mat-slider>
       <small class="hint">This shifts the classification by N semitones to simulate inversion at the Nth.</small>
     </div>

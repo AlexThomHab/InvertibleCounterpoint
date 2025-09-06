@@ -1,7 +1,7 @@
 import { Component, signal, computed, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { MatSliderModule } from '@angular/material/slider';
+import {MatSliderChange, MatSliderModule} from '@angular/material/slider';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,6 +10,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { InvertibleCounterpointService } from '../services/invertible-counterpoint.service';
 import { DEFAULT_INTERVALS, Interval } from '../models/Interval';
+
 
 
 type Bucket = { label: string; values: number[]; chipColor: 'primary'|'accent'|'warn' };
@@ -63,4 +64,6 @@ export class CounterpointUiComponent {
     const item = this.intervals()[i];
     return `${item.name} (${item.semitones})`;
   }
+
+  protected readonly MatSliderChange = MatSliderChange;
 }
