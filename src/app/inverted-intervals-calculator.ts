@@ -3,14 +3,14 @@ import { InvertedIntervals } from './models/InvertedIntervals';
 
 export class InvertedIntervalsCalculator {
   private intervals: Interval[] = [
-    { index: 0, name: 'Unison',  isConsonant: true  },
-    { index: 1, name: 'Second',  isConsonant: false },
-    { index: 2, name: 'Third',   isConsonant: true  },
-    { index: 3, name: 'Fourth',  isConsonant: false },
-    { index: 4, name: 'Fifth',   isConsonant: true  },
-    { index: 5, name: 'Sixth',   isConsonant: true  },
-    { index: 6, name: 'Seventh', isConsonant: false },
-    { index: 7, name: 'Octave',  isConsonant: true  },
+    { semitones: 0, name: 'Unison',  isConsonant: true  },
+    { semitones: 1, name: 'Second',  isConsonant: false },
+    { semitones: 2, name: 'Third',   isConsonant: true  },
+    { semitones: 3, name: 'Fourth',  isConsonant: false },
+    { semitones: 4, name: 'Fifth',   isConsonant: true  },
+    { semitones: 5, name: 'Sixth',   isConsonant: true  },
+    { semitones: 6, name: 'Seventh', isConsonant: false },
+    { semitones: 7, name: 'Octave',  isConsonant: true  },
   ];
 
   calculate(jvIndex: number): InvertedIntervals {
