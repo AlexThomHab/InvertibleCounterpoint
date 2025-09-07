@@ -1,41 +1,44 @@
-import { Component, signal, computed, effect } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import {MatSliderChange, MatSliderModule} from '@angular/material/slider';
-import { MatListModule } from '@angular/material/list';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { FormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { InvertibleCounterpointService } from '../services/invertible-counterpoint.service';
-import {FormsModule} from '@angular/forms';
-import {InvertedIntervals} from '../models/InvertedIntervals';
-
-type Bucket = { label: string; values: number[]; chipColor: 'primary'|'accent'|'warn' };
+import { InvertedIntervals } from '../models/InvertedIntervals';
 
 @Component({
   selector: 'app-counterpoint-ui',
   standalone: true,
-  imports: [
-    CommonModule, MatCardModule, MatSliderModule, MatListModule,
-    MatChipsModule, MatIconModule, MatButtonModule, MatSlideToggleModule, MatTooltipModule, FormsModule
-  ],
+  imports: [CommonModule, FormsModule, MatTooltipModule],
   templateUrl: './counterpoint-ui.component.html',
   styleUrls: ['./counterpoint-ui.component.css']
 })
 export class CounterpointUiComponent {
-  _jvInput: number = 0;
+  _jvInput = 0;
+
   _invertedIntervals: InvertedIntervals = {
     fixedConsonances: [],
-    variableConsonances: [],
     fixedDissonances: [],
+    variableConsonances: [],
     variableDissonances: []
   };
-  constructor(private _invertibleCounterpointService: InvertibleCounterpointService) {}
+
+  // show 0..7 to match the service
+  _indices = Array.from({ length: 8 }, (_, i) => i);
+
+  constructor(private _invertibleCounterpointService: InvertibleCounterpointService) {
+    this.OnJvInput(); // compute initial
+  }
 
   OnJvInput(): void {
-    this._invertedIntervals = this._invertibleCounterpointService.compute(this._jvInput)
+    this._invertedIntervals = this._invertibleCounterpointService.compute(this._jvInput);
+  }
+
+  getClassForIndex(i: number): string {
+    const inv = this._invertedIntervals;
+    if (inv.fixedConsonances.includes(i)) return 'fixedConsonant';
+    if (inv.fixedDissonances.includes(i)) return 'fixedDissonant';
+    if (inv.variableConsonances.includes(i)) return 'variableConsonant';
+    if (inv.variableDissonances.includes(i)) return 'variableDissonant';
+    return '';
   }
 }
-

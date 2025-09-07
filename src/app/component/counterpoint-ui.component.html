@@ -1,20 +1,49 @@
-<div>
-<label for="jv">JV</label>
-  <input id="jv" type="number" [(ngModel)]="_jvInput" (ngModelChange)="OnJvInput()"/>
-</div>
-
-<div>
-  <div>
-  <strong>Fixed Consonances: </strong> {{_invertedIntervals.fixedConsonances}}
-  </div>
-  <div>
-    <strong>Fixed Dissonances: </strong> {{_invertedIntervals.fixedDissonances}}
-  </div>
-  <div>
-    <strong>Variable Consonances: </strong> {{_invertedIntervals.variableConsonances}}
-  </div>
-  <div>
-    <strong>Variable Dissonances: </strong> {{_invertedIntervals.variableDissonances}}
+<div class="cp-container">
+  <div class="controls">
+    <label for="jv">JV</label>
+    <input
+      id="jv"
+      type="number"
+      min="0"
+      max="7"
+      [(ngModel)]="_jvInput"
+      (ngModelChange)="OnJvInput()"
+    />
   </div>
 
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item">
+      <span class="swatch fixedConsonant"></span> Fixed Consonances
+    </div>
+    <div class="legend-item">
+      <span class="swatch fixedDissonant"></span> Fixed Dissonances
+    </div>
+    <div class="legend-item">
+      <span class="swatch variableConsonant"></span> Variable Consonances
+    </div>
+    <div class="legend-item">
+      <span class="swatch variableDissonant"></span> Variable Dissonances
+    </div>
+  </div>
+
+  <!-- Grid of intervals 0..7 -->
+  <div class="grid">
+    <div
+      class="cell"
+      *ngFor="let i of _indices"
+      [ngClass]="getClassForIndex(i)"
+      [matTooltip]="'Interval ' + i"
+    >
+      {{ i }}
+    </div>
+  </div>
+
+  <!-- Buckets (text) -->
+  <div class="buckets">
+    <div><strong>Fixed Consonances:</strong> {{ _invertedIntervals.fixedConsonances.join(', ') }}</div>
+    <div><strong>Fixed Dissonances:</strong> {{ _invertedIntervals.fixedDissonances.join(', ') }}</div>
+    <div><strong>Variable Consonances:</strong> {{ _invertedIntervals.variableConsonances.join(', ') }}</div>
+    <div><strong>Variable Dissonances:</strong> {{ _invertedIntervals.variableDissonances.join(', ') }}</div>
+  </div>
 </div>
