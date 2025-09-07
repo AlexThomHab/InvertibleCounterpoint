@@ -36,7 +36,9 @@ jobs:
       - name: Sync to S3
         run: |
           aws s3 sync dist/InvertibleCounterpoint/browser s3://${{ secrets.S3_BUCKET }} --delete
-      - name: Create Cloudfront cache invalidation
-        run: |
-          aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DISTRIBUTION_ID }} --paths "/*"
+      - name: Invalidate CloudFront cache
+        env:
+          DIST_ID: ${{ secrets.CF_DISTRIBUTION_ID }}
+        run: aws cloudfront create-invalidation --distribution-id "$DIST_ID" --paths "/*"
+
 
