@@ -22,6 +22,15 @@
   text-align: center;
 }
 
+/* Title lives inside .card-header now */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
 .cp-card h1 {
   font-size: 1.35rem;
   font-weight: 700;
@@ -36,12 +45,7 @@
   gap: 10px;
   margin: 10px 0 16px;
 }
-
-.controls label {
-  font-weight: 600;
-  font-size: 14px;
-}
-
+.controls label { font-weight: 600; font-size: 14px; }
 .controls input[type="number"] {
   width: 90px;
   padding: 6px 10px;
@@ -61,14 +65,13 @@
 /* Legend */
 .legend {
   display: flex;
-  flex-direction: column;      /* stack on mobile */
+  flex-direction: column;
   align-items: flex-start;
   gap: 10px;
   margin: 8px auto 18px;
   font-size: 14px;
   max-width: 440px;
 }
-
 .legend-item { display: flex; align-items: center; gap: 8px; }
 .swatch { width: 16px; height: 16px; border-radius: 4px; border: 2px solid #bbb; background: #fff; }
 .swatch.fixedConsonant { border-color: #1e88e5; }
@@ -84,7 +87,6 @@
   justify-content: center;
   margin: 0 auto 18px;
 }
-
 .cell {
   height: var(--cell);
   border-radius: 12px;
@@ -100,7 +102,7 @@
 }
 .cell:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.1); }
 
-/* Buckets summary: readable on phones */
+/* Buckets summary */
 .buckets {
   text-align: left;
   font-size: 14px;
@@ -120,6 +122,45 @@
 .variableConsonant { border-color: #43a047; box-shadow: inset 0 0 0 3px rgba(67,160,71,.15); }
 .variableDissonant { border-color: #8e24aa; box-shadow: inset 0 0 0 3px rgba(142,36,170,.15); }
 
+/* Subtitle */
+.subtitle {
+  margin: 4px auto 10px;
+  font-size: 0.95rem;
+  color: #4b5563;
+  max-width: 720px;
+}
+
+/* Info details (icon + popup) */
+.info { position: relative; }
+.info > summary { list-style: none; cursor: pointer; }
+.info > summary::-webkit-details-marker { display: none; }
+.info-icon { color: #6b7280; transition: color .2s; }
+.info > summary:hover .info-icon { color: #1e88e5; }
+
+/* Info popup body — wider with more padding */
+.info-body {
+  position: absolute;
+  top: 32px;
+  right: 0;
+  width: min(440px, 92vw);
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 6px 22px rgba(0,0,0,.15);
+  padding: 16px 18px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  z-index: 100;
+}
+.info-body p { margin: 6px 0; }
+.info-body ul { margin: 6px 0 0 18px; }
+.info-body code {
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 0 4px;
+}
+
 /* ── Tablet & up ───────────────────────────── */
 @media (min-width: 600px) {
   .cp-card { padding: 24px 28px; }
@@ -131,101 +172,4 @@
 /* Very small phones: gently shrink cells */
 @media (max-width: 360px) {
   .cp-card { --cell: 50px; }
-}
-/* Subtitle + collapsible explanation */
-.subtitle {
-  margin: 4px auto 10px;
-  font-size: 0.95rem;
-  color: #4b5563;
-  max-width: 720px;
-}
-
-.explain {
-  text-align: left;
-  margin: 8px auto 16px;
-  max-width: 720px;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  background: #fafafa;
-  padding: 8px 12px;
-}
-
-.explain > summary {
-  cursor: pointer;
-  font-weight: 700;
-  list-style: none;
-  outline: none;
-}
-
-/* Remove default disclosure triangle for a cleaner look (optional) */
-.explain > summary::-webkit-details-marker { display: none; }
-
-.explain-body {
-  margin-top: 8px;
-  font-size: 0.95rem;
-  color: #374151;
-}
-
-.explain-body p { margin: 6px 0; }
-.explain-body ul { margin: 6px 0 0 18px; padding: 0; }
-.explain-body code {
-  background: #f3f4f6;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  padding: 0 4px;
-}
-
-/* Make the summary obviously clickable */
-.explain > summary {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  margin: -8px -12px;                /* extend hit area to the card edges */
-  border-radius: 10px;
-  background: linear-gradient(#ffffff, #fafafa);
-  border: 1px solid #e5e7eb;
-  transition: background .2s, border-color .2s;
-}
-.explain > summary:hover,
-.explain > summary:focus-visible {
-  background: #f5f7fb;
-  border-color: #d1d5db;
-  outline: none;
-}
-
-.summary-title {
-  font-weight: 700;
-  flex: 1;
-}
-
-/* Right-side hint text that changes based on open/closed */
-.summary-hint::after {
-  content: "Click to expand";
-  font-weight: 500;
-  font-size: 12px;
-  color: #6b7280;
-}
-.explain[open] .summary-hint::after {
-  content: "Click to collapse";
-  color: #374151;
-}
-
-/* Chevron that rotates when open */
-.chevron {
-  transition: transform .25s ease;
-  opacity: .85;
-}
-.explain[open] .chevron { transform: rotate(180deg); }
-
-/* Add a subtle divider when open */
-.explain[open] .explain-body {
-  border-top: 1px dashed #e5e7eb;
-  margin-top: 10px;
-  padding-top: 10px;
-}
-
-/* Improve click target on mobile */
-@media (hover: none) {
-  .explain > summary { padding: 12px 14px; }
 }
