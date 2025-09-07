@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: production   # 👈 must be on the job to use Environment secrets
+    environment: AWS_ACCESS_KEY_ID   # 👈 must be on the job to use Environment secrets
     steps:
       - name: Checkout
         uses: actions/checkout@v4
