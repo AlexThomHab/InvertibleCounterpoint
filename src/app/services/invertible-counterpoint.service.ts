@@ -1,34 +1,49 @@
-import { Injectable } from '@angular/core';
-import { Interval } from '../models/Interval';
-import { InvertedIntervals } from '../models/InvertedIntervals';
-
-export interface InversionResult {
-  fixedConsonances: number[];
-  variableConsonances: number[];
-  fixedDissonances: number[];
-  variableDissonances: number[];
-}
+import {Injectable} from '@angular/core';
+import {Interval} from '../models/Interval';
+import {InvertedIntervals} from '../models/InvertedIntervals';
 
 @Injectable({ providedIn: 'root' })
 export class InvertibleCounterpointService {
-  compute(inversion: number, intervals: Interval[], mod = 12): InversionResult {
-    const res: InversionResult = {
+  private readonly _intervals : Record<number, Interval> = {
+    0: { semitones: 0, name: 'Unison',  isConsonant: true  },
+    1: { semitones: 1, name: 'Second',  isConsonant: false },
+    2: { semitones: 2, name: 'Third',   isConsonant: true  },
+    3: { semitones: 3, name: 'Fourth',  isConsonant: false },
+    4: { semitones: 4, name: 'Fifth',   isConsonant: true  },
+    5: { semitones: 5, name: 'Sixth',   isConsonant: true  },
+    6: { semitones: 6, name: 'Seventh', isConsonant: false },
+    7: { semitones: 7, name: 'Octave',  isConsonant: true  },
+  };
+  public compute(jvIndex: number): InvertedIntervals {
+    const invertedIntervals: InvertedIntervals = {
       fixedConsonances: [],
-      variableConsonances: [],
       fixedDissonances: [],
-      variableDissonances: [],
+      variableConsonances: [],
+      variableDissonances: []
     };
 
-    for (let i = 0; i < mod; i++) {
-      const a = intervals[i].isConsonant;
-      const target = (i + inversion) % mod;
-      const b = intervals[target].isConsonant;
+    for (let i = 0; i <= 7; i++) {
+      const targetIndex = Math.abs((i + jvIndex) % 7);
 
-      if (a && b) res.fixedConsonances.push(i);
-      else if (!a && !b) res.fixedDissonances.push(i);
-      else if (a && !b) res.variableConsonances.push(i);
-      else res.variableDissonances.push(i);
+      if (this._intervals[i].isConsonant && this._intervals[targetIndex].isConsonant) {
+        invertedIntervals.fixedConsonances.push(i);
+        continue;
+      }
+
+      if (!this._intervals[i].isConsonant && !this._intervals[targetIndex].isConsonant) {
+        invertedIntervals.fixedDissonances.push(i);
+        continue;
+      }
+
+      if (this._intervals[i].isConsonant && !this._intervals[targetIndex].isConsonant) {
+        invertedIntervals.variableConsonances.push(i);
+        continue;
+      }
+
+      if (!this._intervals[i].isConsonant && this._intervals[targetIndex].isConsonant) {
+        invertedIntervals.variableDissonances.push(i);
+      }
     }
-    return res;
+    return invertedIntervals;
   }
 }

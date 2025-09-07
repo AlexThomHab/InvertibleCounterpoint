@@ -1,49 +1,20 @@
-<mat-card class="wrap">
-  <div class="header">
-    <h1>Invertible Counterpoint Visualizer</h1>
-    <button mat-stroked-button (click)="resetDefaults()">
-      <mat-icon>refresh</mat-icon>&nbsp;Reset
-    </button>
+<div>
+<label for="jv">JV</label>
+  <input id="jv" type="number" [(ngModel)]="_jvInput" (ngModelChange)="OnJvInput()"/>
+</div>
+
+<div>
+  <div>
+  <strong>Fixed Consonances: </strong> {{_invertedIntervals.fixedConsonances}}
+  </div>
+  <div>
+    <strong>Fixed Dissonances: </strong> {{_invertedIntervals.fixedDissonances}}
+  </div>
+  <div>
+    <strong>Variable Consonances: </strong> {{_invertedIntervals.variableConsonances}}
+  </div>
+  <div>
+    <strong>Variable Dissonances: </strong> {{_invertedIntervals.variableDissonances}}
   </div>
 
-  <section class="controls">
-    <div class="slider">
-      <label>Inversion (mod 12): <strong>{{ inversion() }}</strong></label>
-      <mat-slider min="0" max="11" step="1">
-        <input matSliderThumb [value]="inversion()" (valueChange)="inversion.set($event)">
-      </mat-slider>
-      <small class="hint">This shifts the classification by N semitones to simulate inversion at the Nth.</small>
-    </div>
-
-    <div class="intervals">
-      <h3>Intervals (toggle consonance)</h3>
-      <mat-list>
-        <mat-list-item *ngFor="let it of intervals(); let i = index">
-          <div matListItemTitle>{{ intervalLabel(i) }}</div>
-          <div matListItemLine>
-            <mat-slide-toggle
-              [checked]="it.isConsonant"
-              (change)="toggleConsonant(i)"
-              [matTooltip]="it.isConsonant ? 'Consonant' : 'Dissonant'">
-              {{ it.isConsonant ? 'Consonant' : 'Dissonant' }}
-            </mat-slide-toggle>
-          </div>
-        </mat-list-item>
-      </mat-list>
-    </div>
-  </section>
-
-  <section class="results">
-    <h3>Results</h3>
-    <div class="chips">
-      <div class="bucket" *ngFor="let b of buckets()">
-        <h4>{{ b.label }}</h4>
-        <mat-chip-set>
-          <mat-chip *ngFor="let v of b.values" [color]="b.chipColor" selected>
-            {{ intervals()[v].name }} ({{ v }})
-          </mat-chip>
-        </mat-chip-set>
-      </div>
-    </div>
-  </section>
-</mat-card>
+</div>

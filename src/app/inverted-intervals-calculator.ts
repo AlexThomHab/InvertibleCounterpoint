@@ -21,7 +21,7 @@ export class InvertedIntervalsCalculator {
       fixedConsonances: [],
       fixedDissonances: [],
       variableConsonances: [],
-      variableDissonance: [],
+      variableDissonances: [],
     };
 
     for (let i = 0; i < max; i++) {
@@ -32,7 +32,7 @@ export class InvertedIntervalsCalculator {
       if (a && b) result.fixedConsonances.push(i);
       else if (!a && !b) result.fixedDissonances.push(i);
       else if (a && !b) result.variableConsonances.push(i);
-      else result.variableDissonance.push(i);
+      else result.variableDissonances.push(i);
     }
 
     return result;
