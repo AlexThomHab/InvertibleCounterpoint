@@ -2,6 +2,30 @@
   <mat-card class="cp-card">
     <h1>Invertible Counterpoint</h1>
 
+    <!-- Short one-liner -->
+    <p class="subtitle">
+      Enter a JV (inversion index) to see which intervals stay or switch between consonance and dissonance after inversion.
+    </p>
+
+    <!-- Collapsible explanation -->
+    <details class="explain">
+      <summary>What are JV and vertical-shifting counterpoint?</summary>
+      <div class="explain-body">
+        <p><strong>Vertical-shifting (invertible) counterpoint</strong> means writing two musical lines so that one or both can be moved up or down by a fixed amount and still obey the rules of counterpoint.</p>
+        <p><strong>JV (inversion index)</strong> is that fixed amount measured in diatonic steps.</p>
+        <p><strong>JV is not the interval</strong> (e.g., second, third, fifth). It’s the number of steps from one note to another. For example, C → G is <code>JV = 4</code> (C→D→E→F→G = four steps), even though the interval is a fifth.</p>
+        <p>Upon inversion, an interval that was consonant may remain consonant or become dissonant, and a dissonance may remain dissonant or become consonant:</p>
+        <ul>
+          <li><em>Fixed consonance</em>: consonant → consonant</li>
+          <li><em>Fixed dissonance</em>: dissonant → dissonant</li>
+          <li><em>Variable consonance</em>: consonant → dissonant</li>
+          <li><em>Variable dissonance</em>: dissonant → consonant</li>
+        </ul>
+        <p><strong>How to use:</strong> pick a JV, check the intervals below, and compose accordingly. Later, add suspensions by treating dissonances as prepared and resolving by step.</p>
+        <p>If you’re confused, don’t worry this is a lot, and a small text box can’t cover everything. I highly recommend <a href="https://www.youtube.com/watch?v=dBTh9PVJ0Ps&t=7s&ab_channel=JacobGran">Jacob Gran’s video on this topic</a>; his work inspired this software.</p>
+      </div>
+    </details>
+
     <!-- Input -->
     <div class="controls">
       <label for="jv">JV</label>

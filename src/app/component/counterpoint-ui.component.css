@@ -132,3 +132,46 @@
 @media (max-width: 360px) {
   .cp-card { --cell: 50px; }
 }
+/* Subtitle + collapsible explanation */
+.subtitle {
+  margin: 4px auto 10px;
+  font-size: 0.95rem;
+  color: #4b5563;
+  max-width: 720px;
+}
+
+.explain {
+  text-align: left;
+  margin: 8px auto 16px;
+  max-width: 720px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fafafa;
+  padding: 8px 12px;
+}
+
+.explain > summary {
+  cursor: pointer;
+  font-weight: 700;
+  list-style: none;
+  outline: none;
+}
+
+/* Remove default disclosure triangle for a cleaner look (optional) */
+.explain > summary::-webkit-details-marker { display: none; }
+
+.explain-body {
+  margin-top: 8px;
+  font-size: 0.95rem;
+  color: #374151;
+}
+
+.explain-body p { margin: 6px 0; }
+.explain-body ul { margin: 6px 0 0 18px; padding: 0; }
+.explain-body code {
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 0 4px;
+}
+
