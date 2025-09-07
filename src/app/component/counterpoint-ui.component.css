@@ -175,3 +175,57 @@
   padding: 0 4px;
 }
 
+/* Make the summary obviously clickable */
+.explain > summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  margin: -8px -12px;                /* extend hit area to the card edges */
+  border-radius: 10px;
+  background: linear-gradient(#ffffff, #fafafa);
+  border: 1px solid #e5e7eb;
+  transition: background .2s, border-color .2s;
+}
+.explain > summary:hover,
+.explain > summary:focus-visible {
+  background: #f5f7fb;
+  border-color: #d1d5db;
+  outline: none;
+}
+
+.summary-title {
+  font-weight: 700;
+  flex: 1;
+}
+
+/* Right-side hint text that changes based on open/closed */
+.summary-hint::after {
+  content: "Click to expand";
+  font-weight: 500;
+  font-size: 12px;
+  color: #6b7280;
+}
+.explain[open] .summary-hint::after {
+  content: "Click to collapse";
+  color: #374151;
+}
+
+/* Chevron that rotates when open */
+.chevron {
+  transition: transform .25s ease;
+  opacity: .85;
+}
+.explain[open] .chevron { transform: rotate(180deg); }
+
+/* Add a subtle divider when open */
+.explain[open] .explain-body {
+  border-top: 1px dashed #e5e7eb;
+  margin-top: 10px;
+  padding-top: 10px;
+}
+
+/* Improve click target on mobile */
+@media (hover: none) {
+  .explain > summary { padding: 12px 14px; }
+}
