@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { InvertibleCounterpointService } from '../services/invertible-counterpoint.service';
 import { InvertedIntervals } from '../models/InvertedIntervals';
+import {MatCard} from '@angular/material/card';
 
 @Component({
   selector: 'app-counterpoint-ui',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatTooltipModule],
+  imports: [CommonModule, FormsModule, MatTooltipModule, MatCard],
   templateUrl: './counterpoint-ui.component.html',
   styleUrls: ['./counterpoint-ui.component.css']
 })
