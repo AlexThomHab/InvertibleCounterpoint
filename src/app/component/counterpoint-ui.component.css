@@ -216,6 +216,28 @@
 .glyph.underline { letter-spacing: 1px; } /* for '___' */
 .glyph.xsmall    { font-size: 13px; }     /* for 'x' */
 
+/* keep the info disclosure on the right */
+.card-header { display: flex; align-items: center; }
+.info { margin-left: auto; }
+
+/* style the clickable summary */
+.info-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  color: #6b7280;            /* slate-500-ish */
+  font-size: 0.9rem;
+  font-weight: 500;
+  user-select: none;
+}
+
+/* remove default triangle caret */
+.info-summary::-webkit-details-marker { display: none; }
+.info-summary::marker { content: ""; }
+
+.info-summary:hover { color: #111827; }  /* darker on hover */
+
 
 /* ── Tablet & up ───────────────────────────── */
 @media (min-width: 600px) {
