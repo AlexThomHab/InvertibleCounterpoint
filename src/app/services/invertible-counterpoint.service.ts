@@ -1,49 +1,228 @@
-import {Injectable} from '@angular/core';
-import {Interval} from '../models/Interval';
-import {InvertedIntervals} from '../models/InvertedIntervals';
+// src/app/services/invertible-counterpoint.service.ts
+import { Injectable } from '@angular/core';
+import { Interval, IntervalWithSuspensions } from '../models/Interval';
+import { InvertedIntervals, InvertedIntervalsDetailed } from '../models/InvertedIntervals';
+import { SuspensionTreatmentEnum } from '../models/SuspensionTreatmentEnum';
 
 @Injectable({ providedIn: 'root' })
 export class InvertibleCounterpointService {
-  private readonly _intervals : Record<number, Interval> = {
-    0: { semitones: 0, name: 'Unison',  isConsonant: true  },
-    1: { semitones: 1, name: 'Second',  isConsonant: false },
-    2: { semitones: 2, name: 'Third',   isConsonant: true  },
-    3: { semitones: 3, name: 'Fourth',  isConsonant: false },
-    4: { semitones: 4, name: 'Fifth',   isConsonant: true  },
-    5: { semitones: 5, name: 'Sixth',   isConsonant: true  },
-    6: { semitones: 6, name: 'Seventh', isConsonant: false },
-    7: { semitones: 7, name: 'Octave',  isConsonant: true  },
+  private static readonly N = 8; // 0..7 inclusive
+
+  // Helper to normalize modulo to positive range [0, N-1]
+  private static posMod(x: number, m: number): number {
+    const r = x % m;
+    return r < 0 ? r + m : r;
+  }
+
+  private static copyInterval(i: IntervalWithSuspensions): IntervalWithSuspensions {
+    return {
+      index: i.index,
+      semitones: i.semitones,
+      name: i.name,
+      isConsonant: i.isConsonant,
+      upperSuspensionTreatment: i.upperSuspensionTreatment,
+      lowerSuspensionTreatment: i.lowerSuspensionTreatment,
+    };
+  }
+
+  private static strictMostSuspensionTreatmentEnum(
+    originalIntervalSuspension: SuspensionTreatmentEnum,
+    newIntervalSuspension: SuspensionTreatmentEnum
+  ): SuspensionTreatmentEnum {
+    // Match your C# combined special-case:
+    const o = originalIntervalSuspension;
+    const n = newIntervalSuspension;
+
+    const A = SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension;
+    const B = SuspensionTreatmentEnum.NoteOfResolutionIsDissonant;
+    const AB = SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspensionAndNoteOfResolutionIsDissonant;
+
+    if ((o === A && n === B) || (o === B && n === A)) {
+      return AB;
+    }
+
+    // Otherwise pick the "stricter" (lower enum value) like your Math.Min in C#
+    return (o as number) < (n as number) ? o : n;
+  }
+
+  // Base interval table (jv = 0)
+  private readonly _intervals: Record<number, IntervalWithSuspensions> = {
+    0: { index: 0, semitones: 0, name: 'Unison',  isConsonant: true,
+      upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant },
+    1: { index: 1, semitones: 1, name: 'Second',  isConsonant: false,
+      upperSuspensionTreatment: SuspensionTreatmentEnum.CannotFormSuspension,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension },
+    2: { index: 2, semitones: 2, name: 'Third',   isConsonant: true,
+      upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant },
+    3: { index: 3, semitones: 3, name: 'Fourth',  isConsonant: false,
+      upperSuspensionTreatment: SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension },
+    4: { index: 4, semitones: 4, name: 'Fifth',   isConsonant: true,
+      upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsFree },
+    5: { index: 5, semitones: 5, name: 'Sixth',   isConsonant: true,
+      upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsFree,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant },
+    6: { index: 6, semitones: 6, name: 'Seventh', isConsonant: false,
+      upperSuspensionTreatment: SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.CannotFormSuspension },
+    7: { index: 7, semitones: 7, name: 'Octave',  isConsonant: true,
+      upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant },
   };
+
+  // “Inverted” table used only for negative JV branches in your C#
+  // Note: C# changes the 'Number' to negative; in TS we keep `index` 0..7 for array safety,
+  // but we mirror the *suspension treatments* and the *name* swap logic.
+  private readonly _intervalsInverted: Record<number, IntervalWithSuspensions> = {
+    0: { index: 0, semitones:  0, name: 'Unison',  isConsonant: true,
+      upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant },
+    1: { index: 1, semitones: -1, name: 'Second',  isConsonant: false,
+      upperSuspensionTreatment: SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.CannotFormSuspension },
+    2: { index: 2, semitones: -2, name: 'Third',   isConsonant: true,
+      upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant },
+    3: { index: 3, semitones: -3, name: 'Fourth',  isConsonant: false,
+      upperSuspensionTreatment: SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension },
+    4: { index: 4, semitones: -4, name: 'Fifth',   isConsonant: true,
+      upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsFree,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant },
+    5: { index: 5, semitones: -5, name: 'Sixth',   isConsonant: true,
+      upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsFree },
+    6: { index: 6, semitones: -6, name: 'Seventh', isConsonant: false,
+      upperSuspensionTreatment: SuspensionTreatmentEnum.CannotFormSuspension,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension },
+    7: { index: 7, semitones: -7, name: 'Octave',  isConsonant: true,
+      upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant },
+  };
+
+  /**
+   * Simple numeric API (keeps your current UI working).
+   * Matches your older service, but with correct positive modulo and full 0..7 domain.
+   */
   public compute(jvIndex: number): InvertedIntervals {
-    const invertedIntervals: InvertedIntervals = {
+    const out: InvertedIntervals = {
       fixedConsonances: [],
       fixedDissonances: [],
       variableConsonances: [],
-      variableDissonances: []
+      variableDissonances: [],
     };
 
-    for (let i = 0; i <= 7; i++) {
-      const targetIndex = Math.abs((i + jvIndex) % 7);
+    for (let i = 0; i < InvertibleCounterpointService.N; i++) {
+      // IMPORTANT: match C# remainder + Abs with modulus 7 (NOT 8, NOT positive mod)
+      const remainder = (i + jvIndex) % 7;           // JS % is remainder like C#
+      const targetIndex = Math.abs(remainder);       // 0..6 only
 
-      if (this._intervals[i].isConsonant && this._intervals[targetIndex].isConsonant) {
-        invertedIntervals.fixedConsonances.push(i);
+      const a = this._intervals[i].isConsonant;
+      const b = this._intervals[targetIndex].isConsonant;
+
+      if (a && b) out.fixedConsonances.push(i);
+      else if (!a && !b) out.fixedDissonances.push(i);
+      else if (a && !b) out.variableConsonances.push(i);
+      else out.variableDissonances.push(i);
+    }
+
+    return out;
+  }
+
+  /**
+   * Detailed API: returns Interval objects *with* merged suspension treatments.
+   * This is a direct port of your C# Calculate(int jvIndex) logic.
+   */
+  public computeDetailed(jvIndex: number): InvertedIntervalsDetailed {
+    const out: InvertedIntervalsDetailed = {
+      fixedConsonances: [],
+      fixedDissonances: [],
+      variableConsonances: [],
+      variableDissonances: [],
+    };
+
+    const N = InvertibleCounterpointService.N;
+
+    for (let i = 0; i < N; i++) {
+      // C# classification index
+      const remainder = (i + jvIndex) % 7;
+      const targetIndex = Math.abs(remainder);   // 0..6
+
+      const curr = this._intervals[i];
+      const targ = this._intervals[targetIndex];
+
+      const bothConsonant = curr.isConsonant && targ.isConsonant;
+      const bothDissonant = !curr.isConsonant && !targ.isConsonant;
+      const consToDiss   = curr.isConsonant && !targ.isConsonant;
+      const dissToCons   = !curr.isConsonant && targ.isConsonant;
+
+      // C# merge compare index (note: Abs(jv+i) % 7 — NOT Abs((i+jv) % 7))
+      const shiftedIndexAbs = Math.abs(jvIndex + i);
+      const compareIndex = shiftedIndexAbs % 7;     // 0..6
+      const isLargeShift = shiftedIndexAbs > 7;
+
+      const base = this._intervals[i];
+      const compare = jvIndex < 0
+        ? this._intervalsInverted[compareIndex]
+        : this._intervals[compareIndex];
+
+      const mergeSuspensions = (
+        baseInt: IntervalWithSuspensions,
+        compareInt: IntervalWithSuspensions,
+        tweakSecondOnUpper: boolean
+      ): IntervalWithSuspensions => {
+        const a = InvertibleCounterpointService.copyInterval(baseInt);
+        const b = InvertibleCounterpointService.copyInterval(compareInt);
+
+        // C# tweak: if Abs(jv+i) > 7 and compare.Name == "Second"
+        if (isLargeShift && b.name === 'Second') {
+          if (tweakSecondOnUpper) {
+            b.upperSuspensionTreatment = SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension;
+          } else {
+            b.lowerSuspensionTreatment = SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension;
+          }
+        }
+
+        a.upperSuspensionTreatment =
+          InvertibleCounterpointService.strictMostSuspensionTreatmentEnum(
+            a.upperSuspensionTreatment, b.upperSuspensionTreatment
+          );
+        a.lowerSuspensionTreatment =
+          InvertibleCounterpointService.strictMostSuspensionTreatmentEnum(
+            a.lowerSuspensionTreatment, b.lowerSuspensionTreatment
+          );
+
+        return a;
+      };
+
+      if (bothConsonant) {
+        const merged = mergeSuspensions(base, compare, jvIndex >= 0 /* tweak UPPER on positive */);
+        out.fixedConsonances.push(merged);
         continue;
       }
 
-      if (!this._intervals[i].isConsonant && !this._intervals[targetIndex].isConsonant) {
-        invertedIntervals.fixedDissonances.push(i);
+      if (bothDissonant) {
+        const merged = mergeSuspensions(base, compare, jvIndex >= 0);
+        out.fixedDissonances.push(merged);
         continue;
       }
 
-      if (this._intervals[i].isConsonant && !this._intervals[targetIndex].isConsonant) {
-        invertedIntervals.variableConsonances.push(i);
+      if (consToDiss) {
+        const merged = mergeSuspensions(base, compare, jvIndex >= 0);
+        out.variableConsonances.push(merged);
         continue;
       }
 
-      if (!this._intervals[i].isConsonant && this._intervals[targetIndex].isConsonant) {
-        invertedIntervals.variableDissonances.push(i);
+      // dissToCons
+      {
+        const merged = mergeSuspensions(base, compare, jvIndex >= 0);
+        out.variableDissonances.push(merged);
       }
     }
-    return invertedIntervals;
+
+    return out;
   }
 }
