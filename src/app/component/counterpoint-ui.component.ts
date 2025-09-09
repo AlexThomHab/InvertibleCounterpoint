@@ -8,6 +8,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { InvertibleCounterpointService } from '../services/invertible-counterpoint.service';
 import { SuspensionTreatmentEnum } from '../models/SuspensionTreatmentEnum';
 import { InvertedIntervals, InvertedIntervalsDetailed } from '../models/InvertedIntervals';
+import { ThreeVoiceGivenJvIndexValuesCalculator } from '../services/ThreeVoiceGivenJvIndexCalculator';
 
 type Cell = {
   index: number;
@@ -27,10 +28,14 @@ type Cell = {
   styleUrls: ['./counterpoint-ui.component.css'],
 })
 export class CounterpointUiComponent {
-  _jvInput = 0;
-
-  _indices = [0, 1, 2, 3, 4, 5, 6, 7];
+  // Tabs
   _activeTab: 'two' | 'three' = 'two';
+
+  // Shared
+  _indices = [0, 1, 2, 3, 4, 5, 6, 7];
+
+  // === Two-voice state ===
+  _jvInput = 0;
 
   _invertedIntervals: InvertedIntervals = {
     fixedConsonances: [],
@@ -39,21 +44,38 @@ export class CounterpointUiComponent {
     variableDissonances: [],
   };
 
-  _detailed!: InvertedIntervalsDetailed;
+  _detailed!: InvertedIntervalsDetailed; // for glyphs
   _cells: Record<number, Cell> = {} as any;
 
+  // === Three-voice state ===
+  _jvPrimeInput = 0;        // JV′
+  _jvDoublePrimeInput = 0;  // JV″
+  _three: InvertedIntervals = {
+    fixedConsonances: [],
+    fixedDissonances: [],
+    variableConsonances: [],
+    variableDissonances: [],
+  };
+
+  // Calculators
+  private threeCalc = new ThreeVoiceGivenJvIndexValuesCalculator();
+
   constructor(private cp: InvertibleCounterpointService) {
-    this.recompute();
+    // initial renders
+    this.recomputeTwoVoice();
+    this.recomputeThreeVoice();
   }
 
+  // ===== TWO-VOICE =====
   OnJvInput() {
-    this.recompute();
+    this.recomputeTwoVoice();
   }
 
-  private recompute() {
+  private recomputeTwoVoice() {
     this._invertedIntervals = this.cp.compute(this._jvInput);
     this._detailed = this.cp.computeDetailed(this._jvInput);
 
+    // build glyph cells
     this._cells = {};
     const all = [
       ...this._detailed.fixedConsonances,
@@ -74,6 +96,35 @@ export class CounterpointUiComponent {
       };
     }
   }
+
+  getClassForIndex(i: number): string {
+    if (this._invertedIntervals.fixedConsonances.includes(i)) return 'cell fixedConsonant';
+    if (this._invertedIntervals.fixedDissonances.includes(i)) return 'cell fixedDissonant';
+    if (this._invertedIntervals.variableConsonances.includes(i)) return 'cell variableConsonant';
+    if (this._invertedIntervals.variableDissonances.includes(i)) return 'cell variableDissonant';
+    return 'cell';
+  }
+
+  // ===== THREE-VOICE =====
+  onThreeVoiceInput() {
+    this.recomputeThreeVoice();
+  }
+
+  private recomputeThreeVoice() {
+    // JVΣ shown in the UI is the raw sum; normalization happens inside the calculator.
+    const sigma = this._jvPrimeInput + this._jvDoublePrimeInput;
+    this._three = this.threeCalc.calculate(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
+  }
+
+  getThreeClassForIndex(i: number): string {
+    if (this._three.fixedConsonances.includes(i)) return 'cell fixedConsonant';
+    if (this._three.fixedDissonances.includes(i)) return 'cell fixedDissonant';
+    if (this._three.variableConsonances.includes(i)) return 'cell variableConsonant';
+    if (this._three.variableDissonances.includes(i)) return 'cell variableDissonant';
+    return 'cell';
+  }
+
+  // ===== Glyph helpers (2-voice only) =====
 
   // Map enum -> symbol (matches your C# SuspensionLookUpTable)
   private glyphFor(t: SuspensionTreatmentEnum): string {
@@ -101,13 +152,5 @@ export class CounterpointUiComponent {
               t === SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspensionAndNoteOfResolutionIsDissonant ? 'Both conditions apply' :
                 '';
     return `${voice}: ${base}`;
-  }
-
-  getClassForIndex(i: number): string {
-    if (this._invertedIntervals.fixedConsonances.includes(i)) return 'cell fixedConsonant';
-    if (this._invertedIntervals.fixedDissonances.includes(i)) return 'cell fixedDissonant';
-    if (this._invertedIntervals.variableConsonances.includes(i)) return 'cell variableConsonant';
-    if (this._invertedIntervals.variableDissonances.includes(i)) return 'cell variableDissonant';
-    return 'cell';
   }
 }
