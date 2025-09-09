@@ -65,12 +65,13 @@
 /* Legend */
 .legend {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
+  flex-direction: row;           /* row by default */
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
   margin: 8px auto 18px;
   font-size: 14px;
-  max-width: 440px;
+  max-width: 720px;
 }
 .legend-item { display: flex; align-items: center; gap: 8px; }
 .swatch { width: 16px; height: 16px; border-radius: 4px; border: 2px solid #bbb; background: #fff; }
@@ -239,15 +240,42 @@
 .info-summary:hover { color: #111827; }  /* darker on hover */
 
 
-/* ── Tablet & up ───────────────────────────── */
-@media (min-width: 600px) {
-  .cp-card { padding: 24px 28px; }
-  .cp-card h1 { font-size: 1.6rem; margin-bottom: 16px; }
-  .legend { flex-direction: row; align-items: center; justify-content: center; gap: 16px; }
-  .grid { grid-template-columns: repeat(8, var(--cell)); gap: 12px; }
+/* ── Phones only: keep colors, just shrink & stack ───────────────── */
+@media (max-width: 480px) {
+  .cp-card { --cell: 48px; } /* controls overall cell size on phones */
+
+  /* show 4 across on phones */
+  .grid {
+    grid-template-columns: repeat(4, var(--cell));
+    gap: 8px;
+    margin: 0 auto 16px;
+  }
+
+  /* force true squares and slightly smaller text */
+  .cell {
+    width: var(--cell);
+    height: var(--cell);
+    box-sizing: border-box;   /* prevents border from growing the box */
+    font-size: 14px;
+  }
+
+  .interval-number { font-size: 18px; line-height: 1; }
+
+  /* tidy glyphs so they don't push the box */
+  .glyph { font-size: 12px; line-height: 1; }
+  .glyph-top { top: 6px; }
+  .glyph-bottom { bottom: 6px; }
+}
+@media (max-width: 600px) {
+  .legend {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    max-width: 440px;
+  }
+
+/* optional: ultra-small phones */
+@media (max-width: 360px) {
+  .cp-card { --cell: 44px; }
 }
 
-/* Very small phones: gently shrink cells */
-@media (max-width: 360px) {
-  .cp-card { --cell: 50px; }
-}
