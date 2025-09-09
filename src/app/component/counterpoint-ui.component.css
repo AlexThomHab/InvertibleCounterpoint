@@ -273,9 +273,39 @@
     gap: 10px;
     max-width: 440px;
   }
+} /* ← this closing brace was missing */
 
 /* optional: ultra-small phones */
 @media (max-width: 360px) {
   .cp-card { --cell: 44px; }
 }
 
+/* Phones only: keep colors, just shrink & space glyphs better */
+@media (max-width: 480px) {
+  .cp-card { --cell: 48px; }
+
+  .grid {
+    grid-template-columns: repeat(4, var(--cell));
+    gap: 8px;
+    margin: 0 auto 16px;
+  }
+
+  /* keep squares; slightly smaller text */
+  .cell {
+    width: var(--cell);
+    height: var(--cell);
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+
+  .interval-number { font-size: 18px; line-height: 1; }
+
+  /* more clearance from the number */
+  .glyph { font-size: 12px; line-height: 1; }
+  .glyph-top    { top: 2px; }     /* push closer to the edge */
+  .glyph-bottom { bottom: 2px; }  /* push closer to the edge */
+}
+
+@media (max-width: 360px) {
+  .cp-card { --cell: 44px; }
+}
