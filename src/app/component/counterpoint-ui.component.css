@@ -1,11 +1,10 @@
-/* Mobile-first: tidy spacing + safe area */
 .cp-wrapper {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   min-height: 100vh;
   background: #f7f8fa;
-  padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-left))
+  padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-left) + 30px)
   max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-right));
 }
 
@@ -239,6 +238,32 @@
 
 .info-summary:hover { color: #111827; }  /* darker on hover */
 
+:root {
+  /* Try a big gap; tweak the middle value if you want more/less */
+  --top-gap: clamp(96px, 14vh, 260px);
+}
+
+html, body { height: 100%; }
+
+.cp-wrapper {
+  min-height: 100dvh;                  /* handle mobile browser UI properly */
+  padding-top: calc(var(--top-gap) + env(safe-area-inset-top) + 22px) !important ;
+  padding-right: max(12px, env(safe-area-inset-right));
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  padding-left: max(12px, env(safe-area-inset-left));
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: #f7f8fa;
+}
+
+/* Extra safety: give the card its own margin from the top too */
+.cp-card {
+  margin-top: clamp(12px, 2vh, 32px) !important;
+}
+@media (min-width: 1200px) {
+  :root { --top-gap: clamp(48px, 10vh, 140px); }
+}
 
 /* ── Phones only: keep colors, just shrink & stack ───────────────── */
 @media (max-width: 480px) {
@@ -309,3 +334,36 @@
 @media (max-width: 360px) {
   .cp-card { --cell: 44px; }
 }
+.cp-card { position: relative; }
+
+/* Little folder tab that sits on the top edge */
+.folder-tab {
+  position: absolute;
+  top: -14px;
+  left: 16px;
+  padding: 4px 10px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-bottom: none;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  box-shadow: 0 -2px 10px rgba(0,0,0,.06);
+  font-size: .85rem;
+  cursor: pointer;
+}
+
+.folder-tab.back {
+  left: auto;
+  right: 16px;
+}
+
+.feature-placeholder {
+  padding: 24px 8px 8px;
+  text-align: center;
+}
+
+.feature-placeholder .muted {
+  color: #6b7280;
+  margin-top: 8px;
+}
+

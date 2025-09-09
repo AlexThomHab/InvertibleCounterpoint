@@ -30,6 +30,7 @@ export class CounterpointUiComponent {
   _jvInput = 0;
 
   _indices = [0, 1, 2, 3, 4, 5, 6, 7];
+  _activeTab: 'two' | 'three' = 'two';
 
   _invertedIntervals: InvertedIntervals = {
     fixedConsonances: [],

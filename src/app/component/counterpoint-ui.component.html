@@ -1,99 +1,85 @@
 <div class="cp-wrapper">
-  <mat-card class="cp-card">
+  <mat-card class="cp-card" [ngSwitch]="_activeTab">
 
-    <div class="card-header">
-      <h1>Taneev's Vertical Shifting Counterpoint</h1>
-      <details class="info">
-        <summary class="info-summary" aria-label="I'm confused — what is this?">
-          <svg class="info-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-            <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
-            <line x1="12" y1="8" x2="12" y2="8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <line x1="12" y1="11" x2="12" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-          <span class="info-label">I'm confused! What is this?</span>
-        </summary>
+    <!-- Folder tabs -->
+    <button
+      class="folder-tab"
+      *ngIf="_activeTab === 'two'"
+      (click)="_activeTab = 'three'">
+      3-voice counterpoint
+    </button>
 
+    <button
+      class="folder-tab back"
+      *ngIf="_activeTab === 'three'"
+      (click)="_activeTab = 'two'">
+      ← Back to 2-voice
+    </button>
 
-        <div class="info-body">
-          <p><strong>Vertical-shifting (invertible) counterpoint</strong> is writing two lines so either can be moved up or down by a fixed number of steps while still following counterpoint rules.</p>
-          <p><strong>JV (inversion index)</strong> is that number of diatonic steps. It’s not the interval name. For example, C→G is <code>JV = 4</code> (four steps), even though it’s a fifth.</p>
-          <p>After inversion, intervals may behave differently:</p>
-          <ul>
-            <li><em>Fixed consonance</em>: consonant → consonant</li>
-            <li><em>Fixed dissonance</em>: dissonant → dissonant</li>
-            <li><em>Variable consonance</em>: consonant → dissonant</li>
-            <li><em>Variable dissonance</em>: dissonant → consonant</li>
-          </ul>
+    <!-- TWO-VOICE VIEW -->
+    <ng-container *ngSwitchCase="'two'">
+      <div class="card-header">
+        <h1>Taneev's Vertical Shifting Counterpoint</h1>
+        <!-- (keep your details/info block exactly as you had it) -->
+        <!-- ... -->
+      </div>
 
-          <p><strong>Suspensions (symbols in each box)</strong></p>
-          <ul>
-            <li>Top symbol = upper voice; bottom symbol = lower voice.</li>
-            <li><code>(-)</code> cannot form a suspension.</li>
-            <li><code>-</code> if on a downbeat, it must be a suspension.</li>
-            <li><code>x</code> if it suspends, the tone of resolution is dissonant.</li>
-            <li><code>---</code> if it suspends, the tone of resolution is free.</li>
-            <li><code>-x</code> both “downbeat must suspend” and “resolution is dissonant.”</li>
-            <li>The app compares JV=0 with your JV and shows the stricter rule for each interval.</li>
-            <li>Negative JV swaps the voices, so the symbols flip sides automatically.</li>
-          </ul>
-          <p><strong>How to use:</strong> choose a JV, check the intervals, and compose. Suspensions can be added by preparing dissonances and resolving by step.</p>
-          <p>For a fuller explanation, see
-            <a href="https://www.youtube.com/watch?v=dBTh9PVJ0Ps&t=7s&ab_channel=JacobGran" target="_blank">
-              Jacob Gran’s video
-            </a>, which inspired this tool.</p>
-        </div>
-      </details>
-    </div>
+      <p class="subtitle">
+        Enter a JV (inversion index) to see which intervals stay or switch between consonance and dissonance after inversion.
+      </p>
 
-    <p class="subtitle">
-      Enter a JV (inversion index) to see which intervals stay or switch between consonance and dissonance after inversion.
-    </p>
+      <div class="controls">
+        <label for="jv">JV</label>
+        <input id="jv" type="number" [(ngModel)]="_jvInput" (ngModelChange)="OnJvInput()" />
+      </div>
 
-    <div class="controls">
-      <label for="jv">JV</label>
-      <input id="jv" type="number" [(ngModel)]="_jvInput" (ngModelChange)="OnJvInput()" />
-    </div>
+      <div class="legend">
+        <div class="legend-item"><span class="swatch fixedConsonant"></span> Fixed Consonances</div>
+        <div class="legend-item"><span class="swatch fixedDissonant"></span> Fixed Dissonances</div>
+        <div class="legend-item"><span class="swatch variableConsonant"></span> Variable Consonances</div>
+        <div class="legend-item"><span class="swatch variableDissonant"></span> Variable Dissonances</div>
+      </div>
 
-    <div class="legend">
-      <div class="legend-item"><span class="swatch fixedConsonant"></span> Fixed Consonances</div>
-      <div class="legend-item"><span class="swatch fixedDissonant"></span> Fixed Dissonances</div>
-      <div class="legend-item"><span class="swatch variableConsonant"></span> Variable Consonances</div>
-      <div class="legend-item"><span class="swatch variableDissonant"></span> Variable Dissonances</div>
-    </div>
+      <!-- Interval grid -->
+      <div class="grid">
+        <div
+          *ngFor="let i of _indices"
+          [ngClass]="getClassForIndex(i)"
+          class="cell"
+          [matTooltip]="'Interval ' + i"
+        >
+          <div class="glyph glyph-top"
+               [ngClass]="_cells[i]?.topClass"
+               [title]="_cells[i]?.topTitle">
+            {{ _cells[i]?.topGlyph || '' }}
+          </div>
 
-    <!-- Interval grid -->
-    <div class="grid">
-      <div
-        *ngFor="let i of _indices"
-        [ngClass]="getClassForIndex(i)"
-        class="cell"
-        [matTooltip]="'Interval ' + i"
-      >
-        <!-- Upper glyph -->
-        <div class="glyph glyph-top"
-             [ngClass]="_cells[i]?.topClass"
-             [title]="_cells[i]?.topTitle">
-          {{ _cells[i]?.topGlyph || '' }}
-        </div>
+          <div class="interval-number">{{ i }}</div>
 
-        <!-- Interval number -->
-        <div class="interval-number">{{ i }}</div>
-
-        <!-- Lower glyph -->
-        <div class="glyph glyph-bottom"
-             [ngClass]="_cells[i]?.bottomClass"
-             [title]="_cells[i]?.bottomTitle">
-          {{ _cells[i]?.bottomGlyph || '' }}
+          <div class="glyph glyph-bottom"
+               [ngClass]="_cells[i]?.bottomClass"
+               [title]="_cells[i]?.bottomTitle">
+            {{ _cells[i]?.bottomGlyph || '' }}
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Buckets -->
-    <div class="buckets">
-      <div><strong>Fixed Consonances:</strong> {{ _invertedIntervals.fixedConsonances.join(', ') }}</div>
-      <div><strong>Fixed Dissonances:</strong> {{ _invertedIntervals.fixedDissonances.join(', ') }}</div>
-      <div><strong>Variable Consonances:</strong> {{ _invertedIntervals.variableConsonances.join(', ') }}</div>
-      <div><strong>Variable Dissonances:</strong> {{ _invertedIntervals.variableDissonances.join(', ') }}</div>
-    </div>
+      <!-- Buckets -->
+      <div class="buckets">
+        <div><strong>Fixed Consonances:</strong> {{ _invertedIntervals.fixedConsonances.join(', ') }}</div>
+        <div><strong>Fixed Dissonances:</strong> {{ _invertedIntervals.fixedDissonances.join(', ') }}</div>
+        <div><strong>Variable Consonances:</strong> {{ _invertedIntervals.variableConsonances.join(', ') }}</div>
+        <div><strong>Variable Dissonances:</strong> {{ _invertedIntervals.variableDissonances.join(', ') }}</div>
+      </div>
+    </ng-container>
+
+    <!-- THREE-VOICE PLACEHOLDER -->
+    <ng-container *ngSwitchCase="'three'">
+      <div class="feature-placeholder">
+        <h1>Three-Voice Vertical Shifting Counterpoint</h1>
+        <p class="muted">Feature not yet implemented.</p>
+      </div>
+    </ng-container>
+
   </mat-card>
 </div>
