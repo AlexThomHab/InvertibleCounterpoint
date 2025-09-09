@@ -302,8 +302,8 @@
 
   /* more clearance from the number */
   .glyph { font-size: 12px; line-height: 1; }
-  .glyph-top    { top: 2px; }     /* push closer to the edge */
-  .glyph-bottom { bottom: 2px; }  /* push closer to the edge */
+  .glyph-top    { top: 0px; }     /* push closer to the edge */
+  .glyph-bottom { bottom: 0px; }  /* push closer to the edge */
 }
 
 @media (max-width: 360px) {
