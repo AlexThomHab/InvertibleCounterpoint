@@ -2,24 +2,38 @@
   <mat-card class="cp-card" [ngSwitch]="_activeTab">
 
     <!-- Folder tabs -->
-    <button
-      class="folder-tab"
-      *ngIf="_activeTab === 'two'"
-      (click)="_activeTab = 'three'">
-      3-voice counterpoint
-    </button>
+    <!-- Card header (global) -->
+    <div class="card-top">
+      <h1 class="title">
+        {{ _activeTab === 'two'
+        ? "Taneev's Vertical Shifting Counterpoint"
+        : "Three-Voice Vertical Shifting Counterpoint" }}
+      </h1>
 
-    <button
-      class="folder-tab back"
-      *ngIf="_activeTab === 'three'"
-      (click)="_activeTab = 'two'">
-      ← Back to 2-voice
-    </button>
+      <div class="view-toggle" role="tablist" aria-label="View">
+        <button
+          class="toggle"
+          role="tab"
+          [attr.aria-selected]="_activeTab === 'two'"
+          [class.active]="_activeTab === 'two'"
+          (click)="_activeTab = 'two'">
+          2-voice
+        </button>
+        <button
+          class="toggle"
+          role="tab"
+          [attr.aria-selected]="_activeTab === 'three'"
+          [class.active]="_activeTab === 'three'"
+          (click)="_activeTab = 'three'">
+          3-voice
+        </button>
+      </div>
+    </div>
+
 
     <!-- TWO-VOICE VIEW -->
     <ng-container *ngSwitchCase="'two'">
       <div class="card-header">
-        <h1>Taneev's Vertical Shifting Counterpoint</h1>
         <!-- (keep your details/info block exactly as you had it) -->
         <!-- ... -->
       </div>
@@ -39,6 +53,8 @@
         <div class="legend-item"><span class="swatch variableConsonant"></span> Variable Consonances</div>
         <div class="legend-item"><span class="swatch variableDissonant"></span> Variable Dissonances</div>
       </div>
+      <!-- Notice about suspension logic compromise -->
+
 
       <!-- Interval grid -->
       <div class="grid">
@@ -76,7 +92,6 @@
     <!-- THREE-VOICE VIEW -->
     <ng-container *ngSwitchCase="'three'">
       <div class="card-header">
-        <h1>Three-Voice Vertical Shifting Counterpoint</h1>
       </div>
 
       <p class="subtitle">
@@ -100,6 +115,8 @@
         <div class="legend-item"><span class="swatch variableConsonant"></span> Variable Consonances</div>
         <div class="legend-item"><span class="swatch variableDissonant"></span> Variable Dissonances</div>
       </div>
+      <!-- Notice about suspension logic compromise -->
+
 
       <!-- Interval grid (same look as 2-voice, no glyphs needed) -->
       <div class="grid">
@@ -135,6 +152,15 @@
 
       <h1>Updates Coming</h1>
       <p>Fix bass voice with 4th issues - Add suspensions - Add pop-up info when clicking on an interval</p>
+
+      <div class="notice">
+        <strong>Note:</strong> The 3-voice suspension logic shown here is a pragmatic
+        compromise of the approaches discussed (Taneyev/Taneev pairwise “strict-most”
+        across JV′, JV″, and JΣ; historically informed allowances). By default we treat
+        the 4th above the bass as dissonant and <em>flag</em> context-dependent cases
+        like 1→0, 6→7, and 8→7 rather than forbid them outright. We also don’t enforce
+        the “resolution note must not already be sounding” rule.
+      </div>
     </ng-container>
 
   </mat-card>
