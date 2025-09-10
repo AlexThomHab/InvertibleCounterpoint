@@ -109,10 +109,22 @@
           class="cell"
           [matTooltip]="'Interval ' + i"
         >
+          <!-- NEW: show strict-most upper/lower suspensions -->
+          <div class="glyph glyph-top"
+               [ngClass]="_threeCells[i]?.topClass"
+               [title]="_threeCells[i]?.topTitle">
+            {{ _threeCells[i]?.topGlyph || '' }}
+          </div>
+
           <div class="interval-number">{{ i }}</div>
+
+          <div class="glyph glyph-bottom"
+               [ngClass]="_threeCells[i]?.bottomClass"
+               [title]="_threeCells[i]?.bottomTitle">
+            {{ _threeCells[i]?.bottomGlyph || '' }}
+          </div>
         </div>
       </div>
-
       <!-- Buckets -->
       <div class="buckets">
         <div><strong>Fixed Consonances:</strong> {{ _three.fixedConsonances.join(', ') }}</div>

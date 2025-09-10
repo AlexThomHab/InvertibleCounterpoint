@@ -56,7 +56,8 @@ export class CounterpointUiComponent {
     variableConsonances: [],
     variableDissonances: [],
   };
-
+  _threeSusp!: { upper: Record<number, SuspensionTreatmentEnum>; lower: Record<number, SuspensionTreatmentEnum> };
+  _threeCells: Record<number, Cell> = {} as any;
   // Calculators
   private threeCalc = new ThreeVoiceGivenJvIndexValuesCalculator();
 
@@ -113,7 +114,26 @@ export class CounterpointUiComponent {
   private recomputeThreeVoice() {
     // JVΣ shown in the UI is the raw sum; normalization happens inside the calculator.
     const sigma = this._jvPrimeInput + this._jvDoublePrimeInput;
+
     this._three = this.threeCalc.calculate(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
+
+    // 👇 NEW: pull strict-most suspensions and build cell glyphs
+    this._threeSusp = this.threeCalc.calculateSuspensions(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
+
+    this._threeCells = {};
+    for (const i of this._indices) {
+      const up = this._threeSusp.upper[i];
+      const lo = this._threeSusp.lower[i];
+      this._threeCells[i] = {
+        index: i,
+        topGlyph: this.glyphFor(up),
+        bottomGlyph: this.glyphFor(lo),
+        topTitle: this.fullName(up, 'Upper'),
+        bottomTitle: this.fullName(lo, 'Lower'),
+        topClass: this.glyphExtraClass(up),
+        bottomClass: this.glyphExtraClass(lo),
+      };
+    }
   }
 
   getThreeClassForIndex(i: number): string {
