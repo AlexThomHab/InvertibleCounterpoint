@@ -10,15 +10,29 @@ import { SuspensionTreatmentEnum } from '../models/SuspensionTreatmentEnum';
 import { InvertedIntervals, InvertedIntervalsDetailed } from '../models/InvertedIntervals';
 import { ThreeVoiceGivenJvIndexValuesCalculator } from '../services/ThreeVoiceGivenJvIndexCalculator';
 
+// ---------- helpers MUST be above @Component ----------
 type Cell = {
   index: number;
-  topGlyph: string;        // upper suspension
-  bottomGlyph: string;     // lower suspension
+  topGlyph: string;
+  bottomGlyph: string;
   topTitle: string;
   bottomTitle: string;
-  topClass?: string;       // optional css helper for glyph
-  bottomClass?: string;    // optional css helper for glyph
+  topClass?: string;
+  bottomClass?: string;
 };
+
+type CellsMap = Partial<Record<number, Cell>>;
+type CellsRowTuple = [CellsMap, CellsMap, CellsMap];
+
+function EMPTY(): InvertedIntervals {
+  return {
+    fixedConsonances: [],
+    fixedDissonances: [],
+    variableConsonances: [],
+    variableDissonances: [],
+  };
+}
+// ------------------------------------------------------
 
 @Component({
   selector: 'app-counterpoint-ui',
@@ -28,55 +42,41 @@ type Cell = {
   styleUrls: ['./counterpoint-ui.component.css'],
 })
 export class CounterpointUiComponent {
-  // Tabs
   _activeTab: 'two' | 'three' = 'two';
-
-  // Shared
   _indices = [0, 1, 2, 3, 4, 5, 6, 7];
 
-  // === Two-voice state ===
+  // ===== TWO-VOICE =====
   _jvInput = 0;
+  _invertedIntervals: InvertedIntervals = EMPTY();
+  _detailed!: InvertedIntervalsDetailed;
+  _cells: CellsMap = {}; // Partial<Record<number, Cell>> so ?. is valid in template
 
-  _invertedIntervals: InvertedIntervals = {
-    fixedConsonances: [],
-    fixedDissonances: [],
-    variableConsonances: [],
-    variableDissonances: [],
-  };
-
-  _detailed!: InvertedIntervalsDetailed; // for glyphs
-  _cells: Record<number, Cell> = {} as any;
-
-  // === Three-voice state ===
+  // ===== THREE-VOICE (three separate rows) =====
   _jvPrimeInput = 0;        // JV′
   _jvDoublePrimeInput = 0;  // JV″
-  _three: InvertedIntervals = {
-    fixedConsonances: [],
-    fixedDissonances: [],
-    variableConsonances: [],
-    variableDissonances: [],
-  };
-  _threeSusp!: { upper: Record<number, SuspensionTreatmentEnum>; lower: Record<number, SuspensionTreatmentEnum> };
-  _threeCells: Record<number, Cell> = {} as any;
-  // Calculators
+  _jvSigmaView = 0;         // raw σ shown
+
+  // Three rows of interval buckets: tuple ensures always defined
+  _threeRows: [InvertedIntervals, InvertedIntervals, InvertedIntervals] = [EMPTY(), EMPTY(), EMPTY()];
+
+  // glyph maps per row (I↔II, II↔III, I↔III)
+  _threeRowsCells: CellsRowTuple = [{}, {}, {}];
+
+  // calculators
   private threeCalc = new ThreeVoiceGivenJvIndexValuesCalculator();
 
   constructor(private cp: InvertibleCounterpointService) {
-    // initial renders
     this.recomputeTwoVoice();
     this.recomputeThreeVoice();
   }
 
   // ===== TWO-VOICE =====
-  OnJvInput() {
-    this.recomputeTwoVoice();
-  }
+  OnJvInput() { this.recomputeTwoVoice(); }
 
   private recomputeTwoVoice() {
     this._invertedIntervals = this.cp.compute(this._jvInput);
     this._detailed = this.cp.computeDetailed(this._jvInput);
 
-    // build glyph cells
     this._cells = {};
     const all = [
       ...this._detailed.fixedConsonances,
@@ -84,7 +84,6 @@ export class CounterpointUiComponent {
       ...this._detailed.variableConsonances,
       ...this._detailed.variableDissonances,
     ];
-
     for (const it of all) {
       this._cells[it.index] = {
         index: it.index,
@@ -107,46 +106,61 @@ export class CounterpointUiComponent {
   }
 
   // ===== THREE-VOICE =====
-  onThreeVoiceInput() {
-    this.recomputeThreeVoice();
-  }
+  onThreeVoiceInput() { this.recomputeThreeVoice(); }
 
   private recomputeThreeVoice() {
-    // JVΣ shown in the UI is the raw sum; normalization happens inside the calculator.
     const sigma = this._jvPrimeInput + this._jvDoublePrimeInput;
+    this._jvSigmaView = sigma;
 
-    this._three = this.threeCalc.calculate(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
+    // 3 rows of buckets (I↔II, II↔III, I↔III)
+    const rows = this.threeCalc.calculate(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
+    // ensure tuple
+    this._threeRows = [rows[0] ?? EMPTY(), rows[1] ?? EMPTY(), rows[2] ?? EMPTY()];
 
-    // 👇 NEW: pull strict-most suspensions and build cell glyphs
-    this._threeSusp = this.threeCalc.calculateSuspensions(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
-
-    this._threeCells = {};
-    for (const i of this._indices) {
-      const up = this._threeSusp.upper[i];
-      const lo = this._threeSusp.lower[i];
-      this._threeCells[i] = {
-        index: i,
-        topGlyph: this.glyphFor(up),
-        bottomGlyph: this.glyphFor(lo),
-        topTitle: this.fullName(up, 'Upper'),
-        bottomTitle: this.fullName(lo, 'Lower'),
-        topClass: this.glyphExtraClass(up),
-        bottomClass: this.glyphExtraClass(lo),
-      };
-    }
+    // 3 rows of glyphs (from detailed)
+    const detailedRows = this.threeCalc.calculateDetailed(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
+    this._threeRowsCells = [
+      this.buildCellsMap(detailedRows[0]),
+      this.buildCellsMap(detailedRows[1]),
+      this.buildCellsMap(detailedRows[2]),
+    ];
   }
 
-  getThreeClassForIndex(i: number): string {
-    if (this._three.fixedConsonances.includes(i)) return 'cell fixedConsonant';
-    if (this._three.fixedDissonances.includes(i)) return 'cell fixedDissonant';
-    if (this._three.variableConsonances.includes(i)) return 'cell variableConsonant';
-    if (this._three.variableDissonances.includes(i)) return 'cell variableDissonant';
+  private buildCellsMap(det?: InvertedIntervalsDetailed): CellsMap {
+    const cells: CellsMap = {};
+    if (!det) return cells;
+    const all = [
+      ...det.fixedConsonances,
+      ...det.fixedDissonances,
+      ...det.variableConsonances,
+      ...det.variableDissonances,
+    ];
+    for (const it of all) {
+      cells[it.index] = {
+        index: it.index,
+        topGlyph: this.glyphFor(it.upperSuspensionTreatment),
+        bottomGlyph: this.glyphFor(it.lowerSuspensionTreatment),
+        topTitle: this.fullName(it.upperSuspensionTreatment, 'Upper'),
+        bottomTitle: this.fullName(it.lowerSuspensionTreatment, 'Lower'),
+        topClass: this.glyphExtraClass(it.upperSuspensionTreatment),
+        bottomClass: this.glyphExtraClass(it.lowerSuspensionTreatment),
+      };
+    }
+    return cells;
+  }
+
+  /** Row-aware class getter */
+  getThreeRowClassForIndex(row: number, i: number): string {
+    const r = this._threeRows[row];
+    if (!r) return 'cell';
+    if (r.fixedConsonances.includes(i)) return 'cell fixedConsonant';
+    if (r.fixedDissonances.includes(i)) return 'cell fixedDissonant';
+    if (r.variableConsonances.includes(i)) return 'cell variableConsonant';
+    if (r.variableDissonances.includes(i)) return 'cell variableDissonant';
     return 'cell';
   }
 
-  // ===== Glyph helpers (2-voice only) =====
-
-  // Map enum -> symbol (matches your C# SuspensionLookUpTable)
+  // ===== Glyph helpers =====
   private glyphFor(t: SuspensionTreatmentEnum): string {
     switch (t) {
       case SuspensionTreatmentEnum.CannotFormSuspension: return '(-)';
@@ -157,20 +171,16 @@ export class CounterpointUiComponent {
       default: return '';
     }
   }
-
-  // Optional size tweak (smaller 'x' looks nicer)
   private glyphExtraClass(t: SuspensionTreatmentEnum): string {
     return t === SuspensionTreatmentEnum.NoteOfResolutionIsDissonant ? 'xsmall' : '';
   }
-
   private fullName(t: SuspensionTreatmentEnum, voice: 'Upper' | 'Lower'): string {
     const base =
       t === SuspensionTreatmentEnum.CannotFormSuspension ? 'Cannot form a suspension' :
         t === SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension ? 'If on downbeat, must form suspension' :
           t === SuspensionTreatmentEnum.NoteOfResolutionIsDissonant ? 'If forming suspension, note of resolution is dissonant' :
             t === SuspensionTreatmentEnum.NoteOfResolutionIsFree ? 'If forming suspension, note of resolution is free' :
-              t === SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspensionAndNoteOfResolutionIsDissonant ? 'Both conditions apply' :
-                '';
+              t === SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspensionAndNoteOfResolutionIsDissonant ? 'Both conditions apply' : '';
     return `${voice}: ${base}`;
   }
 }

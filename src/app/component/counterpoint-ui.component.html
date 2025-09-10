@@ -53,9 +53,6 @@
         <div class="legend-item"><span class="swatch variableConsonant"></span> Variable Consonances</div>
         <div class="legend-item"><span class="swatch variableDissonant"></span> Variable Dissonances</div>
       </div>
-      <!-- Notice about suspension logic compromise -->
-
-
       <!-- Interval grid -->
       <div class="grid">
         <div
@@ -91,11 +88,8 @@
 
     <!-- THREE-VOICE VIEW -->
     <ng-container *ngSwitchCase="'three'">
-      <div class="card-header">
-      </div>
-
       <p class="subtitle">
-        Enter JV′ and JV″. JVΣ is computed as JV′ + JV″ (normalization is handled by the calculator).
+        Enter JV′ and JV″. JVΣ is computed as JV′ + JV″ (visualized below as three separate two-voice rows).
       </p>
 
       <div class="controls">
@@ -106,62 +100,129 @@
         <input id="jvDoublePrime" type="number" [(ngModel)]="_jvDoublePrimeInput" (ngModelChange)="onThreeVoiceInput()" />
 
         <label for="jvSigma">JVΣ</label>
-        <input id="jvSigma" type="number" [value]="_jvPrimeInput + _jvDoublePrimeInput" readonly />
+        <input id="jvSigma" type="number" [value]="_jvSigmaView" readonly />
       </div>
 
+      <!-- Row 0: I↔II (JV′) -->
+      <h3 style="margin-top:10px">I ↔ II (JV′ = {{ _jvPrimeInput }})</h3>
       <div class="legend">
         <div class="legend-item"><span class="swatch fixedConsonant"></span> Fixed Consonances</div>
         <div class="legend-item"><span class="swatch fixedDissonant"></span> Fixed Dissonances</div>
         <div class="legend-item"><span class="swatch variableConsonant"></span> Variable Consonances</div>
         <div class="legend-item"><span class="swatch variableDissonant"></span> Variable Dissonances</div>
       </div>
-      <!-- Notice about suspension logic compromise -->
-
-
-      <!-- Interval grid (same look as 2-voice, no glyphs needed) -->
       <div class="grid">
         <div
           *ngFor="let i of _indices"
-          [ngClass]="getThreeClassForIndex(i)"
+          [ngClass]="getThreeRowClassForIndex(0, i)"
           class="cell"
           [matTooltip]="'Interval ' + i"
         >
-          <!-- NEW: show strict-most upper/lower suspensions -->
           <div class="glyph glyph-top"
-               [ngClass]="_threeCells[i]?.topClass"
-               [title]="_threeCells[i]?.topTitle">
-            {{ _threeCells[i]?.topGlyph || '' }}
+               [ngClass]="_threeRowsCells[0]?.[i]?.topClass"
+               [title]="_threeRowsCells[0]?.[i]?.topTitle">
+            {{ _threeRowsCells[0]?.[i]?.topGlyph || '' }}
           </div>
-
           <div class="interval-number">{{ i }}</div>
-
           <div class="glyph glyph-bottom"
-               [ngClass]="_threeCells[i]?.bottomClass"
-               [title]="_threeCells[i]?.bottomTitle">
-            {{ _threeCells[i]?.bottomGlyph || '' }}
+               [ngClass]="_threeRowsCells[0]?.[i]?.bottomClass"
+               [title]="_threeRowsCells[0]?.[i]?.bottomTitle">
+            {{ _threeRowsCells[0]?.[i]?.bottomGlyph || '' }}
           </div>
         </div>
       </div>
-      <!-- Buckets -->
       <div class="buckets">
-        <div><strong>Fixed Consonances:</strong> {{ _three.fixedConsonances.join(', ') }}</div>
-        <div><strong>Fixed Dissonances:</strong> {{ _three.fixedDissonances.join(', ') }}</div>
-        <div><strong>Variable Consonances:</strong> {{ _three.variableConsonances.join(', ') }}</div>
-        <div><strong>Variable Dissonances:</strong> {{ _three.variableDissonances.join(', ') }}</div>
+        <!-- BEFORE -->
+        <!-- AFTER (row 0) -->
+        <div><strong>Fixed Consonances:</strong> {{ _threeRows[0].fixedConsonances.join(', ') }}</div>
+        <div><strong>Fixed Dissonances:</strong> {{ _threeRows[0].fixedDissonances.join(', ') }}</div>
+        <div><strong>Variable Consonances:</strong> {{ _threeRows[0].variableConsonances.join(', ') }}</div>
+        <div><strong>Variable Dissonances:</strong> {{ _threeRows[0].variableDissonances.join(', ') }}</div>
       </div>
 
-      <h1>Updates Coming</h1>
-      <p>Fix bass voice with 4th issues - Add pop-up info when clicking on an interval</p>
+      <hr>
 
-      <div class="notice">
-        <strong>Note:</strong> The 3-voice suspension logic shown here is a pragmatic
-        compromise of the approaches discussed (Taneyev/Taneev pairwise “strict-most”
-        across JV′, JV″, and JΣ; historically informed allowances). By default we treat
-        the 4th above the bass as dissonant and <em>flag</em> context-dependent cases
-        like 1→0, 6→7, and 8→7 rather than forbid them outright. We also don’t enforce
-        the “resolution note must not already be sounding” rule.
+      <!-- Row 1: II↔III (JV″) -->
+      <h3>II ↔ III (JV″ = {{ _jvDoublePrimeInput }})</h3>
+      <div class="legend">
+        <div class="legend-item"><span class="swatch fixedConsonant"></span> Fixed Consonances</div>
+        <div class="legend-item"><span class="swatch fixedDissonant"></span> Fixed Dissonances</div>
+        <div class="legend-item"><span class="swatch variableConsonant"></span> Variable Consonances</div>
+        <div class="legend-item"><span class="swatch variableDissonant"></span> Variable Dissonances</div>
+      </div>
+      <div class="grid">
+        <div
+          *ngFor="let i of _indices"
+          [ngClass]="getThreeRowClassForIndex(1, i)"
+          class="cell"
+          [matTooltip]="'Interval ' + i"
+        >
+          <div class="glyph glyph-top"
+               [ngClass]="_threeRowsCells[1]?.[i]?.topClass"
+               [title]="_threeRowsCells[1]?.[i]?.topTitle">
+            {{ _threeRowsCells[1]?.[i]?.topGlyph || '' }}
+          </div>
+          <div class="interval-number">{{ i }}</div>
+          <div class="glyph glyph-bottom"
+               [ngClass]="_threeRowsCells[1]?.[i]?.bottomClass"
+               [title]="_threeRowsCells[1]?.[i]?.bottomTitle">
+            {{ _threeRowsCells[1]?.[i]?.bottomGlyph || '' }}
+          </div>
+        </div>
+      </div>
+      <div class="buckets">
+        <!-- BEFORE -->
+        <!-- AFTER (row 0) -->
+        <div><strong>Fixed Consonances:</strong> {{ _threeRows[1].fixedConsonances.join(', ') }}</div>
+        <div><strong>Fixed Dissonances:</strong> {{ _threeRows[1].fixedDissonances.join(', ') }}</div>
+        <div><strong>Variable Consonances:</strong> {{ _threeRows[1].variableConsonances.join(', ') }}</div>
+        <div><strong>Variable Dissonances:</strong> {{ _threeRows[1].variableDissonances.join(', ') }}</div>
+
+
+      </div>
+
+      <hr>
+
+      <!-- Row 2: I↔III (JVΣ) -->
+      <h3>I ↔ III (JVΣ = {{ _jvSigmaView }})</h3>
+      <div class="legend">
+        <div class="legend-item"><span class="swatch fixedConsonant"></span> Fixed Consonances</div>
+        <div class="legend-item"><span class="swatch fixedDissonant"></span> Fixed Dissonances</div>
+        <div class="legend-item"><span class="swatch variableConsonant"></span> Variable Consonances</div>
+        <div class="legend-item"><span class="swatch variableDissonant"></span> Variable Dissonances</div>
+      </div>
+      <div class="grid">
+        <div
+          *ngFor="let i of _indices"
+          [ngClass]="getThreeRowClassForIndex(2, i)"
+          class="cell"
+          [matTooltip]="'Interval ' + i"
+        >
+          <div class="glyph glyph-top"
+               [ngClass]="_threeRowsCells[2]?.[i]?.topClass"
+               [title]="_threeRowsCells[2]?.[i]?.topTitle">
+            {{ _threeRowsCells[2]?.[i]?.topGlyph || '' }}
+          </div>
+          <div class="interval-number">{{ i }}</div>
+          <div class="glyph glyph-bottom"
+               [ngClass]="_threeRowsCells[2]?.[i]?.bottomClass"
+               [title]="_threeRowsCells[2]?.[i]?.bottomTitle">
+            {{ _threeRowsCells[2]?.[i]?.bottomGlyph || '' }}
+          </div>
+        </div>
+      </div>
+      <div class="buckets">
+        <!-- BEFORE -->
+        <!-- AFTER (row 0) -->
+        <div><strong>Fixed Consonances:</strong> {{ _threeRows[2].fixedConsonances.join(', ') }}</div>
+        <div><strong>Fixed Dissonances:</strong> {{ _threeRows[2].fixedDissonances.join(', ') }}</div>
+        <div><strong>Variable Consonances:</strong> {{ _threeRows[2].variableConsonances.join(', ') }}</div>
+        <div><strong>Variable Dissonances:</strong> {{ _threeRows[2].variableDissonances.join(', ') }}</div>
+
+
       </div>
     </ng-container>
+
 
   </mat-card>
 </div>
