@@ -513,3 +513,124 @@ html, body { height: 100%; }
 .cp-wrapper, .cp-card {
   overflow-x: hidden;
 }
+/* ===== Theme toggle button ===== */
+.theme-toggle {
+  margin-left: 8px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  border-radius: 9999px;
+  font-size: 14px;
+  line-height: 1;
+  padding: 8px 10px;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  transition: background-color .15s ease, border-color .15s ease, transform .1s ease;
+}
+.theme-toggle:hover { transform: translateY(-1px); }
+.theme-toggle:focus-visible {
+  outline: 2px solid transparent;
+  box-shadow: 0 0 0 3px rgba(30,136,229,.25);
+}
+
+/* ===== Dark mode (scoped to this component) ===== */
+.cp-wrapper.dark { background: #0b0f14; color: #d9e2ec; }
+
+.cp-wrapper.dark .cp-card {
+  background: #0f1720;
+  border-color: #233043;
+  color: #d9e2ec;
+  box-shadow: 0 6px 24px rgba(0,0,0,.35);
+}
+
+.cp-wrapper.dark .title { color: #e6edf3; }
+.cp-wrapper.dark .subtitle { color: #9fb3c8; }
+
+.cp-wrapper.dark .notice {
+  background: #1b2838;
+  color: #e3e8ef;
+  border-color: #2a3b52;
+}
+
+.cp-wrapper.dark .legend { color: #c7d1db; }
+.cp-wrapper.dark .swatch { background: transparent; border-color: #8aa4c1; }
+
+.cp-wrapper.dark .view-toggle {
+  background: #0b1118;
+  border-color: #223142;
+}
+.cp-wrapper.dark .view-toggle .toggle {
+  color: #c9d7e1;
+}
+.cp-wrapper.dark .view-toggle .toggle:hover {
+  background: #12202b;
+}
+.cp-wrapper.dark .view-toggle .toggle.active {
+  background: #1e88e5;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(30,136,229,.35) inset;
+}
+
+/* inputs */
+.cp-wrapper.dark .control input[type="number"],
+.cp-wrapper.dark .controls input[type="number"] {
+  background: #0b1118;
+  color: #e6edf3;
+  border-color: #2a3b52;
+}
+.cp-wrapper.dark .control input[type="number"]:focus,
+.cp-wrapper.dark .controls input[type="number"]:focus {
+  border-color: #4ea1ff;
+  box-shadow: 0 0 0 3px rgba(78,161,255,.25);
+}
+
+/* grid cells */
+.cp-wrapper.dark .cell {
+  background: #0b1118;
+  border-color: #2a3b52;
+  box-shadow: none;
+  color: #e6edf3;
+}
+.cp-wrapper.dark .cell:hover { box-shadow: 0 4px 12px rgba(0,0,0,.4); }
+
+/* keep your status colors but tweak their inner glows for dark */
+.cp-wrapper.dark .fixedConsonant   { border-color: #4ea1ff; box-shadow: inset 0 0 0 3px rgba(78,161,255,.20); }
+.cp-wrapper.dark .fixedDissonant   { border-color: #ff6b6b; box-shadow: inset 0 0 0 3px rgba(255,107,107,.18); }
+.cp-wrapper.dark .variableConsonant{ border-color: #5bd58a; box-shadow: inset 0 0 0 3px rgba(91,213,138,.18); }
+.cp-wrapper.dark .variableDissonant{ border-color: #b98cff; box-shadow: inset 0 0 0 3px rgba(185,140,255,.18); }
+
+/* glyphs */
+.cp-wrapper.dark .glyph { opacity: .95; }
+
+/* buckets */
+.cp-wrapper.dark .buckets { color: #c7d1db; }
+.cp-wrapper.dark .buckets strong { color: #e6edf3; }
+
+/* info popup */
+.cp-wrapper.dark .info-summary { color: #9fb3c8; }
+.cp-wrapper.dark .info-summary:hover { color: #e6edf3; }
+
+.cp-wrapper.dark .info-body {
+  background: #0f1720;
+  color: #d9e2ec;
+  border-color: #233043;
+  box-shadow: 0 6px 22px rgba(0,0,0,.5);
+}
+.cp-wrapper.dark .info-body code {
+  background: #0b1118;
+  border-color: #223142;
+  color: #e6edf3;
+}
+
+/* tooltip (Angular Material) */
+.cp-wrapper.dark .mat-tooltip {
+  background: #233043 !important;
+  color: #e6edf3 !important;
+}
+
+/* dark style for the theme button itself */
+.cp-wrapper.dark .theme-toggle {
+  background: #0b1118;
+  border-color: #223142;
+  color: #e6edf3;
+}
+

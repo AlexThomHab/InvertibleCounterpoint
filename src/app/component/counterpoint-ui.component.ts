@@ -41,6 +41,8 @@ function EMPTY(): InvertedIntervals {
   styleUrls: ['./counterpoint-ui.component.css'],
 })
 export class CounterpointUiComponent {
+
+  _dark = false;
   _activeTab: 'two' | 'three' = 'two';
   _indices = [0, 1, 2, 3, 4, 5, 6, 7];
 
@@ -65,10 +67,20 @@ export class CounterpointUiComponent {
   private threeCalc = new ThreeVoiceGivenJvIndexValuesCalculator();
 
   constructor(private cp: InvertibleCounterpointService) {
+    // ➕ Load preferred theme (localStorage → system preference → light)
+    const saved = localStorage.getItem('theme');
+    this._dark = saved ? saved === 'dark'
+      : (typeof window !== 'undefined'
+        && window.matchMedia
+        && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
     this.recomputeTwoVoice();
     this.recomputeThreeVoice();
   }
-
+  toggleDark() {
+    this._dark = !this._dark;
+    localStorage.setItem('theme', this._dark ? 'dark' : 'light');
+  }
   // ===== TWO-VOICE =====
   OnJvInput() { this.recomputeTwoVoice(); }
 

@@ -6,13 +6,7 @@ import { SuspensionTreatmentEnum } from '../models/SuspensionTreatmentEnum';
 
 @Injectable({ providedIn: 'root' })
 export class InvertibleCounterpointService {
-  private static readonly N = 8; // 0..7 inclusive
-
-  // Helper to normalize modulo to positive range [0, N-1]
-  private static posMod(x: number, m: number): number {
-    const r = x % m;
-    return r < 0 ? r + m : r;
-  }
+  private static readonly N = 8;
 
   private static copyInterval(i: IntervalWithSuspensions): IntervalWithSuspensions {
     return {
@@ -29,7 +23,6 @@ export class InvertibleCounterpointService {
     originalIntervalSuspension: SuspensionTreatmentEnum,
     newIntervalSuspension: SuspensionTreatmentEnum
   ): SuspensionTreatmentEnum {
-    // Match your C# combined special-case:
     const o = originalIntervalSuspension;
     const n = newIntervalSuspension;
 
@@ -41,11 +34,9 @@ export class InvertibleCounterpointService {
       return AB;
     }
 
-    // Otherwise pick the "stricter" (lower enum value) like your Math.Min in C#
     return (o as number) < (n as number) ? o : n;
   }
 
-  // Base interval table (jv = 0)
   private readonly _intervals: Record<number, IntervalWithSuspensions> = {
     0: { index: 0, semitones: 0, name: 'Unison',  isConsonant: true,
       upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant,
@@ -73,9 +64,6 @@ export class InvertibleCounterpointService {
       lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant },
   };
 
-  // “Inverted” table used only for negative JV branches in your C#
-  // Note: C# changes the 'Number' to negative; in TS we keep `index` 0..7 for array safety,
-  // but we mirror the *suspension treatments* and the *name* swap logic.
   private readonly _intervalsInverted: Record<number, IntervalWithSuspensions> = {
     0: { index: 0, semitones:  0, name: 'Unison',  isConsonant: true,
       upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant,
@@ -103,10 +91,6 @@ export class InvertibleCounterpointService {
       lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant },
   };
 
-  /**
-   * Simple numeric API (keeps your current UI working).
-   * Matches your older service, but with correct positive modulo and full 0..7 domain.
-   */
   public compute(jvIndex: number): InvertedIntervals {
     const out: InvertedIntervals = {
       fixedConsonances: [],
@@ -116,9 +100,8 @@ export class InvertibleCounterpointService {
     };
 
     for (let i = 0; i < InvertibleCounterpointService.N; i++) {
-      // IMPORTANT: match C# remainder + Abs with modulus 7 (NOT 8, NOT positive mod)
-      const remainder = (i + jvIndex) % 7;           // JS % is remainder like C#
-      const targetIndex = Math.abs(remainder);       // 0..6 only
+      const remainder = (i + jvIndex) % 7;
+      const targetIndex = Math.abs(remainder);
 
       const a = this._intervals[i].isConsonant;
       const b = this._intervals[targetIndex].isConsonant;
@@ -132,10 +115,6 @@ export class InvertibleCounterpointService {
     return out;
   }
 
-  /**
-   * Detailed API: returns Interval objects *with* merged suspension treatments.
-   * This is a direct port of your C# Calculate(int jvIndex) logic.
-   */
   public computeDetailed(jvIndex: number): InvertedIntervalsDetailed {
     const out: InvertedIntervalsDetailed = {
       fixedConsonances: [],
@@ -147,7 +126,6 @@ export class InvertibleCounterpointService {
     const N = InvertibleCounterpointService.N;
 
     for (let i = 0; i < N; i++) {
-      // C# classification index
       const remainder = (i + jvIndex) % 7;
       const targetIndex = Math.abs(remainder);   // 0..6
 
@@ -159,9 +137,8 @@ export class InvertibleCounterpointService {
       const consToDiss   = curr.isConsonant && !targ.isConsonant;
       const dissToCons   = !curr.isConsonant && targ.isConsonant;
 
-      // C# merge compare index (note: Abs(jv+i) % 7 — NOT Abs((i+jv) % 7))
       const shiftedIndexAbs = Math.abs(jvIndex + i);
-      const compareIndex = shiftedIndexAbs % 7;     // 0..6
+      const compareIndex = shiftedIndexAbs % 7;
       const isLargeShift = shiftedIndexAbs > 7;
 
       const base = this._intervals[i];
@@ -177,7 +154,6 @@ export class InvertibleCounterpointService {
         const a = InvertibleCounterpointService.copyInterval(baseInt);
         const b = InvertibleCounterpointService.copyInterval(compareInt);
 
-        // C# tweak: if Abs(jv+i) > 7 and compare.Name == "Second"
         if (isLargeShift && b.name === 'Second') {
           if (tweakSecondOnUpper) {
             b.upperSuspensionTreatment = SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension;
@@ -216,7 +192,6 @@ export class InvertibleCounterpointService {
         continue;
       }
 
-      // dissToCons
       {
         const merged = mergeSuspensions(base, compare, jvIndex >= 0);
         out.variableDissonances.push(merged);
