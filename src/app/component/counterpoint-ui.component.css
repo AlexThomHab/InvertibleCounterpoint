@@ -441,3 +441,75 @@ html, body { height: 100%; }
   margin-top: 8px;
 }
 
+/* Controls: wrap and size safely */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 12px;
+  margin: 10px 0 16px;
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  /* prevent shrinking text from pushing out of view */
+  min-width: 0;
+}
+
+/* Inputs adapt: never exceed container, stay tappable */
+.control input[type="number"] {
+  box-sizing: border-box;
+  width: 120px;             /* default desktop-ish */
+  max-width: 100%;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  text-align: center;
+  transition: border-color .2s, box-shadow .2s;
+  background: #fff;
+}
+
+/* Labels */
+.control label {
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+/* Tablet and down: make controls two columns */
+@media (max-width: 640px) {
+  .control {
+    /* two columns that fit even with long labels */
+    width: calc(50% - 6px);
+    justify-content: center;
+  }
+  .control input[type="number"] {
+    width: 100%;
+  }
+}
+
+/* Small phones: single column, label above input for clarity */
+@media (max-width: 400px) {
+  .control {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+  .control label {
+    text-align: left;
+    font-size: 13px;
+  }
+  .control input[type="number"] {
+    height: 40px;           /* larger tap target */
+  }
+}
+
+/* Safety: never allow horizontal scroll due to controls */
+.cp-wrapper, .cp-card {
+  overflow-x: hidden;
+}

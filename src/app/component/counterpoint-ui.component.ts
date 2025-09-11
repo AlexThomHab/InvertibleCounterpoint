@@ -10,7 +10,6 @@ import { SuspensionTreatmentEnum } from '../models/SuspensionTreatmentEnum';
 import { InvertedIntervals, InvertedIntervalsDetailed } from '../models/InvertedIntervals';
 import { ThreeVoiceGivenJvIndexValuesCalculator } from '../services/ThreeVoiceGivenJvIndexCalculator';
 
-// ---------- helpers MUST be above @Component ----------
 type Cell = {
   index: number;
   topGlyph: string;
