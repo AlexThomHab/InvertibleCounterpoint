@@ -6,7 +6,8 @@ import { SuspensionTreatmentEnum } from '../models/SuspensionTreatmentEnum';
 @Injectable({ providedIn: 'root' })
 export class InvertibleCounterpointService {
   private static readonly N = 8;
-
+  private static readonly PERFECT = new Set([0, 4, 7]);
+  private static readonly IMPERFECT = new Set([2, 5]);
   private static copyInterval(i: IntervalWithSuspensions): IntervalWithSuspensions {
     return {
       index: i.index,
@@ -127,19 +128,18 @@ export class InvertibleCounterpointService {
     for (let i = 0; i < N; i++) {
       const remainder = (i + jvIndex) % 7;
       const targetIndex = Math.abs(remainder);
-      const curr = this._intervals[i];
+      const base = this._intervals[i];
       const targ = this._intervals[targetIndex];
 
-      const bothConsonant = curr.isConsonant && targ.isConsonant;
-      const bothDissonant = !curr.isConsonant && !targ.isConsonant;
-      const consToDiss   = curr.isConsonant && !targ.isConsonant;
-      const dissToCons   = !curr.isConsonant && targ.isConsonant;
+      const bothConsonant = base.isConsonant && targ.isConsonant;
+      const bothDissonant = !base.isConsonant && !targ.isConsonant;
+      const consToDiss   = base.isConsonant && !targ.isConsonant;
+      // const dissToCons = ...
 
       const shiftedIndexAbs = Math.abs(jvIndex + i);
       const compareIndex = shiftedIndexAbs % 7;
       const isLargeShift = shiftedIndexAbs > 7;
 
-      const base = this._intervals[i];
       const compare = jvIndex < 0
         ? this._intervalsInverted[compareIndex]
         : this._intervals[compareIndex];
@@ -173,7 +173,14 @@ export class InvertibleCounterpointService {
       };
 
       if (bothConsonant) {
-        const merged = mergeSuspensions(base, compare, jvIndex >= 0 /* tweak UPPER on positive */);
+        const merged = mergeSuspensions(base, compare, jvIndex >= 0);
+
+        // NEW: flag when imperfect (2,5) → perfect (0,4,7).
+        // For negative JV we look at |compare.semitones|.
+        merged.imperfectBecomesPerfect =
+          InvertibleCounterpointService.IMPERFECT.has(base.index) &&
+          InvertibleCounterpointService.PERFECT.has(Math.abs(compare.semitones));
+
         out.fixedConsonances.push(merged);
         continue;
       }

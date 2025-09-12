@@ -17,6 +17,7 @@ type Cell = {
   bottomTitle: string;
   topClass?: string;
   bottomClass?: string;
+  upgrade?: boolean
 };
 
 type CellsMap = Partial<Record<number, Cell>>;
@@ -97,6 +98,7 @@ export class CounterpointUiComponent {
         bottomTitle: this.fullName(it.lowerSuspensionTreatment, 'Lower'),
         topClass: this.glyphExtraClass(it.upperSuspensionTreatment),
         bottomClass: this.glyphExtraClass(it.lowerSuspensionTreatment),
+        upgrade: !!it.imperfectBecomesPerfect
       };
     }
   }
@@ -146,6 +148,7 @@ export class CounterpointUiComponent {
         bottomTitle: this.fullName(it.lowerSuspensionTreatment, 'Lower'),
         topClass: this.glyphExtraClass(it.upperSuspensionTreatment),
         bottomClass: this.glyphExtraClass(it.lowerSuspensionTreatment),
+        upgrade: !!it.imperfectBecomesPerfect,
       };
     }
     return cells;

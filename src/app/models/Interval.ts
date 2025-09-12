@@ -10,4 +10,6 @@ export interface IntervalWithSuspensions extends Interval {
   index: number;
   upperSuspensionTreatment: SuspensionTreatmentEnum;
   lowerSuspensionTreatment: SuspensionTreatmentEnum;
+
+  imperfectBecomesPerfect?: boolean;
 }

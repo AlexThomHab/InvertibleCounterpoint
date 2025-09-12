@@ -569,4 +569,20 @@ html, body { height: 100%; }
   border-color: #223142;
   color: #e6edf3;
 }
+/* small circular badge in the top-right corner */
+.ip-flag {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background: #f59e0b;              /* amber */
+  box-shadow: 0 0 0 2px #ffffff;     /* halo so it’s readable on blue/red boxes */
+}
+
+/* dark mode halo */
+.cp-wrapper.dark .ip-flag {
+  box-shadow: 0 0 0 2px #0f1720;
+}
 

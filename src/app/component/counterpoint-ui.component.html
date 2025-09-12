@@ -82,6 +82,11 @@
                [title]="_cells[i]?.bottomTitle">
             {{ _cells[i]?.bottomGlyph || '' }}
           </div>
+          <span
+            *ngIf="_cells[i]?.upgrade"
+            class="ip-flag"
+            [matTooltip]="'Imperfect consonance becomes perfect after JV'">
+    </span>
         </div>
       </div>
 
