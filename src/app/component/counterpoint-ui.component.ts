@@ -1,4 +1,3 @@
-// src/app/component/counterpoint-ui.component.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -31,7 +30,6 @@ function EMPTY(): InvertedIntervals {
     variableDissonances: [],
   };
 }
-// ------------------------------------------------------
 
 @Component({
   selector: 'app-counterpoint-ui',
@@ -46,29 +44,19 @@ export class CounterpointUiComponent {
   _activeTab: 'two' | 'three' = 'two';
   _indices = [0, 1, 2, 3, 4, 5, 6, 7];
 
-  // ===== TWO-VOICE =====
-  _jvInput = 0;
+    _jvInput = 0;
   _invertedIntervals: InvertedIntervals = EMPTY();
   _detailed!: InvertedIntervalsDetailed;
-  _cells: CellsMap = {}; // Partial<Record<number, Cell>> so ?. is valid in template
+  _cells: CellsMap = {};
+    _jvPrimeInput = 0;          _jvDoublePrimeInput = 0;    _jvSigmaView = 0;
+    _threeRows: [InvertedIntervals, InvertedIntervals, InvertedIntervals] = [EMPTY(), EMPTY(), EMPTY()];
 
-  // ===== THREE-VOICE (three separate rows) =====
-  _jvPrimeInput = 0;        // JV′
-  _jvDoublePrimeInput = 0;  // JV″
-  _jvSigmaView = 0;         // raw σ shown
+    _threeRowsCells: CellsRowTuple = [{}, {}, {}];
 
-  // Three rows of interval buckets: tuple ensures always defined
-  _threeRows: [InvertedIntervals, InvertedIntervals, InvertedIntervals] = [EMPTY(), EMPTY(), EMPTY()];
-
-  // glyph maps per row (I↔II, II↔III, I↔III)
-  _threeRowsCells: CellsRowTuple = [{}, {}, {}];
-
-  // calculators
-  private threeCalc = new ThreeVoiceGivenJvIndexValuesCalculator();
+    private threeCalc = new ThreeVoiceGivenJvIndexValuesCalculator();
 
   constructor(private cp: InvertibleCounterpointService) {
-    // ➕ Load preferred theme (localStorage → system preference → light)
-    const saved = localStorage.getItem('theme');
+        const saved = localStorage.getItem('theme');
     this._dark = saved ? saved === 'dark'
       : (typeof window !== 'undefined'
         && window.matchMedia
@@ -81,8 +69,7 @@ export class CounterpointUiComponent {
     this._dark = !this._dark;
     localStorage.setItem('theme', this._dark ? 'dark' : 'light');
   }
-  // ===== TWO-VOICE =====
-  OnJvInput() { this.recomputeTwoVoice(); }
+    OnJvInput() { this.recomputeTwoVoice(); }
 
   private recomputeTwoVoice() {
     this._invertedIntervals = this.cp.compute(this._jvInput);
@@ -116,20 +103,16 @@ export class CounterpointUiComponent {
     return 'cell';
   }
 
-  // ===== THREE-VOICE =====
-  onThreeVoiceInput() { this.recomputeThreeVoice(); }
+    onThreeVoiceInput() { this.recomputeThreeVoice(); }
 
   private recomputeThreeVoice() {
     const sigma = this._jvPrimeInput + this._jvDoublePrimeInput;
     this._jvSigmaView = sigma;
 
-    // 3 rows of buckets (I↔II, II↔III, I↔III)
-    const rows = this.threeCalc.calculate(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
-    // ensure tuple
-    this._threeRows = [rows[0] ?? EMPTY(), rows[1] ?? EMPTY(), rows[2] ?? EMPTY()];
+        const rows = this.threeCalc.calculate(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
+        this._threeRows = [rows[0] ?? EMPTY(), rows[1] ?? EMPTY(), rows[2] ?? EMPTY()];
 
-    // 3 rows of glyphs (from detailed)
-    const detailedRows = this.threeCalc.calculateDetailed(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
+        const detailedRows = this.threeCalc.calculateDetailed(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
     this._threeRowsCells = [
       this.buildCellsMap(detailedRows[0]),
       this.buildCellsMap(detailedRows[1]),
@@ -171,8 +154,7 @@ export class CounterpointUiComponent {
     return 'cell';
   }
 
-  // ===== Glyph helpers =====
-  private glyphFor(t: SuspensionTreatmentEnum): string {
+    private glyphFor(t: SuspensionTreatmentEnum): string {
     switch (t) {
       case SuspensionTreatmentEnum.CannotFormSuspension: return '(-)';
       case SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension: return '-';

@@ -8,10 +8,8 @@
   max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-right));
 }
 
-/* Card */
 .cp-card {
-  --cell: 56px; /* size of each interval square */
-  max-width: 900px;
+  --cell: 56px;   max-width: 900px;
   width: 100%;
   padding: 16px 18px;
   border-radius: 18px;
@@ -21,7 +19,6 @@
   text-align: center;
 }
 
-/* Title lives inside .card-header now */
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -36,7 +33,6 @@
   margin: 4px 0 10px;
 }
 
-/* Controls */
 .controls {
   display: flex;
   justify-content: center;
@@ -61,11 +57,9 @@
   box-shadow: 0 0 0 3px rgba(30,136,229,.15);
 }
 
-/* Legend */
 .legend {
   display: flex;
-  flex-direction: row;           /* row by default */
-  align-items: center;
+  flex-direction: row;             align-items: center;
   justify-content: center;
   gap: 16px;
   margin: 8px auto 18px;
@@ -79,7 +73,6 @@
 .swatch.variableConsonant { border-color: #43a047; }
 .swatch.variableDissonant { border-color: #8e24aa; }
 
-/* Grid: 2 rows of 4 on phones */
 .grid {
   display: grid;
   grid-template-columns: repeat(4, var(--cell));
@@ -102,7 +95,6 @@
 }
 .cell:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.1); }
 
-/* Buckets summary */
 .buckets {
   text-align: left;
   font-size: 14px;
@@ -116,13 +108,11 @@
   color: #333;
 }
 
-/* Color-coded borders */
 .fixedConsonant { border-color: #1e88e5; box-shadow: inset 0 0 0 3px rgba(30,136,229,.15); }
 .fixedDissonant { border-color: #e53935; box-shadow: inset 0 0 0 3px rgba(229,57,53,.15); }
 .variableConsonant { border-color: #43a047; box-shadow: inset 0 0 0 3px rgba(67,160,71,.15); }
 .variableDissonant { border-color: #8e24aa; box-shadow: inset 0 0 0 3px rgba(142,36,170,.15); }
 
-/* Subtitle */
 .subtitle {
   margin: 4px auto 10px;
   font-size: 0.95rem;
@@ -130,14 +120,12 @@
   max-width: 720px;
 }
 
-/* Info details (icon + popup) */
 .info { position: relative; }
 .info > summary { list-style: none; cursor: pointer; }
 .info > summary::-webkit-details-marker { display: none; }
 .info-icon { color: #6b7280; transition: color .2s; }
 .info > summary:hover .info-icon { color: #1e88e5; }
 
-/* Info popup body — wider with more padding */
 .info-body {
   position: absolute;
   top: 32px;
@@ -161,9 +149,7 @@
   padding: 0 4px;
 }
 
-/* src/app/component/counterpoint-ui.component.css */
 
-/* your existing colors should already be here; these are just the new bits */
 .grid {
   display: grid;
   grid-template-columns: repeat(8, 64px);
@@ -184,7 +170,6 @@
   border: 2px solid var(--cp-border, #ccc);
 }
 
-/* keep your original color classes */
 .fixedConsonant   { border-color: #4ea1ff; box-shadow: 0 0 0 3px rgba(78,161,255,0.15) inset; }
 .fixedDissonant   { border-color: #ff5e5e; box-shadow: 0 0 0 3px rgba(255,94,94,0.12) inset; }
 .variableConsonant{ border-color: #4cbc6b; box-shadow: 0 0 0 3px rgba(76,188,107,0.12) inset; }
@@ -195,10 +180,7 @@
   line-height: 22px;
 }
 
-/* glyphs above/below number */
-/* src/app/component/counterpoint-ui.component.css */
 
-/* ...keep your existing styles... */
 
 .glyph {
   font-size: 14px;
@@ -212,42 +194,32 @@
 .glyph-top    { position: absolute; top: 6px; }
 .glyph-bottom { position: absolute; bottom: 6px; }
 
-/* replacements for the old :contains rules */
-.glyph.underline { letter-spacing: 1px; } /* for '___' */
-.glyph.xsmall    { font-size: 13px; }     /* for 'x' */
-
-/* keep the info disclosure on the right */
+.glyph.underline { letter-spacing: 1px; } .glyph.xsmall    { font-size: 13px; }
 .card-header { display: flex; align-items: center; }
 .info { margin-left: auto; }
 
-/* style the clickable summary */
 .info-summary {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   cursor: pointer;
-  color: #6b7280;            /* slate-500-ish */
-  font-size: 0.9rem;
+  color: #6b7280;              font-size: 0.9rem;
   font-weight: 500;
   user-select: none;
 }
 
-/* remove default triangle caret */
 .info-summary::-webkit-details-marker { display: none; }
 .info-summary::marker { content: ""; }
 
-.info-summary:hover { color: #111827; }  /* darker on hover */
-
+.info-summary:hover { color: #111827; }
 :root {
-  /* Try a big gap; tweak the middle value if you want more/less */
-  --top-gap: clamp(96px, 14vh, 260px);
+    --top-gap: clamp(96px, 14vh, 260px);
 }
 
 html, body { height: 100%; }
 
 .cp-wrapper {
-  min-height: 100dvh;                  /* handle mobile browser UI properly */
-  padding-top: calc(var(--top-gap) + env(safe-area-inset-top) + 22px) !important ;
+  min-height: 100dvh;                    padding-top: calc(var(--top-gap) + env(safe-area-inset-top) + 22px) !important ;
   padding-right: max(12px, env(safe-area-inset-right));
   padding-bottom: max(12px, env(safe-area-inset-bottom));
   padding-left: max(12px, env(safe-area-inset-left));
@@ -318,7 +290,6 @@ html, body { height: 100%; }
   box-shadow: 0 2px 8px rgba(30,136,229,.25) inset;
 }
 
-/* Small screens: tuck the toggle under the title nicely */
 @media (max-width: 520px) {
   .card-top {
     flex-direction: column;
@@ -331,7 +302,6 @@ html, body { height: 100%; }
   }
 }
 
-/* Extra safety: give the card its own margin from the top too */
 .cp-card {
   margin-top: clamp(12px, 2vh, 32px) !important;
 }
@@ -339,29 +309,23 @@ html, body { height: 100%; }
   :root { --top-gap: clamp(48px, 10vh, 140px); }
 }
 
-/* ── Phones only: keep colors, just shrink & stack ───────────────── */
 @media (max-width: 480px) {
-  .cp-card { --cell: 48px; } /* controls overall cell size on phones */
-
-  /* show 4 across on phones */
-  .grid {
+  .cp-card { --cell: 48px; }
+    .grid {
     grid-template-columns: repeat(4, var(--cell));
     gap: 8px;
     margin: 0 auto 16px;
   }
 
-  /* force true squares and slightly smaller text */
-  .cell {
+    .cell {
     width: var(--cell);
     height: var(--cell);
-    box-sizing: border-box;   /* prevents border from growing the box */
-    font-size: 14px;
+    box-sizing: border-box;       font-size: 14px;
   }
 
   .interval-number { font-size: 18px; line-height: 1; }
 
-  /* tidy glyphs so they don't push the box */
-  .glyph { font-size: 12px; line-height: 1; }
+    .glyph { font-size: 12px; line-height: 1; }
   .glyph-top { top: 6px; }
   .glyph-bottom { bottom: 6px; }
 }
@@ -372,14 +336,11 @@ html, body { height: 100%; }
     gap: 10px;
     max-width: 440px;
   }
-} /* ← this closing brace was missing */
-
-/* optional: ultra-small phones */
+}
 @media (max-width: 360px) {
   .cp-card { --cell: 44px; }
 }
 
-/* Phones only: keep colors, just shrink & space glyphs better */
 @media (max-width: 480px) {
   .cp-card { --cell: 48px; }
 
@@ -389,8 +350,7 @@ html, body { height: 100%; }
     margin: 0 auto 16px;
   }
 
-  /* keep squares; slightly smaller text */
-  .cell {
+    .cell {
     width: var(--cell);
     height: var(--cell);
     box-sizing: border-box;
@@ -399,18 +359,14 @@ html, body { height: 100%; }
 
   .interval-number { font-size: 18px; line-height: 1; }
 
-  /* more clearance from the number */
-  .glyph { font-size: 12px; line-height: 1; }
-  .glyph-top    { top: 0px; }     /* push closer to the edge */
-  .glyph-bottom { bottom: 0px; }  /* push closer to the edge */
-}
+    .glyph { font-size: 12px; line-height: 1; }
+  .glyph-top    { top: 0px; }       .glyph-bottom { bottom: 0px; }  }
 
 @media (max-width: 360px) {
   .cp-card { --cell: 44px; }
 }
 .cp-card { position: relative; }
 
-/* Little folder tab that sits on the top edge */
 .folder-tab {
   position: absolute;
   top: -14px;
@@ -441,7 +397,6 @@ html, body { height: 100%; }
   margin-top: 8px;
 }
 
-/* Controls: wrap and size safely */
 .controls {
   display: flex;
   flex-wrap: wrap;
@@ -455,15 +410,12 @@ html, body { height: 100%; }
   display: flex;
   align-items: center;
   gap: 8px;
-  /* prevent shrinking text from pushing out of view */
-  min-width: 0;
+    min-width: 0;
 }
 
-/* Inputs adapt: never exceed container, stay tappable */
 .control input[type="number"] {
   box-sizing: border-box;
-  width: 120px;             /* default desktop-ish */
-  max-width: 100%;
+  width: 120px;               max-width: 100%;
   padding: 6px 10px;
   border-radius: 10px;
   border: 1px solid #d1d5db;
@@ -473,18 +425,15 @@ html, body { height: 100%; }
   background: #fff;
 }
 
-/* Labels */
 .control label {
   font-weight: 600;
   font-size: 14px;
   white-space: nowrap;
 }
 
-/* Tablet and down: make controls two columns */
 @media (max-width: 640px) {
   .control {
-    /* two columns that fit even with long labels */
-    width: calc(50% - 6px);
+        width: calc(50% - 6px);
     justify-content: center;
   }
   .control input[type="number"] {
@@ -492,7 +441,6 @@ html, body { height: 100%; }
   }
 }
 
-/* Small phones: single column, label above input for clarity */
 @media (max-width: 400px) {
   .control {
     width: 100%;
@@ -505,15 +453,12 @@ html, body { height: 100%; }
     font-size: 13px;
   }
   .control input[type="number"] {
-    height: 40px;           /* larger tap target */
-  }
+    height: 40px;             }
 }
 
-/* Safety: never allow horizontal scroll due to controls */
 .cp-wrapper, .cp-card {
   overflow-x: hidden;
 }
-/* ===== Theme toggle button ===== */
 .theme-toggle {
   margin-left: 8px;
   border: 1px solid #e5e7eb;
@@ -532,7 +477,6 @@ html, body { height: 100%; }
   box-shadow: 0 0 0 3px rgba(30,136,229,.25);
 }
 
-/* ===== Dark mode (scoped to this component) ===== */
 .cp-wrapper.dark { background: #0b0f14; color: #d9e2ec; }
 
 .cp-wrapper.dark .cp-card {
@@ -570,7 +514,6 @@ html, body { height: 100%; }
   box-shadow: 0 2px 8px rgba(30,136,229,.35) inset;
 }
 
-/* inputs */
 .cp-wrapper.dark .control input[type="number"],
 .cp-wrapper.dark .controls input[type="number"] {
   background: #0b1118;
@@ -583,7 +526,6 @@ html, body { height: 100%; }
   box-shadow: 0 0 0 3px rgba(78,161,255,.25);
 }
 
-/* grid cells */
 .cp-wrapper.dark .cell {
   background: #0b1118;
   border-color: #2a3b52;
@@ -592,20 +534,16 @@ html, body { height: 100%; }
 }
 .cp-wrapper.dark .cell:hover { box-shadow: 0 4px 12px rgba(0,0,0,.4); }
 
-/* keep your status colors but tweak their inner glows for dark */
 .cp-wrapper.dark .fixedConsonant   { border-color: #4ea1ff; box-shadow: inset 0 0 0 3px rgba(78,161,255,.20); }
 .cp-wrapper.dark .fixedDissonant   { border-color: #ff6b6b; box-shadow: inset 0 0 0 3px rgba(255,107,107,.18); }
 .cp-wrapper.dark .variableConsonant{ border-color: #5bd58a; box-shadow: inset 0 0 0 3px rgba(91,213,138,.18); }
 .cp-wrapper.dark .variableDissonant{ border-color: #b98cff; box-shadow: inset 0 0 0 3px rgba(185,140,255,.18); }
 
-/* glyphs */
 .cp-wrapper.dark .glyph { opacity: .95; }
 
-/* buckets */
 .cp-wrapper.dark .buckets { color: #c7d1db; }
 .cp-wrapper.dark .buckets strong { color: #e6edf3; }
 
-/* info popup */
 .cp-wrapper.dark .info-summary { color: #9fb3c8; }
 .cp-wrapper.dark .info-summary:hover { color: #e6edf3; }
 
@@ -621,13 +559,11 @@ html, body { height: 100%; }
   color: #e6edf3;
 }
 
-/* tooltip (Angular Material) */
 .cp-wrapper.dark .mat-tooltip {
   background: #233043 !important;
   color: #e6edf3 !important;
 }
 
-/* dark style for the theme button itself */
 .cp-wrapper.dark .theme-toggle {
   background: #0b1118;
   border-color: #223142;

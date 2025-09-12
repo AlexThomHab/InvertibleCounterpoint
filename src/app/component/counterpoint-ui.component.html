@@ -1,14 +1,13 @@
 <div class="cp-wrapper" [class.dark]="_dark">
   <mat-card class="cp-card" [ngSwitch]="_activeTab">
 
-    <!-- Folder tabs -->
-    <!-- Card header (global) -->
     <div class="card-top">
       <h1 class="title">
         {{ _activeTab === 'two'
         ? "Taneev's Vertical Shifting Counterpoint"
         : "Three-Voice Vertical Shifting Counterpoint" }}
       </h1>
+
       <button
         type="button"
         class="theme-toggle"
@@ -39,11 +38,8 @@
     </div>
 
 
-    <!-- TWO-VOICE VIEW -->
     <ng-container *ngSwitchCase="'two'">
       <div class="card-header">
-        <!-- (keep your details/info block exactly as you had it) -->
-        <!-- ... -->
       </div>
 
       <p class="subtitle">
@@ -63,7 +59,6 @@
         <div class="legend-item"><span class="swatch variableConsonant"></span> Variable Consonances</div>
         <div class="legend-item"><span class="swatch variableDissonant"></span> Variable Dissonances</div>
       </div>
-      <!-- Interval grid -->
       <div class="grid">
         <div
           *ngFor="let i of _indices"
@@ -87,7 +82,6 @@
         </div>
       </div>
 
-      <!-- Buckets -->
       <div class="buckets">
         <div><strong>Fixed Consonances:</strong> {{ _invertedIntervals.fixedConsonances.join(', ') }}</div>
         <div><strong>Fixed Dissonances:</strong> {{ _invertedIntervals.fixedDissonances.join(', ') }}</div>
@@ -96,7 +90,6 @@
       </div>
     </ng-container>
 
-    <!-- THREE-VOICE VIEW -->
     <ng-container *ngSwitchCase="'three'">
       <p class="subtitle">
         Enter JV′ and JV″. JVΣ is computed as JV′ + JV″ (visualized below as three separate two-voice rows).
@@ -119,7 +112,6 @@
         </div>
       </div>
 
-      <!-- Row 0: I↔II (JV′) -->
       <h3 style="margin-top:10px">I ↔ II (JV′ = {{ _jvPrimeInput }})</h3>
       <div class="legend">
         <div class="legend-item"><span class="swatch fixedConsonant"></span> Fixed Consonances</div>
@@ -148,8 +140,6 @@
         </div>
       </div>
       <div class="buckets">
-        <!-- BEFORE -->
-        <!-- AFTER (row 0) -->
         <div><strong>Fixed Consonances:</strong> {{ _threeRows[0].fixedConsonances.join(', ') }}</div>
         <div><strong>Fixed Dissonances:</strong> {{ _threeRows[0].fixedDissonances.join(', ') }}</div>
         <div><strong>Variable Consonances:</strong> {{ _threeRows[0].variableConsonances.join(', ') }}</div>
@@ -158,7 +148,6 @@
 
       <hr>
 
-      <!-- Row 1: II↔III (JV″) -->
       <h3>II ↔ III (JV″ = {{ _jvDoublePrimeInput }})</h3>
       <div class="legend">
         <div class="legend-item"><span class="swatch fixedConsonant"></span> Fixed Consonances</div>
@@ -187,8 +176,6 @@
         </div>
       </div>
       <div class="buckets">
-        <!-- BEFORE -->
-        <!-- AFTER (row 0) -->
         <div><strong>Fixed Consonances:</strong> {{ _threeRows[1].fixedConsonances.join(', ') }}</div>
         <div><strong>Fixed Dissonances:</strong> {{ _threeRows[1].fixedDissonances.join(', ') }}</div>
         <div><strong>Variable Consonances:</strong> {{ _threeRows[1].variableConsonances.join(', ') }}</div>
@@ -199,7 +186,6 @@
 
       <hr>
 
-      <!-- Row 2: I↔III (JVΣ) -->
       <h3>I ↔ III (JVΣ = {{ _jvSigmaView }})</h3>
       <div class="legend">
         <div class="legend-item"><span class="swatch fixedConsonant"></span> Fixed Consonances</div>
@@ -228,8 +214,6 @@
         </div>
       </div>
       <div class="buckets">
-        <!-- BEFORE -->
-        <!-- AFTER (row 0) -->
         <div><strong>Fixed Consonances:</strong> {{ _threeRows[2].fixedConsonances.join(', ') }}</div>
         <div><strong>Fixed Dissonances:</strong> {{ _threeRows[2].fixedDissonances.join(', ') }}</div>
         <div><strong>Variable Consonances:</strong> {{ _threeRows[2].variableConsonances.join(', ') }}</div>

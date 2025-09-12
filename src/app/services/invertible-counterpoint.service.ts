@@ -1,6 +1,5 @@
-// src/app/services/invertible-counterpoint.service.ts
 import { Injectable } from '@angular/core';
-import { Interval, IntervalWithSuspensions } from '../models/Interval';
+import { IntervalWithSuspensions } from '../models/Interval';
 import { InvertedIntervals, InvertedIntervalsDetailed } from '../models/InvertedIntervals';
 import { SuspensionTreatmentEnum } from '../models/SuspensionTreatmentEnum';
 
@@ -127,8 +126,7 @@ export class InvertibleCounterpointService {
 
     for (let i = 0; i < N; i++) {
       const remainder = (i + jvIndex) % 7;
-      const targetIndex = Math.abs(remainder);   // 0..6
-
+      const targetIndex = Math.abs(remainder);
       const curr = this._intervals[i];
       const targ = this._intervals[targetIndex];
 

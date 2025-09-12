@@ -1,4 +1,3 @@
-// src/app/services/ThreeVoiceGivenJvIndexCalculator.ts
 import { InvertibleCounterpointService } from "./invertible-counterpoint.service";
 import { InvertedIntervals, InvertedIntervalsDetailed } from "../models/InvertedIntervals";
 

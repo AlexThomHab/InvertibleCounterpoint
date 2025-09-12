@@ -40,8 +40,7 @@ describe('Suspension treatment parity with C#', () => {
     });
 
     it('Then the correct suspension treatment is returned', () => {
-      // UPPER
-      expect(byUpper(all, SuspensionTreatmentEnum.CannotFormSuspension))
+            expect(byUpper(all, SuspensionTreatmentEnum.CannotFormSuspension))
         .toEqual([1]);
       expect(byUpper(all, SuspensionTreatmentEnum.NoteOfResolutionIsDissonant))
         .toEqual([0, 2, 4, 7]);
@@ -50,8 +49,7 @@ describe('Suspension treatment parity with C#', () => {
       expect(byUpper(all, SuspensionTreatmentEnum.NoteOfResolutionIsFree))
         .toEqual([5]);
 
-      // LOWER
-      expect(byLower(all, SuspensionTreatmentEnum.CannotFormSuspension))
+            expect(byLower(all, SuspensionTreatmentEnum.CannotFormSuspension))
         .toEqual([6]);
       expect(byLower(all, SuspensionTreatmentEnum.NoteOfResolutionIsDissonant))
         .toEqual([0, 2, 5, 7]);
@@ -71,8 +69,7 @@ describe('Suspension treatment parity with C#', () => {
     });
 
     it('Then the correct suspension treatment is returned', () => {
-      // UPPER
-      expect(byUpper(all, SuspensionTreatmentEnum.CannotFormSuspension))
+            expect(byUpper(all, SuspensionTreatmentEnum.CannotFormSuspension))
         .toEqual([1]);
       expect(byUpper(all, SuspensionTreatmentEnum.NoteOfResolutionIsDissonant))
         .toEqual([0, 2, 4, 7]);
@@ -83,8 +80,7 @@ describe('Suspension treatment parity with C#', () => {
       expect(byUpper(all, SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspensionAndNoteOfResolutionIsDissonant))
         .toEqual([6]);
 
-      // LOWER
-      expect(byLower(all, SuspensionTreatmentEnum.CannotFormSuspension))
+            expect(byLower(all, SuspensionTreatmentEnum.CannotFormSuspension))
         .toEqual([1, 6]);
       expect(byLower(all, SuspensionTreatmentEnum.NoteOfResolutionIsDissonant))
         .toEqual([0, 2, 4, 7]);
@@ -106,8 +102,7 @@ describe('Suspension treatment parity with C#', () => {
     });
 
     it('Then the correct suspension treatment is returned', () => {
-      // UPPER
-      expect(byUpper(all, SuspensionTreatmentEnum.CannotFormSuspension))
+            expect(byUpper(all, SuspensionTreatmentEnum.CannotFormSuspension))
         .toEqual([1, 5]);
       expect(byUpper(all, SuspensionTreatmentEnum.NoteOfResolutionIsDissonant))
         .toEqual([0, 2, 4, 7]);
@@ -118,8 +113,7 @@ describe('Suspension treatment parity with C#', () => {
       expect(byUpper(all, SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspensionAndNoteOfResolutionIsDissonant))
         .toEqual([6]);
 
-      // LOWER
-      expect(byLower(all, SuspensionTreatmentEnum.CannotFormSuspension))
+            expect(byLower(all, SuspensionTreatmentEnum.CannotFormSuspension))
         .toEqual([6]);
       expect(byLower(all, SuspensionTreatmentEnum.NoteOfResolutionIsDissonant))
         .toEqual([0, 2, 4, 7]);
