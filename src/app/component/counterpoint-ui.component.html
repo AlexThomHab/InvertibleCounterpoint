@@ -3,9 +3,11 @@
 
     <div class="card-top">
       <h1 class="title">
-        {{ _activeTab === 'two'
-        ? "Taneev's Vertical Shifting Counterpoint"
-        : "Three-Voice Vertical Shifting Counterpoint" }}
+        {{
+          _activeTab === 'two'
+            ? "Taneev's Vertical Shifting Counterpoint"
+            : "Three-Voice Vertical Shifting Counterpoint"
+        }}
       </h1>
 
       <button
@@ -43,13 +45,14 @@
       </div>
 
       <p class="subtitle">
-        Enter a JV (inversion index) to see which intervals stay or switch between consonance and dissonance after inversion.
+        Enter a JV (inversion index) to see which intervals stay or switch between consonance and dissonance after
+        inversion.
       </p>
 
       <div class="controls">
         <div class="control">
           <label for="jv">JV</label>
-          <input id="jv" type="number" [(ngModel)]="_jvInput" (ngModelChange)="OnJvInput()" />
+          <input id="jv" type="number" [(ngModel)]="_jvInput" (ngModelChange)="OnJvInput()"/>
         </div>
       </div>
 
@@ -98,17 +101,18 @@
       <div class="controls">
         <div class="control">
           <label for="jvPrime">JV′</label>
-          <input id="jvPrime" type="number" [(ngModel)]="_jvPrimeInput" (ngModelChange)="onThreeVoiceInput()" />
+          <input id="jvPrime" type="number" [(ngModel)]="_jvPrimeInput" (ngModelChange)="onThreeVoiceInput()"/>
         </div>
 
         <div class="control">
           <label for="jvDoublePrime">JV″</label>
-          <input id="jvDoublePrime" type="number" [(ngModel)]="_jvDoublePrimeInput" (ngModelChange)="onThreeVoiceInput()" />
+          <input id="jvDoublePrime" type="number" [(ngModel)]="_jvDoublePrimeInput"
+                 (ngModelChange)="onThreeVoiceInput()"/>
         </div>
 
         <div class="control">
           <label for="jvSigma">JVΣ</label>
-          <input id="jvSigma" type="number" [value]="_jvSigmaView" readonly />
+          <input id="jvSigma" type="number" [value]="_jvSigmaView" readonly/>
         </div>
       </div>
 

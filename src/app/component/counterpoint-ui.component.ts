@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { MatCard } from '@angular/material/card';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import {Component} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {MatCard} from '@angular/material/card';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
-import { InvertibleCounterpointService } from '../services/invertible-counterpoint.service';
-import { SuspensionTreatmentEnum } from '../models/SuspensionTreatmentEnum';
-import { InvertedIntervals, InvertedIntervalsDetailed } from '../models/InvertedIntervals';
-import { ThreeVoiceGivenJvIndexValuesCalculator } from '../services/ThreeVoiceGivenJvIndexCalculator';
+import {InvertibleCounterpointService} from '../services/invertible-counterpoint.service';
+import {SuspensionTreatmentEnum} from '../models/SuspensionTreatmentEnum';
+import {InvertedIntervals, InvertedIntervalsDetailed} from '../models/InvertedIntervals';
+import {ThreeVoiceGivenJvIndexValuesCalculator} from '../services/ThreeVoiceGivenJvIndexCalculator';
 
 type Cell = {
   index: number;
@@ -44,19 +44,21 @@ export class CounterpointUiComponent {
   _activeTab: 'two' | 'three' = 'two';
   _indices = [0, 1, 2, 3, 4, 5, 6, 7];
 
-    _jvInput = 0;
+  _jvInput = 0;
   _invertedIntervals: InvertedIntervals = EMPTY();
   _detailed!: InvertedIntervalsDetailed;
   _cells: CellsMap = {};
-    _jvPrimeInput = 0;          _jvDoublePrimeInput = 0;    _jvSigmaView = 0;
-    _threeRows: [InvertedIntervals, InvertedIntervals, InvertedIntervals] = [EMPTY(), EMPTY(), EMPTY()];
+  _jvPrimeInput = 0;
+  _jvDoublePrimeInput = 0;
+  _jvSigmaView = 0;
+  _threeRows: [InvertedIntervals, InvertedIntervals, InvertedIntervals] = [EMPTY(), EMPTY(), EMPTY()];
 
-    _threeRowsCells: CellsRowTuple = [{}, {}, {}];
+  _threeRowsCells: CellsRowTuple = [{}, {}, {}];
 
-    private threeCalc = new ThreeVoiceGivenJvIndexValuesCalculator();
+  private threeCalc = new ThreeVoiceGivenJvIndexValuesCalculator();
 
   constructor(private cp: InvertibleCounterpointService) {
-        const saved = localStorage.getItem('theme');
+    const saved = localStorage.getItem('theme');
     this._dark = saved ? saved === 'dark'
       : (typeof window !== 'undefined'
         && window.matchMedia
@@ -65,11 +67,15 @@ export class CounterpointUiComponent {
     this.recomputeTwoVoice();
     this.recomputeThreeVoice();
   }
+
   toggleDark() {
     this._dark = !this._dark;
     localStorage.setItem('theme', this._dark ? 'dark' : 'light');
   }
-    OnJvInput() { this.recomputeTwoVoice(); }
+
+  OnJvInput() {
+    this.recomputeTwoVoice();
+  }
 
   private recomputeTwoVoice() {
     this._invertedIntervals = this.cp.compute(this._jvInput);
@@ -103,16 +109,18 @@ export class CounterpointUiComponent {
     return 'cell';
   }
 
-    onThreeVoiceInput() { this.recomputeThreeVoice(); }
+  onThreeVoiceInput() {
+    this.recomputeThreeVoice();
+  }
 
   private recomputeThreeVoice() {
     const sigma = this._jvPrimeInput + this._jvDoublePrimeInput;
     this._jvSigmaView = sigma;
 
-        const rows = this.threeCalc.calculate(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
-        this._threeRows = [rows[0] ?? EMPTY(), rows[1] ?? EMPTY(), rows[2] ?? EMPTY()];
+    const rows = this.threeCalc.calculate(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
+    this._threeRows = [rows[0] ?? EMPTY(), rows[1] ?? EMPTY(), rows[2] ?? EMPTY()];
 
-        const detailedRows = this.threeCalc.calculateDetailed(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
+    const detailedRows = this.threeCalc.calculateDetailed(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
     this._threeRowsCells = [
       this.buildCellsMap(detailedRows[0]),
       this.buildCellsMap(detailedRows[1]),
@@ -143,7 +151,6 @@ export class CounterpointUiComponent {
     return cells;
   }
 
-  /** Row-aware class getter */
   getThreeRowClassForIndex(row: number, i: number): string {
     const r = this._threeRows[row];
     if (!r) return 'cell';
@@ -154,19 +161,27 @@ export class CounterpointUiComponent {
     return 'cell';
   }
 
-    private glyphFor(t: SuspensionTreatmentEnum): string {
+  private glyphFor(t: SuspensionTreatmentEnum): string {
     switch (t) {
-      case SuspensionTreatmentEnum.CannotFormSuspension: return '(-)';
-      case SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension: return '-';
-      case SuspensionTreatmentEnum.NoteOfResolutionIsDissonant: return 'x';
-      case SuspensionTreatmentEnum.NoteOfResolutionIsFree: return '---';
-      case SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspensionAndNoteOfResolutionIsDissonant: return '-x';
-      default: return '';
+      case SuspensionTreatmentEnum.CannotFormSuspension:
+        return '(-)';
+      case SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension:
+        return '-';
+      case SuspensionTreatmentEnum.NoteOfResolutionIsDissonant:
+        return 'x';
+      case SuspensionTreatmentEnum.NoteOfResolutionIsFree:
+        return '---';
+      case SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspensionAndNoteOfResolutionIsDissonant:
+        return '-x';
+      default:
+        return '';
     }
   }
+
   private glyphExtraClass(t: SuspensionTreatmentEnum): string {
     return t === SuspensionTreatmentEnum.NoteOfResolutionIsDissonant ? 'xsmall' : '';
   }
+
   private fullName(t: SuspensionTreatmentEnum, voice: 'Upper' | 'Lower'): string {
     const base =
       t === SuspensionTreatmentEnum.CannotFormSuspension ? 'Cannot form a suspension' :
