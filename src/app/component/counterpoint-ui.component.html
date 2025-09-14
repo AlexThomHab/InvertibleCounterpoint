@@ -1,5 +1,31 @@
 <div class="cp-wrapper" [class.dark]="_dark">
   <mat-card class="cp-card" [ngSwitch]="_activeTab">
+    <!-- Concise intro -->
+    <p class="subtitle" style="margin-top:6px">
+      This tool applies Sergei Taneyev’s vertical shifting (invertible) counterpoint. Enter JV indices to see
+      how intervals behave after inversion in 2- and 3-voice textures.
+    </p>
+
+    <!-- Clickable info (short) -->
+    <details class="info" style="margin-bottom:12px;">
+      <summary class="info-summary" aria-label="Open information panel">
+        ℹ️ What it does • Use • Notes
+      </summary>
+      <div class="info-body">
+        <p><strong>What:</strong> Shows interval classes as Fixed/Variable Consonance or Dissonance before/after inversion.
+          In 3-voice mode, enter <code>JV′</code> (I↔II) and <code>JV″</code> (II↔III); the app derives <code>JVΣ</code> (I↔III).</p>
+
+        <p><strong>Use:</strong>
+          1) 2-voice: set <code>JV</code> and read the grid (amber dot = imperfect → perfect).
+          2) 3-voice: set <code>JV′</code>, <code>JV″</code> to compare I↔II, II↔III, I↔III.</p>
+
+        <p><strong>Why:</strong> Plan themes/textures that survive voice swaps; spot safe (fixed) vs context-dependent (variable) intervals.</p>
+
+        <p><strong>Notes:</strong> Focuses on vertical behaviour; it doesn’t auto-enforce rhythmic species rules. Treat as a compositional aid.</p>
+
+        <p style="margin-top:8px; font-size:.9rem; opacity:.9;">Author: Alex H • Feedback welcome.</p>
+      </div>
+    </details>
 
     <div class="card-top">
       <h1 class="title">
