@@ -122,18 +122,18 @@ export class InvertibleCounterpointService {
     for (let i = 0; i < N; i++) {
       const remainder = (i + jvIndex) % 7;
       const targetIndex = Math.abs(remainder);
-      const base = this._intervals[i];
+      const jv0Interval = this._intervals[i];
       const targ = this._intervals[targetIndex];
 
-      const bothConsonant = base.isConsonant && targ.isConsonant;
-      const bothDissonant = !base.isConsonant && !targ.isConsonant;
-      const consToDiss   = base.isConsonant && !targ.isConsonant;
+      const bothConsonant = jv0Interval.isConsonant && targ.isConsonant;
+      const bothDissonant = !jv0Interval.isConsonant && !targ.isConsonant;
+      const consToDiss   = jv0Interval.isConsonant && !targ.isConsonant;
 
       const shiftedIndexAbs = Math.abs(jvIndex + i);
       const compareIndex = shiftedIndexAbs % 7;
       const isLargeShift = shiftedIndexAbs > 7;
 
-      const compare = jvIndex < 0
+      const targetInterval = jvIndex < 0
         ? this._intervalsInverted[compareIndex]
         : this._intervals[compareIndex];
 
@@ -166,30 +166,32 @@ export class InvertibleCounterpointService {
       };
 
       if (bothConsonant) {
-        const merged = mergeSuspensions(base, compare, jvIndex >= 0);
+        const merged = mergeSuspensions(jv0Interval, targetInterval, jvIndex >= 0);
 
         merged.imperfectBecomesPerfect =
-          InvertibleCounterpointService.IMPERFECT.has(base.index) &&
-          InvertibleCounterpointService.PERFECT.has(Math.abs(compare.semitones));
+          InvertibleCounterpointService.IMPERFECT.has(jv0Interval.index) &&
+          InvertibleCounterpointService.PERFECT.has(Math.abs(targetInterval.semitones));
 
         out.fixedConsonances.push(merged);
         continue;
       }
 
       if (bothDissonant) {
-        const merged = mergeSuspensions(base, compare, jvIndex >= 0);
+        const merged = mergeSuspensions(jv0Interval, targetInterval, jvIndex >= 0);
+        merged.becomesAFourth = targetInterval.name == "Fourth" && jvIndex != 0;
         out.fixedDissonances.push(merged);
         continue;
       }
 
       if (consToDiss) {
-        const merged = mergeSuspensions(base, compare, jvIndex >= 0);
+        const merged = mergeSuspensions(jv0Interval, targetInterval, jvIndex >= 0);
+        merged.becomesAFourth = targetInterval.name == "Fourth";
         out.variableConsonances.push(merged);
         continue;
       }
 
       {
-        const merged = mergeSuspensions(base, compare, jvIndex >= 0);
+        const merged = mergeSuspensions(jv0Interval, targetInterval, jvIndex >= 0);
         out.variableDissonances.push(merged);
       }
     }

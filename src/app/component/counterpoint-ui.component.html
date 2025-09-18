@@ -10,16 +10,20 @@
         ℹ️ What it does • Use • Notes
       </summary>
       <div class="info-body">
-        <p><strong>What:</strong> Shows interval classes as Fixed/Variable Consonance or Dissonance before/after inversion.
-          In 3-voice mode, enter <code>JV′</code> (I↔II) and <code>JV″</code> (II↔III); the app derives <code>JVΣ</code> (I↔III).</p>
+        <p><strong>What:</strong> Shows interval classes as Fixed/Variable Consonance or Dissonance before/after
+          inversion.
+          In 3-voice mode, enter <code>JV′</code> (I↔II) and <code>JV″</code> (II↔III); the app derives <code>JVΣ</code>
+          (I↔III).</p>
 
         <p><strong>Use:</strong>
           1) 2-voice: set <code>JV</code> and read the grid (amber dot = imperfect → perfect).
           2) 3-voice: set <code>JV′</code>, <code>JV″</code> to compare I↔II, II↔III, I↔III.</p>
 
-        <p><strong>Why:</strong> Plan themes/textures that survive voice swaps; spot safe (fixed) vs context-dependent (variable) intervals.</p>
+        <p><strong>Why:</strong> Plan themes/textures that survive voice swaps; spot safe (fixed) vs context-dependent
+          (variable) intervals.</p>
 
-        <p><strong>Notes:</strong> Focuses on vertical behaviour; it doesn’t auto-enforce rhythmic species rules. Treat as a compositional aid.</p>
+        <p><strong>Notes:</strong> Focuses on vertical behaviour; it doesn’t auto-enforce rhythmic species rules. Treat
+          as a compositional aid.</p>
 
         <p style="margin-top:8px; font-size:.9rem; opacity:.9;">Author: Alex H • Feedback welcome.</p>
       </div>
@@ -111,6 +115,11 @@
             class="ip-flag"
             [matTooltip]="'Imperfect consonance becomes perfect after JV'">
           </span>
+          <span
+            *ngIf="_cells[i]?.becomesAFourth"
+            class="isAFourth-flag"
+            [matTooltip]="'This interval transforms to a 4th hence be cautious if it appears in the lower voice'">
+          4</span>
         </div>
       </div>
 

@@ -7,16 +7,16 @@ export class ThreeVoiceGivenJvIndexValuesCalculator {
   ) {}
 
   calculate(jvPrime: number, jvDoublePrime: number, jvSigma: number): InvertedIntervals[] {
-    const v12 = this.twoVoiceCalc.compute(jvPrime);
-    const v23 = this.twoVoiceCalc.compute(jvDoublePrime);
-    const v13 = this.twoVoiceCalc.compute(jvSigma);
-    return [v12, v23, v13];
+    const firstAndSecondVoice = this.twoVoiceCalc.compute(jvPrime);
+    const secondAndThirdVoice = this.twoVoiceCalc.compute(jvDoublePrime);
+    const firstAndThirdVoice = this.twoVoiceCalc.compute(jvSigma);
+    return [firstAndSecondVoice, secondAndThirdVoice, firstAndThirdVoice];
   }
 
   calculateDetailed(jvPrime: number, jvDoublePrime: number, jvSigma: number): InvertedIntervalsDetailed[] {
-    const v12 = this.twoVoiceCalc.computeDetailed(jvPrime);
-    const v23 = this.twoVoiceCalc.computeDetailed(jvDoublePrime);
-    const v13 = this.twoVoiceCalc.computeDetailed(jvSigma);
-    return [v12, v23, v13];
+    const firstAndSecondVoice = this.twoVoiceCalc.computeDetailed(jvPrime);
+    const secondAndThirdVoice = this.twoVoiceCalc.computeDetailed(jvDoublePrime);
+    const firstAndThirdVoice = this.twoVoiceCalc.computeDetailed(jvSigma);
+    return [firstAndSecondVoice, secondAndThirdVoice, firstAndThirdVoice];
   }
 }

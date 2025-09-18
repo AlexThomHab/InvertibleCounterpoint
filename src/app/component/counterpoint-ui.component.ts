@@ -17,7 +17,8 @@ type Cell = {
   bottomTitle: string;
   topClass?: string;
   bottomClass?: string;
-  upgrade?: boolean
+  upgrade?: boolean;
+  becomesAFourth?: boolean;
 };
 
 type CellsMap = Partial<Record<number, Cell>>;
@@ -98,7 +99,8 @@ export class CounterpointUiComponent {
         bottomTitle: this.fullName(it.lowerSuspensionTreatment, 'Lower'),
         topClass: this.glyphExtraClass(it.upperSuspensionTreatment),
         bottomClass: this.glyphExtraClass(it.lowerSuspensionTreatment),
-        upgrade: !!it.imperfectBecomesPerfect
+        upgrade: it.imperfectBecomesPerfect,
+        becomesAFourth: it.becomesAFourth,
       };
     }
   }
@@ -124,13 +126,13 @@ export class CounterpointUiComponent {
 
     const detailedRows = this.threeCalc.calculateDetailed(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
     this._threeRowsCells = [
-      this.buildCellsMap(detailedRows[0]),
-      this.buildCellsMap(detailedRows[1]),
-      this.buildCellsMap(detailedRows[2]),
+      this.buildGridMap(detailedRows[0]),
+      this.buildGridMap(detailedRows[1]),
+      this.buildGridMap(detailedRows[2]),
     ];
   }
 
-  private buildCellsMap(det?: InvertedIntervalsDetailed): CellsMap {
+  private buildGridMap(det?: InvertedIntervalsDetailed): CellsMap {
     const cells: CellsMap = {};
     if (!det) return cells;
     const all = [
@@ -139,16 +141,16 @@ export class CounterpointUiComponent {
       ...det.variableConsonances,
       ...det.variableDissonances,
     ];
-    for (const it of all) {
-      cells[it.index] = {
-        index: it.index,
-        topGlyph: this.glyphFor(it.upperSuspensionTreatment),
-        bottomGlyph: this.glyphFor(it.lowerSuspensionTreatment),
-        topTitle: this.fullName(it.upperSuspensionTreatment, 'Upper'),
-        bottomTitle: this.fullName(it.lowerSuspensionTreatment, 'Lower'),
-        topClass: this.glyphExtraClass(it.upperSuspensionTreatment),
-        bottomClass: this.glyphExtraClass(it.lowerSuspensionTreatment),
-        upgrade: !!it.imperfectBecomesPerfect,
+    for (const interval of all) {
+      cells[interval.index] = {
+        index: interval.index,
+        topGlyph: this.glyphFor(interval.upperSuspensionTreatment),
+        bottomGlyph: this.glyphFor(interval.lowerSuspensionTreatment),
+        topTitle: this.fullName(interval.upperSuspensionTreatment, 'Upper'),
+        bottomTitle: this.fullName(interval.lowerSuspensionTreatment, 'Lower'),
+        topClass: this.glyphExtraClass(interval.upperSuspensionTreatment),
+        bottomClass: this.glyphExtraClass(interval.lowerSuspensionTreatment),
+        upgrade: !!interval.imperfectBecomesPerfect,
       };
     }
     return cells;

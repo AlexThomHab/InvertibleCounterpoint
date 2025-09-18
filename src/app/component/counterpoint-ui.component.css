@@ -580,6 +580,23 @@ html, body { height: 100%; }
   background: #f59e0b;              /* amber */
   box-shadow: 0 0 0 2px #ffffff;     /* halo so it’s readable on blue/red boxes */
 }
+.isAFourth-flag {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 0.9rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.8rem;
+  height: 0.8rem;
+  border: 1px solid currentColor;
+  border-radius: 999px; /* circle */
+  padding: 0;
+  user-select: none;
+}
 
 /* dark mode halo */
 .cp-wrapper.dark .ip-flag {
