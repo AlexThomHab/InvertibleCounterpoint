@@ -4,38 +4,38 @@ import { SuspensionTreatmentEnum } from '../models/SuspensionTreatmentEnum';
 import { InvertedIntervalsDetailed } from '../models/InvertedIntervals';
 import { IntervalWithSuspensions } from '../models/Interval';
 
-function collectAll(d: InvertedIntervalsDetailed): IntervalWithSuspensions[] {
+function collectAll(invertedIntervalsDetailed: InvertedIntervalsDetailed): IntervalWithSuspensions[] {
   return [
-    ...d.fixedConsonances,
-    ...d.fixedDissonances,
-    ...d.variableConsonances,
-    ...d.variableDissonances,
+    ...invertedIntervalsDetailed.fixedConsonances,
+    ...invertedIntervalsDetailed.fixedDissonances,
+    ...invertedIntervalsDetailed.variableConsonances,
+    ...invertedIntervalsDetailed.variableDissonances,
   ];
 }
 
-function byUpper(d: IntervalWithSuspensions[], t: SuspensionTreatmentEnum): number[] {
-  return d.filter(x => x.upperSuspensionTreatment === t).map(x => x.index).sort((a, b) => a - b);
+function byUpper(intervalsWithSuspensions: IntervalWithSuspensions[], suspensionTreatmentEnum: SuspensionTreatmentEnum): number[] {
+  return intervalsWithSuspensions.filter(x => x.upperSuspensionTreatment === suspensionTreatmentEnum).map(x => x.index).sort((a, b) => a - b);
 }
 
-function byLower(d: IntervalWithSuspensions[], t: SuspensionTreatmentEnum): number[] {
-  return d.filter(x => x.lowerSuspensionTreatment === t).map(x => x.index).sort((a, b) => a - b);
+function byLower(intervalsWithSuspensions: IntervalWithSuspensions[], suspensionTreatmentEnum: SuspensionTreatmentEnum): number[] {
+  return intervalsWithSuspensions.filter(x => x.lowerSuspensionTreatment === suspensionTreatmentEnum).map(x => x.index).sort((a, b) => a - b);
 }
 
 describe('Suspension treatment parity with C#', () => {
-  let svc: InvertibleCounterpointService;
+  let invertibleCounterpointService: InvertibleCounterpointService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [InvertibleCounterpointService],
     });
-    svc = TestBed.inject(InvertibleCounterpointService);
+    invertibleCounterpointService = TestBed.inject(InvertibleCounterpointService);
   });
 
   describe('Given JV index is 0', () => {
     let all: IntervalWithSuspensions[];
 
     beforeEach(() => {
-      const res = svc.computeDetailed(0);
+      const res = invertibleCounterpointService.computeDetailed(0);
       all = collectAll(res);
     });
 
@@ -64,7 +64,7 @@ describe('Suspension treatment parity with C#', () => {
     let all: IntervalWithSuspensions[];
 
     beforeEach(() => {
-      const res = svc.computeDetailed(5);
+      const res = invertibleCounterpointService.computeDetailed(5);
       all = collectAll(res);
     });
 
@@ -97,7 +97,7 @@ describe('Suspension treatment parity with C#', () => {
     let all: IntervalWithSuspensions[];
 
     beforeEach(() => {
-      const res = svc.computeDetailed(-11);
+      const res = invertibleCounterpointService.computeDetailed(-11);
       all = collectAll(res);
     });
 
