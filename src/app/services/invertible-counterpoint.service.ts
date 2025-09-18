@@ -85,30 +85,6 @@ export class InvertibleCounterpointService {
       lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant },
   };
 
-  public compute(jvIndex: number): InvertedIntervals {
-    const out: InvertedIntervals = {
-      fixedConsonances: [],
-      fixedDissonances: [],
-      variableConsonances: [],
-      variableDissonances: [],
-    };
-
-    for (let i = 0; i <= 7; i++) {
-      const remainder = (i + jvIndex) % 7;
-      const targetIndex = Math.abs(remainder);
-
-      const selectedInterval = this._intervals[i].isConsonant;
-      const targetInterval = this._intervals[targetIndex].isConsonant;
-
-      if (selectedInterval && targetInterval) out.fixedConsonances.push(i);
-      else if (!selectedInterval && !targetInterval) out.fixedDissonances.push(i);
-      else if (selectedInterval && !targetInterval) out.variableConsonances.push(i);
-      else out.variableDissonances.push(i);
-    }
-
-    return out;
-  }
-
   public computeDetailed(jvIndex: number): InvertedIntervalsDetailed {
     const out: InvertedIntervalsDetailed = {
       fixedConsonances: [],

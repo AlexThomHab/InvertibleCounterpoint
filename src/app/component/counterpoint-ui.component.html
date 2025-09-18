@@ -124,10 +124,10 @@
       </div>
 
       <div class="buckets">
-        <div><strong>Fixed Consonances:</strong> {{ _invertedIntervals.fixedConsonances.join(', ') }}</div>
-        <div><strong>Fixed Dissonances:</strong> {{ _invertedIntervals.fixedDissonances.join(', ') }}</div>
-        <div><strong>Variable Consonances:</strong> {{ _invertedIntervals.variableConsonances.join(', ') }}</div>
-        <div><strong>Variable Dissonances:</strong> {{ _invertedIntervals.variableDissonances.join(', ') }}</div>
+        <div><strong>Fixed Consonances:</strong> {{ toIndexList(_invertedIntervals.fixedConsonances) }}</div>
+        <div><strong>Fixed Dissonances:</strong> {{ toIndexList(_invertedIntervals.fixedDissonances) }}</div>
+        <div><strong>Variable Consonances:</strong> {{ toIndexList(_invertedIntervals.variableConsonances) }}</div>
+        <div><strong>Variable Dissonances:</strong> {{ toIndexList(_invertedIntervals.variableDissonances) }}</div>
       </div>
     </ng-container>
 
@@ -186,15 +186,19 @@
             class="ip-flag"
             [matTooltip]="'Imperfect consonance becomes perfect after JV'">
           </span>
+          <span
+            *ngIf="_threeRowsCells[0]?.[i]?.becomesAFourth"
+            class="isAFourth-flag"
+            [matTooltip]="'This interval transforms to a 4th hence be cautious if it appears in the lower voice'">
+          4</span>
         </div>
       </div>
       <div class="buckets">
-        <div><strong>Fixed Consonances:</strong> {{ _threeRows[0].fixedConsonances.join(', ') }}</div>
-        <div><strong>Fixed Dissonances:</strong> {{ _threeRows[0].fixedDissonances.join(', ') }}</div>
-        <div><strong>Variable Consonances:</strong> {{ _threeRows[0].variableConsonances.join(', ') }}</div>
-        <div><strong>Variable Dissonances:</strong> {{ _threeRows[0].variableDissonances.join(', ') }}</div>
+        <div><strong>Fixed Consonances:</strong> {{ toIndexList(_threeRows[0].fixedConsonances) }}</div>
+        <div><strong>Fixed Dissonances:</strong> {{ toIndexList(_threeRows[0].fixedDissonances) }}</div>
+        <div><strong>Variable Consonances:</strong> {{ toIndexList(_threeRows[0].variableConsonances) }}</div>
+        <div><strong>Variable Dissonances:</strong> {{ toIndexList(_threeRows[0].variableDissonances) }}</div>
       </div>
-
       <hr>
 
       <h3>II ↔ III (JV″ = {{ _jvDoublePrimeInput }})</h3>
@@ -229,13 +233,18 @@
             class="ip-flag"
             [matTooltip]="'Imperfect consonance becomes perfect after JV'">
           </span>
+          <span
+            *ngIf="_threeRowsCells[1]?.[i]?.becomesAFourth"
+            class="isAFourth-flag"
+            [matTooltip]="'This interval transforms to a 4th hence be cautious if it appears in the lower voice'">
+          4</span>
         </div>
       </div>
       <div class="buckets">
-        <div><strong>Fixed Consonances:</strong> {{ _threeRows[1].fixedConsonances.join(', ') }}</div>
-        <div><strong>Fixed Dissonances:</strong> {{ _threeRows[1].fixedDissonances.join(', ') }}</div>
-        <div><strong>Variable Consonances:</strong> {{ _threeRows[1].variableConsonances.join(', ') }}</div>
-        <div><strong>Variable Dissonances:</strong> {{ _threeRows[1].variableDissonances.join(', ') }}</div>
+        <div><strong>Fixed Consonances:</strong> {{ toIndexList(_threeRows[1].fixedConsonances) }}</div>
+        <div><strong>Fixed Dissonances:</strong> {{ toIndexList(_threeRows[1].fixedDissonances) }}</div>
+        <div><strong>Variable Consonances:</strong> {{ toIndexList(_threeRows[1].variableConsonances) }}</div>
+        <div><strong>Variable Dissonances:</strong> {{ toIndexList(_threeRows[1].variableDissonances) }}</div>
       </div>
 
       <hr>
@@ -272,13 +281,19 @@
             class="ip-flag"
             [matTooltip]="'Imperfect consonance becomes perfect after JV'">
           </span>
+          <span
+            *ngIf="_threeRowsCells[2]?.[i]?.becomesAFourth"
+            class="isAFourth-flag"
+            [matTooltip]="'This interval transforms to a 4th hence be cautious if it appears in the lower voice'">
+          4</span>
+
         </div>
       </div>
       <div class="buckets">
-        <div><strong>Fixed Consonances:</strong> {{ _threeRows[2].fixedConsonances.join(', ') }}</div>
-        <div><strong>Fixed Dissonances:</strong> {{ _threeRows[2].fixedDissonances.join(', ') }}</div>
-        <div><strong>Variable Consonances:</strong> {{ _threeRows[2].variableConsonances.join(', ') }}</div>
-        <div><strong>Variable Dissonances:</strong> {{ _threeRows[2].variableDissonances.join(', ') }}</div>
+        <div><strong>Fixed Consonances:</strong> {{ toIndexList(_threeRows[2].fixedConsonances) }}</div>
+        <div><strong>Fixed Dissonances:</strong> {{ toIndexList(_threeRows[2].fixedDissonances) }}</div>
+        <div><strong>Variable Consonances:</strong> {{ toIndexList(_threeRows[2].variableConsonances) }}</div>
+        <div><strong>Variable Dissonances:</strong> {{ toIndexList(_threeRows[2].variableDissonances) }}</div>
       </div>
     </ng-container>
 
