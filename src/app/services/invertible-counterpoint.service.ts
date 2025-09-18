@@ -23,18 +23,12 @@ export class InvertibleCounterpointService {
     originalIntervalSuspension: SuspensionTreatmentEnum,
     newIntervalSuspension: SuspensionTreatmentEnum
   ): SuspensionTreatmentEnum {
-    const o = originalIntervalSuspension;
-    const n = newIntervalSuspension;
 
-    const A = SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension;
-    const B = SuspensionTreatmentEnum.NoteOfResolutionIsDissonant;
-    const AB = SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspensionAndNoteOfResolutionIsDissonant;
-
-    if ((o === A && n === B) || (o === B && n === A)) {
-      return AB;
+    if ((originalIntervalSuspension === SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension && newIntervalSuspension === SuspensionTreatmentEnum.NoteOfResolutionIsDissonant) || (originalIntervalSuspension === SuspensionTreatmentEnum.NoteOfResolutionIsDissonant && newIntervalSuspension === SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension)) {
+      return SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspensionAndNoteOfResolutionIsDissonant;
     }
 
-    return (o as number) < (n as number) ? o : n;
+    return (originalIntervalSuspension as number) < (newIntervalSuspension as number) ? originalIntervalSuspension : newIntervalSuspension;
   }
 
   private readonly _intervals: Record<number, IntervalWithSuspensions> = {
@@ -103,12 +97,12 @@ export class InvertibleCounterpointService {
       const remainder = (i + jvIndex) % 7;
       const targetIndex = Math.abs(remainder);
 
-      const a = this._intervals[i].isConsonant;
-      const b = this._intervals[targetIndex].isConsonant;
+      const selectedInterval = this._intervals[i].isConsonant;
+      const targetInterval = this._intervals[targetIndex].isConsonant;
 
-      if (a && b) out.fixedConsonances.push(i);
-      else if (!a && !b) out.fixedDissonances.push(i);
-      else if (a && !b) out.variableConsonances.push(i);
+      if (selectedInterval && targetInterval) out.fixedConsonances.push(i);
+      else if (!selectedInterval && !targetInterval) out.fixedDissonances.push(i);
+      else if (selectedInterval && !targetInterval) out.variableConsonances.push(i);
       else out.variableDissonances.push(i);
     }
 
@@ -134,7 +128,6 @@ export class InvertibleCounterpointService {
       const bothConsonant = base.isConsonant && targ.isConsonant;
       const bothDissonant = !base.isConsonant && !targ.isConsonant;
       const consToDiss   = base.isConsonant && !targ.isConsonant;
-      // const dissToCons = ...
 
       const shiftedIndexAbs = Math.abs(jvIndex + i);
       const compareIndex = shiftedIndexAbs % 7;
@@ -145,38 +138,36 @@ export class InvertibleCounterpointService {
         : this._intervals[compareIndex];
 
       const mergeSuspensions = (
-        baseInt: IntervalWithSuspensions,
-        compareInt: IntervalWithSuspensions,
+        jv0IntervalToCopy: IntervalWithSuspensions,
+        targetIndexIntervalToCopy: IntervalWithSuspensions,
         tweakSecondOnUpper: boolean
       ): IntervalWithSuspensions => {
-        const a = InvertibleCounterpointService.copyInterval(baseInt);
-        const b = InvertibleCounterpointService.copyInterval(compareInt);
+        const jv0Interval = InvertibleCounterpointService.copyInterval(jv0IntervalToCopy);
+        const targetInterval = InvertibleCounterpointService.copyInterval(targetIndexIntervalToCopy);
 
-        if (isLargeShift && b.name === 'Second') {
+        if (isLargeShift && targetInterval.name === 'Second') {
           if (tweakSecondOnUpper) {
-            b.upperSuspensionTreatment = SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension;
+            targetInterval.upperSuspensionTreatment = SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension;
           } else {
-            b.lowerSuspensionTreatment = SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension;
+            targetInterval.lowerSuspensionTreatment = SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension;
           }
         }
 
-        a.upperSuspensionTreatment =
+        jv0Interval.upperSuspensionTreatment =
           InvertibleCounterpointService.strictMostSuspensionTreatmentEnum(
-            a.upperSuspensionTreatment, b.upperSuspensionTreatment
+            jv0Interval.upperSuspensionTreatment, targetInterval.upperSuspensionTreatment
           );
-        a.lowerSuspensionTreatment =
+        jv0Interval.lowerSuspensionTreatment =
           InvertibleCounterpointService.strictMostSuspensionTreatmentEnum(
-            a.lowerSuspensionTreatment, b.lowerSuspensionTreatment
+            jv0Interval.lowerSuspensionTreatment, targetInterval.lowerSuspensionTreatment
           );
 
-        return a;
+        return jv0Interval;
       };
 
       if (bothConsonant) {
         const merged = mergeSuspensions(base, compare, jvIndex >= 0);
 
-        // NEW: flag when imperfect (2,5) → perfect (0,4,7).
-        // For negative JV we look at |compare.semitones|.
         merged.imperfectBecomesPerfect =
           InvertibleCounterpointService.IMPERFECT.has(base.index) &&
           InvertibleCounterpointService.PERFECT.has(Math.abs(compare.semitones));
