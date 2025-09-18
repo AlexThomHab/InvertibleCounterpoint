@@ -93,7 +93,7 @@ export class InvertibleCounterpointService {
       variableDissonances: [],
     };
 
-    for (let i = 0; i < InvertibleCounterpointService.N; i++) {
+    for (let i = 0; i <= 7; i++) {
       const remainder = (i + jvIndex) % 7;
       const targetIndex = Math.abs(remainder);
 
