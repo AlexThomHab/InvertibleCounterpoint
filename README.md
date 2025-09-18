@@ -65,7 +65,6 @@ This way, you can study how **interval relations across three voices** behave af
 ## 🛠️ Development
 Built with:
 - **Angular** (frontend UI)
-- **Spring Boot / Java** (backend services for interval logic)
 
 ---
 
