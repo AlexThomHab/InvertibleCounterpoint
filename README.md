@@ -1,59 +1,73 @@
-# InvertibleCounterpoint
+# 🎼 Taneyev's Vertical Shifting Counterpoint Tool
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.2.
+This interactive web tool applies Sergei Taneyev’s concept of **vertical shifting (invertible) counterpoint**.  
+By entering inversion indices (JV values), you can see how musical intervals behave after inversion in both **2-voice** and **3-voice** textures.
 
-## Development server
+👉 Try it out to explore which intervals stay consonant/dissonant, and which switch category after inversion.
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
-```
+## 🚀 Features
+- Explore **2-voice** and **3-voice** counterpoint inversion.
+- Visual grid showing **Fixed Consonances, Fixed Dissonances, Variable Consonances, Variable Dissonances**.
+- Works with any JV index (positive or negative).
+- Dark and Light modes for easy reading.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## 📖 How to Use
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### 🔹 2-Voice Counterpoint
 
-```bash
-ng generate component component-name
-```
+In 2-voice mode, enter a **JV (inversion index)** to see how intervals behave after inversion.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- **Fixed Consonances** (blue) – intervals that always remain consonant.
+- **Fixed Dissonances** (red) – intervals that always remain dissonant.
+- **Variable Consonances** (green) – intervals that may change.
+- **Variable Dissonances** (purple) – intervals that may change.
 
-```bash
-ng generate --help
-```
+Example (JV = 0):  
+![2-voice JV=0](./images/2voice-jv0.png)
 
-## Building
+Example (JV = –2):  
+![2-voice JV=-2](./images/2voice-jv-2.png)
 
-To build the project run:
+At the bottom, the tool also lists which intervals fall into each category.
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### 🔹 3-Voice Counterpoint
 
-## Running unit tests
+In 3-voice mode, you enter **two JV values (JV′ and JV″)**.  
+A third value (JVΣ) is automatically computed as the sum of the first two.  
+The tool then shows three separate **2-voice comparisons**:
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+- I ⇔ II (JV′)
+- II ⇔ III (JV″)
+- I ⇔ III (JVΣ)
 
-```bash
-ng test
-```
+Each comparison displays the same consonance/dissonance categories as in 2-voice mode.
 
-## Running end-to-end tests
+Example (JV′ = 4, JV″ = –2):  
+![3-voice example](./images/3voice-example.png)
 
-For end-to-end (e2e) testing, run:
+This way, you can study how **interval relations across three voices** behave after inversion.
 
-```bash
-ng e2e
-```
+---
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## 📌 Notes
+- This tool is meant for **theoretical study and teaching** of Taneyev’s counterpoint system.
+- It doesn’t generate music, but instead provides a **visual framework** for interval transformations.
+- Great for exploring how consonance/dissonance balance shifts in multi-voice textures.
 
-## Additional Resources
+---
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 🛠️ Development
+Built with:
+- **Angular** (frontend UI)
+- **Spring Boot / Java** (backend services for interval logic)
+
+---
+
+## 📜 License
+MIT License
