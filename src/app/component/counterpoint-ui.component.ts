@@ -48,10 +48,8 @@ export class CounterpointUiComponent {
   _dark = false;
   _activeTab: 'two' | 'three' = 'two';
   _indices = [0, 1, 2, 3, 4, 5, 6, 7];
-
   _jvInput = 0;
-  _invertedIntervals: InvertedIntervalsDetailed = emptyDetailed();
-  _detailed!: InvertedIntervalsDetailed;
+  _intervals: InvertedIntervalsDetailed = emptyDetailed();
   _cells: CellsMap = {};
   _jvPrimeInput = 0;
   _jvDoublePrimeInput = 0;
@@ -90,15 +88,15 @@ export class CounterpointUiComponent {
   }
 
   private recomputeTwoVoice() {
-    this._invertedIntervals = this.cp.computeDetailed(this._jvInput);
-    this._detailed = this.cp.computeDetailed(this._jvInput);
+    this._intervals = this.cp.computeDetailed(this._jvInput);
+    this._intervals = this.cp.computeDetailed(this._jvInput);
 
     this._cells = {};
     const all = [
-      ...this._detailed.fixedConsonances,
-      ...this._detailed.fixedDissonances,
-      ...this._detailed.variableConsonances,
-      ...this._detailed.variableDissonances,
+      ...this._intervals.fixedConsonances,
+      ...this._intervals.fixedDissonances,
+      ...this._intervals.variableConsonances,
+      ...this._intervals.variableDissonances,
     ];
     for (const it of all) {
       this._cells[it.index] = {
@@ -116,10 +114,10 @@ export class CounterpointUiComponent {
   }
 
   getClassForIndex(i: number): string {
-    if (this._invertedIntervals.fixedConsonances.some(x => x.index === i)) return 'cell fixedConsonant';
-    if (this._invertedIntervals.fixedDissonances.some(x => x.index === i)) return 'cell fixedDissonant';
-    if (this._invertedIntervals.variableConsonances.some(x => x.index === i)) return 'cell variableConsonant';
-    if (this._invertedIntervals.variableDissonances.some(x => x.index === i)) return 'cell variableDissonant';
+    if (this._intervals.fixedConsonances.some(x => x.index === i)) return 'cell fixedConsonant';
+    if (this._intervals.fixedDissonances.some(x => x.index === i)) return 'cell fixedDissonant';
+    if (this._intervals.variableConsonances.some(x => x.index === i)) return 'cell variableConsonant';
+    if (this._intervals.variableDissonances.some(x => x.index === i)) return 'cell variableDissonant';
     return 'cell';
   }
 
