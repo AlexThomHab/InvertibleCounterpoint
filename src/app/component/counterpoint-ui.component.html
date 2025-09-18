@@ -1,12 +1,10 @@
 <div class="cp-wrapper" [class.dark]="_dark">
   <mat-card class="cp-card" [ngSwitch]="_activeTab">
-    <!-- Concise intro -->
     <p class="subtitle" style="margin-top:6px">
       This tool applies Sergei Taneyev’s vertical shifting (invertible) counterpoint. Enter JV indices to see
       how intervals behave after inversion in 2- and 3-voice textures.
     </p>
 
-    <!-- Clickable info (short) -->
     <details class="info" style="margin-bottom:12px;">
       <summary class="info-summary" aria-label="Open information panel">
         ℹ️ What it does • Use • Notes
@@ -39,7 +37,7 @@
       <button
         type="button"
         class="theme-toggle"
-        (click)="toggleDark"
+        (click)="toggleDark()"
         [attr.aria-pressed]="_dark"
         [matTooltip]="_dark ? 'Switch to light mode' : 'Switch to dark mode'">
         <span aria-hidden="true">{{ _dark ? '☀️' : '🌙' }}</span>
@@ -108,7 +106,6 @@
             {{ _cells[i]?.bottomGlyph || '' }}
           </div>
 
-          <!-- imperfect → perfect flag (2-voice) -->
           <span
             *ngIf="_cells[i]?.upgrade"
             class="ip-flag"

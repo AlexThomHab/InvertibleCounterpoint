@@ -8,14 +8,14 @@ export class InvertibleCounterpointService {
   private static readonly N = 8;
   private static readonly PERFECT = new Set([0, 4, 7]);
   private static readonly IMPERFECT = new Set([2, 5]);
-  private static copyInterval(i: IntervalWithSuspensions): IntervalWithSuspensions {
+  private static copyInterval(interval: IntervalWithSuspensions): IntervalWithSuspensions {
     return {
-      index: i.index,
-      semitones: i.semitones,
-      name: i.name,
-      isConsonant: i.isConsonant,
-      upperSuspensionTreatment: i.upperSuspensionTreatment,
-      lowerSuspensionTreatment: i.lowerSuspensionTreatment,
+      index: interval.index,
+      semitones: interval.semitones,
+      name: interval.name,
+      isConsonant: interval.isConsonant,
+      upperSuspensionTreatment: interval.upperSuspensionTreatment,
+      lowerSuspensionTreatment: interval.lowerSuspensionTreatment,
     };
   }
 
