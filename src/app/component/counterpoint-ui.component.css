@@ -150,7 +150,6 @@
   padding: 0 4px;
 }
 
-
 .grid {
   display: grid;
   grid-template-columns: repeat(8, 64px);
@@ -180,8 +179,6 @@
   font-size: 22px;
   line-height: 22px;
 }
-
-
 
 .glyph {
   font-size: 14px;

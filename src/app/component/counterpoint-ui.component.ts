@@ -6,9 +6,10 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 
 import {InvertibleCounterpointService} from '../services/invertible-counterpoint.service';
 import {SuspensionTreatmentEnum} from '../models/SuspensionTreatmentEnum';
-import {InvertedIntervals, InvertedIntervalsDetailed} from '../models/InvertedIntervals';
+import {InvertedIntervalsDetailed} from '../models/InvertedIntervals';
 import {ThreeVoiceGivenJvIndexValuesCalculator} from '../services/ThreeVoiceGivenJvIndexCalculator';
 import {IntervalWithSuspensions} from '../models/Interval';
+import {IntervalRow} from './interval-row/interval-row';
 
 type Cell = {
   index: number;
@@ -37,11 +38,10 @@ function emptyDetailed(): InvertedIntervalsDetailed {
 @Component({
   selector: 'app-counterpoint-ui',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatCard, MatTooltipModule],
+  imports: [CommonModule, FormsModule, MatCard, MatTooltipModule, IntervalRow],
   templateUrl: './counterpoint-ui.component.html',
   styleUrls: ['./counterpoint-ui.component.css'],
 })
-
 
 export class CounterpointUiComponent {
 
@@ -64,7 +64,7 @@ export class CounterpointUiComponent {
 
   private threeCalc = new ThreeVoiceGivenJvIndexValuesCalculator();
 
-  constructor(private cp: InvertibleCounterpointService) {
+  constructor(private invertibleCounterpointService: InvertibleCounterpointService) {
     const saved = localStorage.getItem('theme');
     this._dark = saved ? saved === 'dark'
       : (typeof window !== 'undefined'
@@ -88,8 +88,8 @@ export class CounterpointUiComponent {
   }
 
   private recomputeTwoVoice() {
-    this._intervals = this.cp.computeDetailed(this._jvInput);
-    this._intervals = this.cp.computeDetailed(this._jvInput);
+    this._intervals = this.invertibleCounterpointService.computeDetailed(this._jvInput);
+    this._intervals = this.invertibleCounterpointService.computeDetailed(this._jvInput);
 
     this._cells = {};
     const all = [
@@ -113,11 +113,11 @@ export class CounterpointUiComponent {
     }
   }
 
-  getClassForIndex(i: number): string {
-    if (this._intervals.fixedConsonances.some(x => x.index === i)) return 'cell fixedConsonant';
-    if (this._intervals.fixedDissonances.some(x => x.index === i)) return 'cell fixedDissonant';
-    if (this._intervals.variableConsonances.some(x => x.index === i)) return 'cell variableConsonant';
-    if (this._intervals.variableDissonances.some(x => x.index === i)) return 'cell variableDissonant';
+  getClassForIndex(index: number): string {
+    if (this._intervals.fixedConsonances.some(x => x.index === index)) return 'cell fixedConsonant';
+    if (this._intervals.fixedDissonances.some(x => x.index === index)) return 'cell fixedDissonant';
+    if (this._intervals.variableConsonances.some(x => x.index === index)) return 'cell variableConsonant';
+    if (this._intervals.variableDissonances.some(x => x.index === index)) return 'cell variableDissonant';
     return 'cell';
   }
 
