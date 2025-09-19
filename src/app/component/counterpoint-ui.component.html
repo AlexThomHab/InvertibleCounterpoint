@@ -33,7 +33,7 @@
       <h1 class="title">
         {{
           _activeTab === 'two'
-            ? "Taneev's Vertical Shifting Counterpoint"
+            ? "Two-Voice Vertical Shifting Counterpoint"
             : "Three-Voice Vertical Shifting Counterpoint"
         }}
       </h1>
@@ -74,7 +74,7 @@
         inversion.
       </p>
       <app-interval-row></app-interval-row>
-      
+
     </ng-container>
 
     <ng-container *ngSwitchCase="'three'">
@@ -126,7 +126,6 @@
             {{ _threeRowsCells[0]?.[i]?.bottomGlyph || '' }}
           </div>
 
-          <!-- imperfect → perfect flag (I↔II) -->
           <span
             *ngIf="_threeRowsCells[0]?.[i]?.upgrade"
             class="ip-flag"
@@ -135,7 +134,7 @@
           <span
             *ngIf="_threeRowsCells[0]?.[i]?.becomesAFourth"
             class="isAFourth-flag"
-            [matTooltip]="'This interval transforms to a 4th hence be cautious if it appears in the lower voice'">
+            [matTooltip]="'This interval transforms to a 4th hence it can appear in upper voices but not between the lowest voice'">
           4</span>
         </div>
       </div>

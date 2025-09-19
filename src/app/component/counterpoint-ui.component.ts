@@ -124,22 +124,6 @@ export class CounterpointUiComponent {
   onThreeVoiceInput() {
     this.recomputeThreeVoice();
   }
-
-  private recomputeThreeVoice() {
-    const sigma = this._jvPrimeInput + this._jvDoublePrimeInput;
-    this._jvSigmaView = sigma;
-
-    const rows = this.threeCalc.calculateDetailed(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
-    this._threeRows = [rows[0] ?? emptyDetailed(), rows[1] ?? emptyDetailed(), rows[2] ?? emptyDetailed()];
-
-    const detailedRows = this.threeCalc.calculateDetailed(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
-    this._threeRowsCells = [
-      this.buildGridMap(detailedRows[0]),
-      this.buildGridMap(detailedRows[1]),
-      this.buildGridMap(detailedRows[2]),
-    ];
-  }
-
   private buildGridMap(det?: InvertedIntervalsDetailed): CellsMap {
     const cells: CellsMap = {};
     if (!det) return cells;
@@ -163,6 +147,21 @@ export class CounterpointUiComponent {
       };
     }
     return cells;
+  }
+
+  private recomputeThreeVoice() {
+    const sigma = this._jvPrimeInput + this._jvDoublePrimeInput;
+    this._jvSigmaView = sigma;
+
+    const rows = this.threeCalc.calculateDetailed(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
+    this._threeRows = [rows[0] ?? emptyDetailed(), rows[1] ?? emptyDetailed(), rows[2] ?? emptyDetailed()];
+
+    const detailedRows = this.threeCalc.calculateDetailed(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
+    this._threeRowsCells = [
+      this.buildGridMap(detailedRows[0]),
+      this.buildGridMap(detailedRows[1]),
+      this.buildGridMap(detailedRows[2]),
+    ];
   }
 
   getThreeRowClassForIndex(row: number, i: number): string {

@@ -97,8 +97,7 @@
   width: 10px;
   height: 10px;
   border-radius: 9999px;
-  background: #f59e0b;
-  box-shadow: 0 0 0 2px #ffffff;
+  background: #270c2e;
 }
 .isAFourth-flag {
   position: absolute;
@@ -189,8 +188,7 @@
 .glyph-top    { position:absolute; top:6px; }
 .glyph-bottom { position:absolute; bottom:6px; }
 
-.ip-flag { position:absolute; top:4px; right:4px; width:10px; height:10px; border-radius:9999px;
-  background:#f59e0b; box-shadow:0 0 0 2px #fff; }
+.ip-flag { position:absolute; top:4px; right:4px; width:10px; height:10px; background: #d60bf5; }
 .isAFourth-flag { position:absolute; top:4px; right:4px; font-family:"Times New Roman", Times, serif;
   font-size:.9rem; width:.8rem; height:.8rem; border:1px solid currentColor; border-radius:999px; }
 
@@ -199,10 +197,6 @@
 .variableConsonant{ border-color:#4cbc6b; box-shadow:0 0 0 3px rgba(76,188,107,.12) inset; }
 .variableDissonant{ border-color:#b26bff; box-shadow:0 0 0 3px rgba(178,107,255,.12) inset; }
 
-.cp-wrapper.dark .control input[type="number"],
-.cp-wrapper.dark .controls input[type="number"] { background: #0b1118; color: #e6edf3; border-color: #2a3b52; }
-.cp-wrapper.dark .control input[type="number"]:focus,
-.cp-wrapper.dark .controls input[type="number"]:focus { border-color: #4ea1ff; box-shadow: 0 0 0 3px rgba(78,161,255,.25); }
 
 :host-context(.dark) .cell { background:#0b1118; border-color:#2a3b52; color:#e6edf3; }
 :host-context(.dark) .fixedConsonant   { border-color:#4ea1ff; box-shadow:inset 0 0 0 3px rgba(78,161,255,.20); }
@@ -210,14 +204,11 @@
 :host-context(.dark) .variableConsonant{ border-color:#5bd58a; box-shadow:inset 0 0 0 3px rgba(91,213,138,.18); }
 :host-context(.dark) .variableDissonant{ border-color:#b98cff; box-shadow:inset 0 0 0 3px rgba(185,140,255,.18); }
 
-.cp-wrapper.dark .fixedConsonant   { border-color: #4ea1ff; box-shadow: inset 0 0 0 3px rgba(78,161,255,.20); }
-.cp-wrapper.dark .fixedDissonant   { border-color: #ff6b6b; box-shadow: inset 0 0 0 3px rgba(255,107,107,.18); }
-.cp-wrapper.dark .variableConsonant{ border-color: #5bd58a; box-shadow: inset 0 0 0 3px rgba(91,213,138,.18); }
-.cp-wrapper.dark .variableDissonant{ border-color: #b98cff; box-shadow: inset 0 0 0 3px rgba(185,140,255,.18); }
+:host-context(.dark) .control input[type="number"],
+:host-context(.dark) .controls input[type="number"] {
+  background: #0b1118;
+  color: #e6edf3;
+  border-color: #2a3b52;
+}
 
-.cp-wrapper.dark .glyph { opacity: .95; }
-
-.cp-wrapper.dark .buckets { color: #c7d1db; }
-.cp-wrapper.dark .buckets strong { color: #e6edf3; }
-
-
+:host-context(.dark) .swatch { background: transparent; }
