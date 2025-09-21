@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IntervalWithSuspensions } from '../models/Interval';
+import { Interval } from '../models/Interval';
 import { InvertedIntervals, InvertedIntervalsDetailed } from '../models/InvertedIntervals';
 import { SuspensionTreatmentEnum } from '../models/SuspensionTreatmentEnum';
 
@@ -8,7 +8,7 @@ export class InvertibleCounterpointService {
   private static readonly N = 8;
   private static readonly PERFECT = new Set([0, 4, 7]);
   private static readonly IMPERFECT = new Set([2, 5]);
-  private static copyInterval(interval: IntervalWithSuspensions): IntervalWithSuspensions {
+  private static copyInterval(interval: Interval): Interval {
     return {
       index: interval.index,
       semitones: interval.semitones,
@@ -31,7 +31,7 @@ export class InvertibleCounterpointService {
     return (originalIntervalSuspension as number) < (newIntervalSuspension as number) ? originalIntervalSuspension : newIntervalSuspension;
   }
 
-  private readonly _intervals: Record<number, IntervalWithSuspensions> = {
+  private readonly _intervals: Record<number, Interval> = {
     0: { index: 0, semitones: 0, name: 'Unison',  isConsonant: true,
       upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant,
       lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant },
@@ -58,7 +58,7 @@ export class InvertibleCounterpointService {
       lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant },
   };
 
-  private readonly _intervalsInverted: Record<number, IntervalWithSuspensions> = {
+  private readonly _intervalsInverted: Record<number, Interval> = {
     0: { index: 0, semitones:  0, name: 'Unison',  isConsonant: true,
       upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant,
       lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant },
@@ -114,10 +114,10 @@ export class InvertibleCounterpointService {
         : this._intervals[compareIndex];
 
       const mergeSuspensions = (
-        jv0IntervalToCopy: IntervalWithSuspensions,
-        targetIndexIntervalToCopy: IntervalWithSuspensions,
+        jv0IntervalToCopy: Interval,
+        targetIndexIntervalToCopy: Interval,
         tweakSecondOnUpper: boolean
-      ): IntervalWithSuspensions => {
+      ): Interval => {
         const jv0Interval = InvertibleCounterpointService.copyInterval(jv0IntervalToCopy);
         const targetInterval = InvertibleCounterpointService.copyInterval(targetIndexIntervalToCopy);
 
@@ -171,7 +171,6 @@ export class InvertibleCounterpointService {
         out.variableDissonances.push(merged);
       }
     }
-
     return out;
   }
 }

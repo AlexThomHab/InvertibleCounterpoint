@@ -1,12 +1,12 @@
 import {Component, Input, SimpleChanges} from '@angular/core';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {IntervalWithSuspensions} from '../../models/Interval';
 import {InvertibleCounterpointService} from '../../services/invertible-counterpoint.service';
 import {SuspensionTreatmentEnum} from '../../models/SuspensionTreatmentEnum';
 import {InvertedIntervalsDetailed} from '../../models/InvertedIntervals';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {ThreeVoiceGivenJvIndexValuesCalculator} from '../../services/ThreeVoiceGivenJvIndexCalculator';
+import {Interval} from '../../models/Interval';
 
 type Cell = {
   index: number;
@@ -68,7 +68,7 @@ export class IntervalRow {
     this.recomputeThreeVoice();
   }
 
-  toIndexList(intervalsWithSuspensions?: IntervalWithSuspensions[] | null): string {
+  toIndexList(intervalsWithSuspensions?: Interval[] | null): string {
     return (intervalsWithSuspensions ?? []).map(x => x.index).join(', ');
   }
   ngOnChanges(changes: SimpleChanges): void {

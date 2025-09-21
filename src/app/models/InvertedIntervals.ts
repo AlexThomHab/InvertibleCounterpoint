@@ -1,4 +1,4 @@
-import {IntervalWithSuspensions} from './Interval';
+import {Interval} from './Interval';
 
 export interface InvertedIntervals {
   fixedConsonances: number[];
@@ -7,8 +7,8 @@ export interface InvertedIntervals {
   variableDissonances: number[];
 }
 export interface InvertedIntervalsDetailed {
-  fixedConsonances: IntervalWithSuspensions[];
-  fixedDissonances: IntervalWithSuspensions[];
-  variableConsonances: IntervalWithSuspensions[];
-  variableDissonances: IntervalWithSuspensions[];
+  fixedConsonances: Interval[];
+  fixedDissonances: Interval[];
+  variableConsonances: Interval[];
+  variableDissonances: Interval[];
 }
