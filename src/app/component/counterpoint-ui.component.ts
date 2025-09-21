@@ -38,10 +38,9 @@ function emptyDetailed(): InvertedIntervalsDetailed {
 })
 
 export class CounterpointUiComponent {
-
   _dark = false;
   _activeTab: 'two' | 'three' = 'two';
-  _indices = [0, 1, 2, 3, 4, 5, 6, 7];
+  _intervalJvList = [0, 1, 2, 3, 4, 5, 6, 7];
   _jvInput = 0;
   _intervals: InvertedIntervalsDetailed = emptyDetailed();
   _cells: CellsMap = {};
@@ -55,7 +54,6 @@ export class CounterpointUiComponent {
       : (typeof window !== 'undefined'
         && window.matchMedia
         && window.matchMedia('(prefers-color-scheme: dark)').matches);
-
   }
 
   toggleDark() {

@@ -77,7 +77,7 @@
       </div>
 
       <app-interval-row
-        [_intervalsList]="_indices"
+        [_intervalsList]="_intervalJvList"
         [_twoVoiceCells]="_cells"
         [_intervals]="_intervals"
         [_jvInput]="_jvInput">
@@ -108,7 +108,7 @@
 
       <h3 style="margin-top:10px">I ↔ II (JV′ = {{ _jvPrimeInput }})</h3>
       <app-interval-row
-        [_intervalsList]="_indices"
+        [_intervalsList]="_intervalJvList"
         [_twoVoiceCells]="_cells"
         [_intervals]="_intervals"
         [_jvInput]="_jvPrimeInput">
@@ -116,7 +116,7 @@
 
       <h3>II ↔ III (JV″ = {{ _jvDoublePrimeInput }})</h3>
       <app-interval-row
-        [_intervalsList]="_indices"
+        [_intervalsList]="_intervalJvList"
         [_twoVoiceCells]="_cells"
         [_intervals]="_intervals"
         [_jvInput]="_jvDoublePrimeInput">
@@ -124,7 +124,7 @@
 
       <h3>I ↔ III (JVΣ = {{ _jvSigmaView }})</h3>
       <app-interval-row
-        [_intervalsList]="_indices"
+        [_intervalsList]="_intervalJvList"
         [_twoVoiceCells]="_cells"
         [_intervals]="_intervals"
         [_jvInput]="_jvSigmaView">
