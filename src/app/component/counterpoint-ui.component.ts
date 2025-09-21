@@ -1,14 +1,9 @@
-import {Component, SimpleChanges} from '@angular/core';
+import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {MatCard} from '@angular/material/card';
 import {MatTooltipModule} from '@angular/material/tooltip';
-
-import {InvertibleCounterpointService} from '../services/invertible-counterpoint.service';
-import {SuspensionTreatmentEnum} from '../models/SuspensionTreatmentEnum';
 import {InvertedIntervalsDetailed} from '../models/InvertedIntervals';
-import {ThreeVoiceGivenJvIndexValuesCalculator} from '../services/ThreeVoiceGivenJvIndexCalculator';
-import {IntervalWithSuspensions} from '../models/Interval';
 import {IntervalRow} from './interval-row/interval-row';
 
 type Cell = {
@@ -24,7 +19,6 @@ type Cell = {
 };
 
 type CellsMap = Partial<Record<number, Cell>>;
-type CellsRowTuple = [CellsMap, CellsMap, CellsMap];
 
 function emptyDetailed(): InvertedIntervalsDetailed {
   return {
@@ -54,28 +48,14 @@ export class CounterpointUiComponent {
   _jvPrimeInput = 0;
   _jvDoublePrimeInput = 0;
   _jvSigmaView = 0;
-  _threeRows: [InvertedIntervalsDetailed, InvertedIntervalsDetailed, InvertedIntervalsDetailed] = [
-    emptyDetailed(),
-    emptyDetailed(),
-    emptyDetailed(),
-  ];
 
-  _threeRowsCells: CellsRowTuple = [{}, {}, {}];
-
-  private threeCalc = new ThreeVoiceGivenJvIndexValuesCalculator();
-
-  constructor(private invertibleCounterpointService: InvertibleCounterpointService) {
+  constructor() {
     const saved = localStorage.getItem('theme');
     this._dark = saved ? saved === 'dark'
       : (typeof window !== 'undefined'
         && window.matchMedia
         && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
-    this.recomputeTwoVoice();
-    this.recomputeThreeVoice();
-  }
-  toIndexList(arr?: IntervalWithSuspensions[] | null): string {
-    return (arr ?? []).map(x => x.index).join(', ');
   }
 
   toggleDark() {
@@ -83,124 +63,7 @@ export class CounterpointUiComponent {
     localStorage.setItem('theme', this._dark ? 'dark' : 'light');
   }
 
-  OnTwoVoiceInput() {
-    this.recomputeTwoVoice();
-  }
-
-  private recomputeTwoVoice() {
-    this._intervals = this.invertibleCounterpointService.computeDetailed(this._jvInput);
-
-    this._cells = {};
-    const all = [
-      ...this._intervals.fixedConsonances,
-      ...this._intervals.fixedDissonances,
-      ...this._intervals.variableConsonances,
-      ...this._intervals.variableDissonances,
-    ];
-    for (const it of all) {
-      this._cells[it.index] = {
-        index: it.index,
-        topGlyph: this.glyphFor(it.upperSuspensionTreatment),
-        bottomGlyph: this.glyphFor(it.lowerSuspensionTreatment),
-        topTitle: this.fullName(it.upperSuspensionTreatment, 'Upper'),
-        bottomTitle: this.fullName(it.lowerSuspensionTreatment, 'Lower'),
-        topClass: this.glyphExtraClass(it.upperSuspensionTreatment),
-        bottomClass: this.glyphExtraClass(it.lowerSuspensionTreatment),
-        upgrade: it.imperfectBecomesPerfect,
-        becomesAFourth: it.becomesAFourth,
-      };
-    }
-  }
-
-  getClassForIndex(index: number): string {
-    if (this._intervals.fixedConsonances.some(x => x.index === index)) return 'cell fixedConsonant';
-    if (this._intervals.fixedDissonances.some(x => x.index === index)) return 'cell fixedDissonant';
-    if (this._intervals.variableConsonances.some(x => x.index === index)) return 'cell variableConsonant';
-    if (this._intervals.variableDissonances.some(x => x.index === index)) return 'cell variableDissonant';
-    return 'cell';
-  }
-
-  onThreeVoiceInput() {
-    this.recomputeThreeVoice();
-  }
-  private buildGridMap(det?: InvertedIntervalsDetailed): CellsMap {
-    const cells: CellsMap = {};
-    if (!det) return cells;
-    const all = [
-      ...det.fixedConsonances,
-      ...det.fixedDissonances,
-      ...det.variableConsonances,
-      ...det.variableDissonances,
-    ];
-    for (const interval of all) {
-      cells[interval.index] = {
-        index: interval.index,
-        topGlyph: this.glyphFor(interval.upperSuspensionTreatment),
-        bottomGlyph: this.glyphFor(interval.lowerSuspensionTreatment),
-        topTitle: this.fullName(interval.upperSuspensionTreatment, 'Upper'),
-        bottomTitle: this.fullName(interval.lowerSuspensionTreatment, 'Lower'),
-        topClass: this.glyphExtraClass(interval.upperSuspensionTreatment),
-        bottomClass: this.glyphExtraClass(interval.lowerSuspensionTreatment),
-        upgrade: interval.imperfectBecomesPerfect,
-        becomesAFourth: interval.becomesAFourth,
-      };
-    }
-    return cells;
-  }
-
-  private recomputeThreeVoice() {
-    const sigma = this._jvPrimeInput + this._jvDoublePrimeInput;
-    this._jvSigmaView = sigma;
-
-    const rows = this.threeCalc.calculateDetailed(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
-    this._threeRows = [rows[0] ?? emptyDetailed(), rows[1] ?? emptyDetailed(), rows[2] ?? emptyDetailed()];
-
-    const detailedRows = this.threeCalc.calculateDetailed(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
-    this._threeRowsCells = [
-      this.buildGridMap(detailedRows[0]),
-      this.buildGridMap(detailedRows[1]),
-      this.buildGridMap(detailedRows[2]),
-    ];
-  }
-
-  getThreeRowClassForIndex(row: number, i: number): string {
-    const gridRow = this._threeRows[row];
-    if (!gridRow) return 'cell';
-    if (gridRow.fixedConsonances.some(x => x.index === i)) return 'cell fixedConsonant';
-    if (gridRow.fixedDissonances.some(x => x.index === i)) return 'cell fixedDissonant';
-    if (gridRow.variableConsonances.some(x => x.index === i)) return 'cell variableConsonant';
-    if (gridRow.variableDissonances.some(x => x.index === i)) return 'cell variableDissonant';
-    return 'cell';
-  }
-
-  private glyphFor(t: SuspensionTreatmentEnum): string {
-    switch (t) {
-      case SuspensionTreatmentEnum.CannotFormSuspension:
-        return '(-)';
-      case SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension:
-        return '-';
-      case SuspensionTreatmentEnum.NoteOfResolutionIsDissonant:
-        return 'x';
-      case SuspensionTreatmentEnum.NoteOfResolutionIsFree:
-        return '---';
-      case SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspensionAndNoteOfResolutionIsDissonant:
-        return '-x';
-      default:
-        return '';
-    }
-  }
-
-  private glyphExtraClass(t: SuspensionTreatmentEnum): string {
-    return t === SuspensionTreatmentEnum.NoteOfResolutionIsDissonant ? 'xsmall' : '';
-  }
-
-  private fullName(treatmentEnum: SuspensionTreatmentEnum, voice: 'Upper' | 'Lower'): string {
-    const base =
-      treatmentEnum === SuspensionTreatmentEnum.CannotFormSuspension ? 'Cannot form a suspension' :
-        treatmentEnum === SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension ? 'If on downbeat, must form suspension' :
-          treatmentEnum === SuspensionTreatmentEnum.NoteOfResolutionIsDissonant ? 'If forming suspension, note of resolution is dissonant' :
-            treatmentEnum === SuspensionTreatmentEnum.NoteOfResolutionIsFree ? 'If forming suspension, note of resolution is free' :
-              treatmentEnum === SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspensionAndNoteOfResolutionIsDissonant ? 'Both conditions apply' : '';
-    return `${voice}: ${base}`;
+  CalculateJvSigma() {
+    this._jvSigmaView = this._jvPrimeInput + this._jvDoublePrimeInput;
   }
 }

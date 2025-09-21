@@ -101,13 +101,12 @@
       <div class="controls">
         <div class="control">
           <label for="jvPrime">JV′</label>
-          <input id="jvPrime" type="number" [(ngModel)]="_jvPrimeInput" (ngModelChange)="onThreeVoiceInput()"/>
+          <input id="jvPrime" type="number" [(ngModel)]="_jvPrimeInput" (ngModelChange)="CalculateJvSigma()"/>
         </div>
 
         <div class="control">
           <label for="jvDoublePrime">JV″</label>
-          <input id="jvDoublePrime" type="number" [(ngModel)]="_jvDoublePrimeInput"
-                 (ngModelChange)="onThreeVoiceInput()"/>
+          <input id="jvDoublePrime" type="number" [(ngModel)]="_jvDoublePrimeInput" (ngModelChange)="CalculateJvSigma()"/>
         </div>
 
         <div class="control">
@@ -140,6 +139,5 @@
         [_jvInput]="_jvSigmaView">
       </app-interval-row>
     </ng-container>
-
   </mat-card>
 </div>

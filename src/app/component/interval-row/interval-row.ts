@@ -84,9 +84,6 @@ export class IntervalRow {
     return 'cell';
   }
 
-  OnJvInput() {
-    this.recomputeTwoVoice();
-  }
   private recomputeTwoVoice() {
     this._intervals = this.invertibleCounterpointService.computeDetailed(this._jvInput);
 
