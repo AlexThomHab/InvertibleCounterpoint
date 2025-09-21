@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, SimpleChanges} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {MatCard} from '@angular/material/card';
@@ -83,12 +83,11 @@ export class CounterpointUiComponent {
     localStorage.setItem('theme', this._dark ? 'dark' : 'light');
   }
 
-  OnJvInput() {
+  OnTwoVoiceInput() {
     this.recomputeTwoVoice();
   }
 
   private recomputeTwoVoice() {
-    this._intervals = this.invertibleCounterpointService.computeDetailed(this._jvInput);
     this._intervals = this.invertibleCounterpointService.computeDetailed(this._jvInput);
 
     this._cells = {};

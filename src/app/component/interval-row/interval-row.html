@@ -1,10 +1,3 @@
-<div class="controls">
-  <div class="control">
-    <label for="jv">JV</label>
-    <input id="jv" type="number" [(ngModel)]="_jvInput" (ngModelChange)="OnJvInput()"/>
-  </div>
-</div>
-
 <div class="legend">
   <div class="legend-item"><span class="swatch fixedConsonant"></span> Fixed Consonances</div>
   <div class="legend-item"><span class="swatch fixedDissonant"></span> Fixed Dissonances</div>
@@ -14,7 +7,7 @@
 
 <div class="grid">
   <div
-    *ngFor="let i of _indices"
+    *ngFor="let i of _intervalsList"
     [ngClass]="getClassForIndex(i)"
     class="cell"
     [matTooltip]="'Interval ' + i"

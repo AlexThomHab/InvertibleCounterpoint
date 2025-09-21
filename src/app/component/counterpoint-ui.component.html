@@ -73,7 +73,23 @@
         Enter a JV (inversion index) to see which intervals stay or switch between consonance and dissonance after
         inversion.
       </p>
-      <app-interval-row></app-interval-row>
+      <div class="controls">
+        <div class="control">
+          <label for="jv">JV</label>
+          <input
+            id="jv"
+            type="number"
+            [(ngModel)]="_jvInput"
+          />
+        </div>
+      </div>
+
+      <app-interval-row
+        [_intervalsList]="_indices"
+        [_cells]="_cells"
+        [_intervals]="_intervals"
+        [_jvInput]="_jvInput">
+      </app-interval-row>
 
     </ng-container>
 
@@ -101,148 +117,28 @@
       </div>
 
       <h3 style="margin-top:10px">I ↔ II (JV′ = {{ _jvPrimeInput }})</h3>
-      <div class="legend">
-        <div class="legend-item"><span class="swatch fixedConsonant"></span> Fixed Consonances</div>
-        <div class="legend-item"><span class="swatch fixedDissonant"></span> Fixed Dissonances</div>
-        <div class="legend-item"><span class="swatch variableConsonant"></span> Variable Consonances</div>
-        <div class="legend-item"><span class="swatch variableDissonant"></span> Variable Dissonances</div>
-      </div>
-      <div class="grid">
-        <div
-          *ngFor="let i of _indices"
-          [ngClass]="getThreeRowClassForIndex(0, i)"
-          class="cell"
-          [matTooltip]="'Interval ' + i"
-        >
-          <div class="glyph glyph-top"
-               [ngClass]="_threeRowsCells[0]?.[i]?.topClass"
-               [title]="_threeRowsCells[0]?.[i]?.topTitle">
-            {{ _threeRowsCells[0]?.[i]?.topGlyph || '' }}
-          </div>
-          <div class="interval-number">{{ i }}</div>
-          <div class="glyph glyph-bottom"
-               [ngClass]="_threeRowsCells[0]?.[i]?.bottomClass"
-               [title]="_threeRowsCells[0]?.[i]?.bottomTitle">
-            {{ _threeRowsCells[0]?.[i]?.bottomGlyph || '' }}
-          </div>
-
-          <span
-            *ngIf="_threeRowsCells[0]?.[i]?.upgrade"
-            class="ip-flag"
-            [matTooltip]="'Imperfect consonance becomes perfect after JV'">
-          </span>
-          <span
-            *ngIf="_threeRowsCells[0]?.[i]?.becomesAFourth"
-            class="isAFourth-flag"
-            [matTooltip]="'This interval transforms to a 4th hence it can appear in upper voices but not between the lowest voice'">
-          4</span>
-        </div>
-      </div>
-      <div class="buckets">
-        <div><strong>Fixed Consonances:</strong> {{ toIndexList(_threeRows[0].fixedConsonances) }}
-          <strong>Fixed Dissonances:</strong> {{ toIndexList(_threeRows[0].fixedDissonances) }}
-          <strong>Variable Consonances:</strong> {{ toIndexList(_threeRows[0].variableConsonances) }}
-          <strong>Variable Dissonances:</strong> {{ toIndexList(_threeRows[0].variableDissonances) }}
-        </div>
-      </div>
-      <hr>
+      <app-interval-row
+        [_intervalsList]="_indices"
+        [_cells]="_cells"
+        [_intervals]="_intervals"
+        [_jvInput]="_jvPrimeInput">
+      </app-interval-row>
 
       <h3>II ↔ III (JV″ = {{ _jvDoublePrimeInput }})</h3>
-      <div class="legend">
-        <div class="legend-item"><span class="swatch fixedConsonant"></span> Fixed Consonances</div>
-        <div class="legend-item"><span class="swatch fixedDissonant"></span> Fixed Dissonances</div>
-        <div class="legend-item"><span class="swatch variableConsonant"></span> Variable Consonances</div>
-        <div class="legend-item"><span class="swatch variableDissonant"></span> Variable Dissonances</div>
-      </div>
-      <div class="grid">
-        <div
-          *ngFor="let i of _indices"
-          [ngClass]="getThreeRowClassForIndex(1, i)"
-          class="cell"
-          [matTooltip]="'Interval ' + i"
-        >
-          <div class="glyph glyph-top"
-               [ngClass]="_threeRowsCells[1]?.[i]?.topClass"
-               [title]="_threeRowsCells[1]?.[i]?.topTitle">
-            {{ _threeRowsCells[1]?.[i]?.topGlyph || '' }}
-          </div>
-          <div class="interval-number">{{ i }}</div>
-          <div class="glyph glyph-bottom"
-               [ngClass]="_threeRowsCells[1]?.[i]?.bottomClass"
-               [title]="_threeRowsCells[1]?.[i]?.bottomTitle">
-            {{ _threeRowsCells[1]?.[i]?.bottomGlyph || '' }}
-          </div>
-
-          <!-- imperfect → perfect flag (II↔III) -->
-          <span
-            *ngIf="_threeRowsCells[1]?.[i]?.upgrade"
-            class="ip-flag"
-            [matTooltip]="'Imperfect consonance becomes perfect after JV'">
-          </span>
-          <span
-            *ngIf="_threeRowsCells[1]?.[i]?.becomesAFourth"
-            class="isAFourth-flag"
-            [matTooltip]="'This interval transforms to a 4th hence be cautious if it appears in the lower voice'">
-          4</span>
-        </div>
-      </div>
-      <div class="buckets">
-        <div><strong>Fixed Consonances:</strong> {{ toIndexList(_threeRows[1].fixedConsonances) }}
-          <strong>Fixed Dissonances:</strong> {{ toIndexList(_threeRows[1].fixedDissonances) }}
-          <strong>Variable Consonances:</strong> {{ toIndexList(_threeRows[1].variableConsonances) }}
-          <strong>Variable Dissonances:</strong> {{ toIndexList(_threeRows[1].variableDissonances) }}
-        </div>
-      </div>
-
-      <hr>
+      <app-interval-row
+        [_intervalsList]="_indices"
+        [_cells]="_cells"
+        [_intervals]="_intervals"
+        [_jvInput]="_jvDoublePrimeInput">
+      </app-interval-row>
 
       <h3>I ↔ III (JVΣ = {{ _jvSigmaView }})</h3>
-      <div class="legend">
-        <div class="legend-item"><span class="swatch fixedConsonant"></span> Fixed Consonances</div>
-        <div class="legend-item"><span class="swatch fixedDissonant"></span> Fixed Dissonances</div>
-        <div class="legend-item"><span class="swatch variableConsonant"></span> Variable Consonances</div>
-        <div class="legend-item"><span class="swatch variableDissonant"></span> Variable Dissonances</div>
-      </div>
-      <div class="grid">
-        <div
-          *ngFor="let i of _indices"
-          [ngClass]="getThreeRowClassForIndex(2, i)"
-          class="cell"
-          [matTooltip]="'Interval ' + i"
-        >
-          <div class="glyph glyph-top"
-               [ngClass]="_threeRowsCells[2]?.[i]?.topClass"
-               [title]="_threeRowsCells[2]?.[i]?.topTitle">
-            {{ _threeRowsCells[2]?.[i]?.topGlyph || '' }}
-          </div>
-          <div class="interval-number">{{ i }}</div>
-          <div class="glyph glyph-bottom"
-               [ngClass]="_threeRowsCells[2]?.[i]?.bottomClass"
-               [title]="_threeRowsCells[2]?.[i]?.bottomTitle">
-            {{ _threeRowsCells[2]?.[i]?.bottomGlyph || '' }}
-          </div>
-
-          <!-- imperfect → perfect flag (I↔III / JVΣ) -->
-          <span
-            *ngIf="_threeRowsCells[2]?.[i]?.upgrade"
-            class="ip-flag"
-            [matTooltip]="'Imperfect consonance becomes perfect after JV'">
-          </span>
-          <span
-            *ngIf="_threeRowsCells[2]?.[i]?.becomesAFourth"
-            class="isAFourth-flag"
-            [matTooltip]="'This interval transforms to a 4th hence be cautious if it appears in the lower voice'">
-          4</span>
-
-        </div>
-      </div>
-      <div class="buckets">
-        <div><strong>Fixed Consonances:</strong> {{ toIndexList(_threeRows[2].fixedConsonances) }}
-          <strong>Fixed Dissonances:</strong> {{ toIndexList(_threeRows[2].fixedDissonances) }}
-          <strong>Variable Consonances:</strong> {{ toIndexList(_threeRows[2].variableConsonances) }}
-          <strong>Variable Dissonances:</strong> {{ toIndexList(_threeRows[2].variableDissonances) }}
-        </div>
-      </div>
+      <app-interval-row
+        [_intervalsList]="_indices"
+        [_cells]="_cells"
+        [_intervals]="_intervals"
+        [_jvInput]="_jvSigmaView">
+      </app-interval-row>
     </ng-container>
 
   </mat-card>

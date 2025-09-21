@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input, SimpleChanges} from '@angular/core';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {IntervalWithSuspensions} from '../../models/Interval';
@@ -47,10 +47,10 @@ function emptyDetailed(): InvertedIntervalsDetailed {
 })
 
 export class IntervalRow {
-  _cells: CellsMap = {};
-  _intervals: InvertedIntervalsDetailed = emptyDetailed();
-  _indices = [0, 1, 2, 3, 4, 5, 6, 7];
-  _jvInput = 0;
+  @Input() _cells: CellsMap = {};
+  @Input() _intervals: InvertedIntervalsDetailed = emptyDetailed();
+  @Input() _intervalsList = [0, 1, 2, 3, 4, 5, 6, 7];
+  @Input() _jvInput = 0;
   _jvPrimeInput = 0;
   _jvDoublePrimeInput = 0;
   _jvSigmaView = 0;
@@ -71,7 +71,11 @@ export class IntervalRow {
   toIndexList(intervalsWithSuspensions?: IntervalWithSuspensions[] | null): string {
     return (intervalsWithSuspensions ?? []).map(x => x.index).join(', ');
   }
-
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['_jvInput']) {
+      this.recomputeTwoVoice();
+    }
+  }
   getClassForIndex(i: number): string {
     if (this._intervals.fixedConsonances.some(x => x.index === i)) return 'cell fixedConsonant';
     if (this._intervals.fixedDissonances.some(x => x.index === i)) return 'cell fixedDissonant';
@@ -84,7 +88,6 @@ export class IntervalRow {
     this.recomputeTwoVoice();
   }
   private recomputeTwoVoice() {
-    this._intervals = this.invertibleCounterpointService.computeDetailed(this._jvInput);
     this._intervals = this.invertibleCounterpointService.computeDetailed(this._jvInput);
 
     this._cells = {};
@@ -107,7 +110,6 @@ export class IntervalRow {
         becomesAFourth: it.becomesAFourth,
       };
     }
-
   }
   private recomputeThreeVoice() {
     const sigma = this._jvPrimeInput + this._jvDoublePrimeInput;
