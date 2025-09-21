@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { InvertibleCounterpointService } from './invertible-counterpoint.service';
 import { SuspensionTreatmentEnum } from '../models/SuspensionTreatmentEnum';
-import { InvertedIntervalsDetailed } from '../models/InvertedIntervals';
+import { CalculatedIntervalList } from '../models/CalculatedIntervalList';
 import { IntervalWithSuspensions } from '../models/Interval';
 
-function collectAll(invertedIntervalsDetailed: InvertedIntervalsDetailed): IntervalWithSuspensions[] {
+function collectAll(invertedIntervalsDetailed: CalculatedIntervalList): IntervalWithSuspensions[] {
   return [
     ...invertedIntervalsDetailed.fixedConsonances,
     ...invertedIntervalsDetailed.fixedDissonances,
@@ -35,7 +35,7 @@ describe('Suspension treatment parity with C#', () => {
     let all: IntervalWithSuspensions[];
 
     beforeEach(() => {
-      const res = invertibleCounterpointService.computeDetailed(0);
+      const res = invertibleCounterpointService.calculate(0);
       all = collectAll(res);
     });
 
@@ -64,7 +64,7 @@ describe('Suspension treatment parity with C#', () => {
     let all: IntervalWithSuspensions[];
 
     beforeEach(() => {
-      const res = invertibleCounterpointService.computeDetailed(5);
+      const res = invertibleCounterpointService.calculate(5);
       all = collectAll(res);
     });
 
@@ -97,7 +97,7 @@ describe('Suspension treatment parity with C#', () => {
     let all: IntervalWithSuspensions[];
 
     beforeEach(() => {
-      const res = invertibleCounterpointService.computeDetailed(-11);
+      const res = invertibleCounterpointService.calculate(-11);
       all = collectAll(res);
     });
 

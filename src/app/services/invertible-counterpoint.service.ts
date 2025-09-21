@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Interval } from '../models/Interval';
-import { InvertedIntervals, InvertedIntervalsDetailed } from '../models/InvertedIntervals';
+import { CalculatedIntervalList } from '../models/CalculatedIntervalList';
 import { SuspensionTreatmentEnum } from '../models/SuspensionTreatmentEnum';
 
 @Injectable({ providedIn: 'root' })
@@ -85,8 +85,8 @@ export class InvertibleCounterpointService {
       lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant },
   };
 
-  public computeDetailed(jvIndex: number): InvertedIntervalsDetailed {
-    const out: InvertedIntervalsDetailed = {
+  public calculate(jvIndex: number): CalculatedIntervalList {
+    const out: CalculatedIntervalList = {
       fixedConsonances: [],
       fixedDissonances: [],
       variableConsonances: [],

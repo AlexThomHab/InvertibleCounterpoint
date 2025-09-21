@@ -51,7 +51,7 @@ describe('InvertedIntervalsCalculator', () => {
 
   positiveCases.forEach(([jv, fc, fd, vc, vd]) => {
     it(`should correctly classify intervals for positive JV ${jv}`, () => {
-      const result = calculator.compute(jv);
+      const result = calculator.calculate(jv);
       expectUnordered(toNums(result.fixedConsonances), fc);
       expectUnordered(toNums(result.fixedDissonances), fd);
       expectUnordered(toNums(result.variableConsonances), vc);
@@ -61,7 +61,7 @@ describe('InvertedIntervalsCalculator', () => {
 
   negativeCases.forEach(([jv, fc, fd, vc, vd]) => {
     it(`should correctly classify intervals for negative JV ${jv}`, () => {
-      const result = calculator.compute(jv);
+      const result = calculator.calculate(jv);
       expectUnordered(toNums(result.fixedConsonances), fc);
       expectUnordered(toNums(result.fixedDissonances), fd);
       expectUnordered(toNums(result.variableConsonances), vc);

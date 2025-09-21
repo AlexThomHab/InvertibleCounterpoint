@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {MatCard} from '@angular/material/card';
 import {MatTooltipModule} from '@angular/material/tooltip';
-import {InvertedIntervalsDetailed} from '../models/InvertedIntervals';
+import {CalculatedIntervalList} from '../models/CalculatedIntervalList';
 import {IntervalRow} from './interval-row/interval-row';
 
 type Cell = {
@@ -20,7 +20,7 @@ type Cell = {
 
 type CellsMap = Partial<Record<number, Cell>>;
 
-function emptyDetailed(): InvertedIntervalsDetailed {
+function emptyDetailed(): CalculatedIntervalList {
   return {
     fixedConsonances: [],
     fixedDissonances: [],
@@ -42,7 +42,7 @@ export class CounterpointUiComponent {
   _activeTab: 'two' | 'three' = 'two';
   _intervalJvList = [0, 1, 2, 3, 4, 5, 6, 7];
   _jvInput = 0;
-  _intervals: InvertedIntervalsDetailed = emptyDetailed();
+  _intervals: CalculatedIntervalList = emptyDetailed();
   _cells: CellsMap = {};
   _jvPrimeInput = 0;
   _jvDoublePrimeInput = 0;

@@ -1,15 +1,15 @@
 import { InvertibleCounterpointService } from "./invertible-counterpoint.service";
-import { InvertedIntervals, InvertedIntervalsDetailed } from "../models/InvertedIntervals";
+import { CalculatedIntervalList } from "../models/CalculatedIntervalList";
 
 export class ThreeVoiceGivenJvIndexValuesCalculator {
   constructor(
     private readonly twoVoiceCalc = new InvertibleCounterpointService()
   ) {}
 
-  calculateDetailed(jvPrime: number, jvDoublePrime: number, jvSigma: number): InvertedIntervalsDetailed[] {
-    const firstAndSecondVoice = this.twoVoiceCalc.computeDetailed(jvPrime);
-    const secondAndThirdVoice = this.twoVoiceCalc.computeDetailed(jvDoublePrime);
-    const firstAndThirdVoice = this.twoVoiceCalc.computeDetailed(jvSigma);
+  calculate(jvPrime: number, jvDoublePrime: number, jvSigma: number): CalculatedIntervalList[] {
+    const firstAndSecondVoice = this.twoVoiceCalc.calculate(jvPrime);
+    const secondAndThirdVoice = this.twoVoiceCalc.calculate(jvDoublePrime);
+    const firstAndThirdVoice = this.twoVoiceCalc.calculate(jvSigma);
     return [firstAndSecondVoice, secondAndThirdVoice, firstAndThirdVoice];
   }
 }

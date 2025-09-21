@@ -3,7 +3,7 @@ import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {InvertibleCounterpointService} from '../../services/invertible-counterpoint.service';
 import {SuspensionTreatmentEnum} from '../../models/SuspensionTreatmentEnum';
-import {InvertedIntervalsDetailed} from '../../models/InvertedIntervals';
+import {CalculatedIntervalList} from '../../models/CalculatedIntervalList';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {ThreeVoiceGivenJvIndexValuesCalculator} from '../../services/ThreeVoiceGivenJvIndexCalculator';
 import {Interval} from '../../models/Interval';
@@ -23,7 +23,7 @@ type Cell = {
 type CellsMap = Partial<Record<number, Cell>>;
 type CellsRowTuple = [CellsMap, CellsMap, CellsMap];
 
-function emptyDetailed(): InvertedIntervalsDetailed {
+function emptyDetailed(): CalculatedIntervalList {
   return {
     fixedConsonances: [],
     fixedDissonances: [],
@@ -48,13 +48,13 @@ function emptyDetailed(): InvertedIntervalsDetailed {
 
 export class IntervalRow {
   @Input() _twoVoiceCells: CellsMap = {};
-  @Input() _intervals: InvertedIntervalsDetailed = emptyDetailed();
+  @Input() _intervals: CalculatedIntervalList = emptyDetailed();
   @Input() _intervalsList = [0, 1, 2, 3, 4, 5, 6, 7];
   @Input() _jvInput = 0;
   _jvPrimeInput = 0;
   _jvDoublePrimeInput = 0;
   _jvSigmaView = 0;
-  _threeRows: [InvertedIntervalsDetailed, InvertedIntervalsDetailed, InvertedIntervalsDetailed] = [
+  _threeRows: [CalculatedIntervalList, CalculatedIntervalList, CalculatedIntervalList] = [
     emptyDetailed(),
     emptyDetailed(),
     emptyDetailed(),
@@ -85,17 +85,17 @@ export class IntervalRow {
   }
 
   private recomputeTwoVoice() {
-    this._intervals = this.invertibleCounterpointService.computeDetailed(this._jvInput);
+    this._intervals = this.invertibleCounterpointService.calculate(this._jvInput);
     this._twoVoiceCells = this.buildGridMap(this._intervals)
   }
   private recomputeThreeVoice() {
     const sigma = this._jvPrimeInput + this._jvDoublePrimeInput;
     this._jvSigmaView = sigma;
 
-    const rows = this.threeCalc.calculateDetailed(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
+    const rows = this.threeCalc.calculate(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
     this._threeRows = [rows[0] ?? emptyDetailed(), rows[1] ?? emptyDetailed(), rows[2] ?? emptyDetailed()];
 
-    const detailedRows = this.threeCalc.calculateDetailed(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
+    const detailedRows = this.threeCalc.calculate(this._jvPrimeInput, this._jvDoublePrimeInput, sigma);
     this._threeRowsCells = [
       this.buildGridMap(detailedRows[0]),
       this.buildGridMap(detailedRows[1]),
@@ -103,7 +103,7 @@ export class IntervalRow {
     ];
   }
 
-  private buildGridMap(det?: InvertedIntervalsDetailed): CellsMap {
+  private buildGridMap(det?: CalculatedIntervalList): CellsMap {
     const cells: CellsMap = {};
     if (!det) return cells;
     const all = [
