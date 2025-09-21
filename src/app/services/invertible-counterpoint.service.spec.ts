@@ -2,9 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { InvertibleCounterpointService } from './invertible-counterpoint.service';
 import { SuspensionTreatmentEnum } from '../models/SuspensionTreatmentEnum';
 import { CalculatedIntervalList } from '../models/CalculatedIntervalList';
-import { IntervalWithSuspensions } from '../models/Interval';
+import { Interval } from '../models/Interval';
 
-function collectAll(invertedIntervalsDetailed: CalculatedIntervalList): IntervalWithSuspensions[] {
+function collectAll(invertedIntervalsDetailed: CalculatedIntervalList): Interval[] {
   return [
     ...invertedIntervalsDetailed.fixedConsonances,
     ...invertedIntervalsDetailed.fixedDissonances,
@@ -13,11 +13,11 @@ function collectAll(invertedIntervalsDetailed: CalculatedIntervalList): Interval
   ];
 }
 
-function byUpper(intervalsWithSuspensions: IntervalWithSuspensions[], suspensionTreatmentEnum: SuspensionTreatmentEnum): number[] {
+function byUpper(intervalsWithSuspensions: Interval[], suspensionTreatmentEnum: SuspensionTreatmentEnum): number[] {
   return intervalsWithSuspensions.filter(x => x.upperSuspensionTreatment === suspensionTreatmentEnum).map(x => x.index).sort((a, b) => a - b);
 }
 
-function byLower(intervalsWithSuspensions: IntervalWithSuspensions[], suspensionTreatmentEnum: SuspensionTreatmentEnum): number[] {
+function byLower(intervalsWithSuspensions: Interval[], suspensionTreatmentEnum: SuspensionTreatmentEnum): number[] {
   return intervalsWithSuspensions.filter(x => x.lowerSuspensionTreatment === suspensionTreatmentEnum).map(x => x.index).sort((a, b) => a - b);
 }
 
@@ -32,7 +32,7 @@ describe('Suspension treatment parity with C#', () => {
   });
 
   describe('Given JV index is 0', () => {
-    let all: IntervalWithSuspensions[];
+    let all: Interval[];
 
     beforeEach(() => {
       const res = invertibleCounterpointService.calculate(0);
@@ -61,7 +61,7 @@ describe('Suspension treatment parity with C#', () => {
   });
 
   describe('Given JV index is 5', () => {
-    let all: IntervalWithSuspensions[];
+    let all: Interval[];
 
     beforeEach(() => {
       const res = invertibleCounterpointService.calculate(5);
@@ -94,7 +94,7 @@ describe('Suspension treatment parity with C#', () => {
   });
 
   describe('Given JV index is -11', () => {
-    let all: IntervalWithSuspensions[];
+    let all: Interval[];
 
     beforeEach(() => {
       const res = invertibleCounterpointService.calculate(-11);

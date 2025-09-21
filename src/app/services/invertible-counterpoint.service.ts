@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
-import { Interval } from '../models/Interval';
-import { CalculatedIntervalList } from '../models/CalculatedIntervalList';
-import { SuspensionTreatmentEnum } from '../models/SuspensionTreatmentEnum';
+import {Injectable} from '@angular/core';
+import {Interval} from '../models/Interval';
+import {CalculatedIntervalList} from '../models/CalculatedIntervalList';
+import {SuspensionTreatmentEnum} from '../models/SuspensionTreatmentEnum';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class InvertibleCounterpointService {
   private static readonly N = 8;
   private static readonly PERFECT = new Set([0, 4, 7]);
   private static readonly IMPERFECT = new Set([2, 5]);
+
   private static copyInterval(interval: Interval): Interval {
     return {
       index: interval.index,
@@ -32,57 +33,89 @@ export class InvertibleCounterpointService {
   }
 
   private readonly _intervals: Record<number, Interval> = {
-    0: { index: 0, semitones: 0, name: 'Unison',  isConsonant: true,
+    0: {
+      index: 0, semitones: 0, name: 'Unison', isConsonant: true,
       upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant,
-      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant },
-    1: { index: 1, semitones: 1, name: 'Second',  isConsonant: false,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant
+    },
+    1: {
+      index: 1, semitones: 1, name: 'Second', isConsonant: false,
       upperSuspensionTreatment: SuspensionTreatmentEnum.CannotFormSuspension,
-      lowerSuspensionTreatment: SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension },
-    2: { index: 2, semitones: 2, name: 'Third',   isConsonant: true,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension
+    },
+    2: {
+      index: 2, semitones: 2, name: 'Third', isConsonant: true,
       upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant,
-      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant },
-    3: { index: 3, semitones: 3, name: 'Fourth',  isConsonant: false,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant
+    },
+    3: {
+      index: 3, semitones: 3, name: 'Fourth', isConsonant: false,
       upperSuspensionTreatment: SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension,
-      lowerSuspensionTreatment: SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension },
-    4: { index: 4, semitones: 4, name: 'Fifth',   isConsonant: true,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension
+    },
+    4: {
+      index: 4, semitones: 4, name: 'Fifth', isConsonant: true,
       upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant,
-      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsFree },
-    5: { index: 5, semitones: 5, name: 'Sixth',   isConsonant: true,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsFree
+    },
+    5: {
+      index: 5, semitones: 5, name: 'Sixth', isConsonant: true,
       upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsFree,
-      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant },
-    6: { index: 6, semitones: 6, name: 'Seventh', isConsonant: false,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant
+    },
+    6: {
+      index: 6, semitones: 6, name: 'Seventh', isConsonant: false,
       upperSuspensionTreatment: SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension,
-      lowerSuspensionTreatment: SuspensionTreatmentEnum.CannotFormSuspension },
-    7: { index: 7, semitones: 7, name: 'Octave',  isConsonant: true,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.CannotFormSuspension
+    },
+    7: {
+      index: 7, semitones: 7, name: 'Octave', isConsonant: true,
       upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant,
-      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant },
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant
+    },
   };
 
   private readonly _intervalsInverted: Record<number, Interval> = {
-    0: { index: 0, semitones:  0, name: 'Unison',  isConsonant: true,
+    0: {
+      index: 0, semitones: 0, name: 'Unison', isConsonant: true,
       upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant,
-      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant },
-    1: { index: 1, semitones: -1, name: 'Second',  isConsonant: false,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant
+    },
+    1: {
+      index: 1, semitones: -1, name: 'Second', isConsonant: false,
       upperSuspensionTreatment: SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension,
-      lowerSuspensionTreatment: SuspensionTreatmentEnum.CannotFormSuspension },
-    2: { index: 2, semitones: -2, name: 'Third',   isConsonant: true,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.CannotFormSuspension
+    },
+    2: {
+      index: 2, semitones: -2, name: 'Third', isConsonant: true,
       upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant,
-      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant },
-    3: { index: 3, semitones: -3, name: 'Fourth',  isConsonant: false,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant
+    },
+    3: {
+      index: 3, semitones: -3, name: 'Fourth', isConsonant: false,
       upperSuspensionTreatment: SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension,
-      lowerSuspensionTreatment: SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension },
-    4: { index: 4, semitones: -4, name: 'Fifth',   isConsonant: true,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension
+    },
+    4: {
+      index: 4, semitones: -4, name: 'Fifth', isConsonant: true,
       upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsFree,
-      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant },
-    5: { index: 5, semitones: -5, name: 'Sixth',   isConsonant: true,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant
+    },
+    5: {
+      index: 5, semitones: -5, name: 'Sixth', isConsonant: true,
       upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant,
-      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsFree },
-    6: { index: 6, semitones: -6, name: 'Seventh', isConsonant: false,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsFree
+    },
+    6: {
+      index: 6, semitones: -6, name: 'Seventh', isConsonant: false,
       upperSuspensionTreatment: SuspensionTreatmentEnum.CannotFormSuspension,
-      lowerSuspensionTreatment: SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension },
-    7: { index: 7, semitones: -7, name: 'Octave',  isConsonant: true,
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.IfOnDownbeatMustFormSuspension
+    },
+    7: {
+      index: 7, semitones: -7, name: 'Octave', isConsonant: true,
       upperSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant,
-      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant },
+      lowerSuspensionTreatment: SuspensionTreatmentEnum.NoteOfResolutionIsDissonant
+    },
   };
 
   public calculate(jvIndex: number): CalculatedIntervalList {
@@ -99,17 +132,17 @@ export class InvertibleCounterpointService {
       const remainder = (i + jvIndex) % 7;
       const targetIndex = Math.abs(remainder);
       const jv0Interval = this._intervals[i];
-      const targ = this._intervals[targetIndex];
+      let targetInterval = this._intervals[targetIndex];
 
-      const bothConsonant = jv0Interval.isConsonant && targ.isConsonant;
-      const bothDissonant = !jv0Interval.isConsonant && !targ.isConsonant;
-      const consToDiss   = jv0Interval.isConsonant && !targ.isConsonant;
+      const bothConsonant = jv0Interval.isConsonant && targetInterval.isConsonant;
+      const bothDissonant = !jv0Interval.isConsonant && !targetInterval.isConsonant;
+      const consToDiss = jv0Interval.isConsonant && !targetInterval.isConsonant;
 
       const shiftedIndexAbs = Math.abs(jvIndex + i);
       const compareIndex = shiftedIndexAbs % 7;
       const isLargeShift = shiftedIndexAbs > 7;
 
-      const targetInterval = jvIndex < 0
+      targetInterval = jvIndex < 0
         ? this._intervalsInverted[compareIndex]
         : this._intervals[compareIndex];
 
@@ -165,7 +198,6 @@ export class InvertibleCounterpointService {
         out.variableConsonances.push(merged);
         continue;
       }
-
       {
         const merged = mergeSuspensions(jv0Interval, targetInterval, jvIndex >= 0);
         out.variableDissonances.push(merged);
