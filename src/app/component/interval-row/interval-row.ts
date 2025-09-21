@@ -47,7 +47,7 @@ function emptyDetailed(): InvertedIntervalsDetailed {
 })
 
 export class IntervalRow {
-  @Input() _cells: CellsMap = {};
+  @Input() _twoVoiceCells: CellsMap = {};
   @Input() _intervals: InvertedIntervalsDetailed = emptyDetailed();
   @Input() _intervalsList = [0, 1, 2, 3, 4, 5, 6, 7];
   @Input() _jvInput = 0;
@@ -86,27 +86,7 @@ export class IntervalRow {
 
   private recomputeTwoVoice() {
     this._intervals = this.invertibleCounterpointService.computeDetailed(this._jvInput);
-
-    this._cells = {};
-    const all = [
-      ...this._intervals.fixedConsonances,
-      ...this._intervals.fixedDissonances,
-      ...this._intervals.variableConsonances,
-      ...this._intervals.variableDissonances,
-    ];
-    for (const it of all) {
-      this._cells[it.index] = {
-        index: it.index,
-        topGlyph: this.glyphFor(it.upperSuspensionTreatment),
-        bottomGlyph: this.glyphFor(it.lowerSuspensionTreatment),
-        topTitle: this.fullName(it.upperSuspensionTreatment, 'Upper'),
-        bottomTitle: this.fullName(it.lowerSuspensionTreatment, 'Lower'),
-        topClass: this.glyphExtraClass(it.upperSuspensionTreatment),
-        bottomClass: this.glyphExtraClass(it.lowerSuspensionTreatment),
-        upgrade: it.imperfectBecomesPerfect,
-        becomesAFourth: it.becomesAFourth,
-      };
-    }
+    this._twoVoiceCells = this.buildGridMap(this._intervals)
   }
   private recomputeThreeVoice() {
     const sigma = this._jvPrimeInput + this._jvDoublePrimeInput;

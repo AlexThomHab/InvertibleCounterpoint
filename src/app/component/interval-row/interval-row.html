@@ -13,26 +13,26 @@
     [matTooltip]="'Interval ' + i"
   >
     <div class="glyph glyph-top"
-         [ngClass]="_cells[i]?.topClass"
-         [title]="_cells[i]?.topTitle">
-      {{ _cells[i]?.topGlyph || '' }}
+         [ngClass]="_twoVoiceCells[i]?.topClass"
+         [title]="_twoVoiceCells[i]?.topTitle">
+      {{ _twoVoiceCells[i]?.topGlyph || '' }}
     </div>
 
     <div class="interval-number">{{ i }}</div>
 
     <div class="glyph glyph-bottom"
-         [ngClass]="_cells[i]?.bottomClass"
-         [title]="_cells[i]?.bottomTitle">
-      {{ _cells[i]?.bottomGlyph || '' }}
+         [ngClass]="_twoVoiceCells[i]?.bottomClass"
+         [title]="_twoVoiceCells[i]?.bottomTitle">
+      {{ _twoVoiceCells[i]?.bottomGlyph || '' }}
     </div>
 
     <span
-      *ngIf="_cells[i]?.upgrade"
+      *ngIf="_twoVoiceCells[i]?.upgrade"
       class="ip-flag"
       [matTooltip]="'Imperfect consonance becomes perfect after JV'">
           </span>
     <span
-      *ngIf="_cells[i]?.becomesAFourth"
+      *ngIf="_twoVoiceCells[i]?.becomesAFourth"
       class="isAFourth-flag"
       [matTooltip]="'This interval transforms to a 4th hence be cautious if it appears in the lower voice'">
           4</span>

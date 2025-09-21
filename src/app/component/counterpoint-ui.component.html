@@ -4,28 +4,20 @@
       This tool applies Sergei Taneyev’s vertical shifting (invertible) counterpoint. Enter JV indices to see
       how intervals behave after inversion in 2- and 3-voice textures.
     </p>
-
     <details class="info" style="margin-bottom:12px;">
       <summary class="info-summary" aria-label="Open information panel">
-        ℹ️ What it does • Use • Notes
+        ℹ️ What is all this, I'm confused?
       </summary>
       <div class="info-body">
-        <p><strong>What:</strong> Shows interval classes as Fixed/Variable Consonance or Dissonance before/after
-          inversion.
-          In 3-voice mode, enter <code>JV′</code> (I↔II) and <code>JV″</code> (II↔III); the app derives <code>JVΣ</code>
-          (I↔III).</p>
-
-        <p><strong>Use:</strong>
-          1) 2-voice: set <code>JV</code> and read the grid (amber dot = imperfect → perfect).
-          2) 3-voice: set <code>JV′</code>, <code>JV″</code> to compare I↔II, II↔III, I↔III.</p>
-
-        <p><strong>Why:</strong> Plan themes/textures that survive voice swaps; spot safe (fixed) vs context-dependent
-          (variable) intervals.</p>
-
-        <p><strong>Notes:</strong> Focuses on vertical behaviour; it doesn’t auto-enforce rhythmic species rules. Treat
-          as a compositional aid.</p>
-
-        <p style="margin-top:8px; font-size:.9rem; opacity:.9;">Author: Anemone Lux • Feedback welcome.</p>
+        <p>
+          This tool was created for my own studies of Sergei Taneyev’s theories of invertible counterpoint,
+          inspired by Jacob Gran’s video lectures on the subject
+          (<a href="https://www.youtube.com/watch?v=dBTh9PVJ0Ps&list=PL6Towqbh0pdoozx7YmEkb8EHJI7iCMxwU&index=2" target="_blank">YouTube playlist</a>).
+        </p>
+        <p>
+          It is meant as a way to explore and visualize interval transformations after inversion, both for my own practice
+          and as a resource for anyone else who may find it useful.
+        </p>
       </div>
     </details>
 
@@ -86,11 +78,10 @@
 
       <app-interval-row
         [_intervalsList]="_indices"
-        [_cells]="_cells"
+        [_twoVoiceCells]="_cells"
         [_intervals]="_intervals"
         [_jvInput]="_jvInput">
       </app-interval-row>
-
     </ng-container>
 
     <ng-container *ngSwitchCase="'three'">
@@ -118,7 +109,7 @@
       <h3 style="margin-top:10px">I ↔ II (JV′ = {{ _jvPrimeInput }})</h3>
       <app-interval-row
         [_intervalsList]="_indices"
-        [_cells]="_cells"
+        [_twoVoiceCells]="_cells"
         [_intervals]="_intervals"
         [_jvInput]="_jvPrimeInput">
       </app-interval-row>
@@ -126,7 +117,7 @@
       <h3>II ↔ III (JV″ = {{ _jvDoublePrimeInput }})</h3>
       <app-interval-row
         [_intervalsList]="_indices"
-        [_cells]="_cells"
+        [_twoVoiceCells]="_cells"
         [_intervals]="_intervals"
         [_jvInput]="_jvDoublePrimeInput">
       </app-interval-row>
@@ -134,7 +125,7 @@
       <h3>I ↔ III (JVΣ = {{ _jvSigmaView }})</h3>
       <app-interval-row
         [_intervalsList]="_indices"
-        [_cells]="_cells"
+        [_twoVoiceCells]="_cells"
         [_intervals]="_intervals"
         [_jvInput]="_jvSigmaView">
       </app-interval-row>
