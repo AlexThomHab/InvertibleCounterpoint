@@ -3,12 +3,9 @@
 This interactive web tool applies Sergei Taneyev’s concept of **vertical shifting (invertible) counterpoint**.  
 By entering inversion indices (JV values), you can see how musical intervals behave after inversion in both **2-voice** and **3-voice** textures.
 
-👉 Try it out to explore which intervals stay consonant/dissonant, and which switch category after inversion.
-
 ---
 
 ## 🚀 Features
-- Explore **2-voice** and **3-voice** counterpoint inversion.
 - Visual grid showing **Fixed Consonances, Fixed Dissonances, Variable Consonances, Variable Dissonances**.
 - Works with any JV index (positive or negative).
 - Dark and Light modes for easy reading.
@@ -57,7 +54,7 @@ This way, you can study how **interval relations across three voices** behave af
 
 ## 📌 Notes
 - This tool is meant for **theoretical study and teaching** of Taneyev’s counterpoint system.
-- It doesn’t generate music, but instead provides a **visual framework** for interval transformations.
+- It doesn’t generate music (yet), but instead provides a **visual framework** for interval transformations.
 - Great for exploring how consonance/dissonance balance shifts in multi-voice textures.
 
 ---
